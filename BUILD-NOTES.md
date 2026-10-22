@@ -1,12 +1,20 @@
 # QuizHost builds
 
+## Version 0.1.4 Beta 2 — sticky teacher header (23 October 2026)
+
+The teacher's top bar stays at the top of the viewport while scrolling through the workspace. Its stacking level keeps page content beneath it and editor/dialog overlays above it.
+
+Production build passed. Browser checks confirmed the header remains at viewport y=0 after scrolling and the quiz editor overlays it correctly.
+
+Latest executable: release/QuizHost-0.1.4-beta.2-Windows.exe. Final classroom acceptance testing and native Windows startup verification remain pending.
+
 ## Version 0.1.4 Beta 1 — beta release label (23 October 2026)
 
 The package version is now 0.1.4-beta.1. Teacher and student branding shows a Beta badge, the library footer reads the version from package.json, and browser/window titles identify the beta. The Windows package and source archive filenames include beta.1. The app's data directory and game behavior remain the same.
 
 TypeScript, production build, and desktop-entry syntax checks passed. Browser checks confirmed the badge on teacher and student screens, the beta browser title, and the package-derived version in the library footer. Package inspection confirmed version 0.1.4-beta.1, matching compiled assets, and all seven custom icon sizes in both executables.
 
-Latest executable: release/QuizHost-0.1.4-beta.1-Windows.exe. Final classroom acceptance testing and native Windows startup verification remain pending.
+Executable: release/QuizHost-0.1.4-beta.1-Windows.exe. Final classroom acceptance testing and native Windows startup verification remain pending.
 
 ## Version 0.1.4 — Windows application icon (23 October 2026)
 

@@ -1,0 +1,14 @@
+node_modules/
+dist/
+release/
+data/
+deliverables/
+outputs/
+PROJECT-CONTEXT.md
+*.log
+.env
+.env.*
+!.env.example
+*.sqlite
+*.sqlite-*
+work/

@@ -1,0 +1,35 @@
+QUIZHOST — FIRST CLASSROOM TEST
+
+1. Open release\QuizHost-0.1.4-Windows.exe on the teacher's Windows x64 laptop.
+2. Click Host game on the sample quiz.
+3. Choose a play mode and open the room.
+
+INDIVIDUAL PHONE MODE
+Connect the laptop and phones to the same local Wi-Fi.
+Open the address displayed in Setup & connection on each phone.
+Students enter the game PIN and their name.
+Click Start game, reveal answers, and continue to the final scoreboard.
+Every question starts with a 3-2-1 countdown, then the full answer timer.
+
+SHARED-SCREEN TEAM MODE
+Choose Better together. Enter one team name per line (2–8 teams).
+Start, choose a tile, let the active team answer aloud, then reveal.
+Mark Correct or Missed it. QuizHost rotates the teams for you.
+Student phones and Wi-Fi are not needed for this mode.
+
+ANIMATIONS
+Answer tiles, feedback, leaderboard changes, and the final podium animate.
+Click Animations on in the header to use reduced motion on that device.
+The app also follows the device's reduced-motion preference.
+
+AFTER CLASS
+Finished scores are saved under Results. Export CSV to keep a copy.
+Use Back up in the library to export your quizzes.
+
+BEFORE FINAL DELIVERY
+This is an unsigned first build. Run a pilot on the school's laptop.
+Test the intended Wi-Fi with real phones before promising 50 players.
+The current room ends if the teacher app closes. Finished results and
+saved quizzes remain on disk. Keep the laptop awake during a game.
+
+See README.md in the source archive for development and network details.

@@ -1,0 +1,434 @@
+/* Decorative motion never decides game state or submits an answer. */
+.motion-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 7px 9px;
+  border: 1px solid #e1d7ed;
+  border-radius: 5px;
+  background: #f8f5fc;
+  color: #7d5c9b;
+  font-size: 10px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.motion-toggle[aria-pressed="true"] {
+  color: #7547a2;
+}
+.motion-toggle[aria-pressed="false"] {
+  background: #eeeaf2;
+  color: #6a6274;
+}
+.motion-toggle:disabled {
+  opacity: 0.8;
+}
+.student-header .motion-toggle {
+  color: #e5d6f4;
+  background: #ffffff10;
+  border-color: #ffffff20;
+  margin-right: 12px;
+}
+.student-header > .pill {
+  margin-left: 0;
+}
+.student-header .motion-toggle {
+  margin-left: auto;
+}
+.score-list,
+.score-row {
+  position: relative;
+}
+.score-row {
+  animation: player-arrive 240ms ease-out both;
+}
+.round-countdown {
+  position: relative;
+  isolation: isolate;
+  min-height: 390px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #fff;
+  overflow: hidden;
+  padding: 25px 20px;
+  border: 1px solid #ffffff18;
+  border-radius: 12px;
+  background: #411584;
+}
+.countdown-kicker {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #cdb5e8;
+}
+.round-countdown h2 {
+  margin: 16px 0 18px;
+  font-size: 36px;
+}
+.countdown-number {
+  display: grid;
+  place-items: center;
+  width: 148px;
+  height: 148px;
+  border-radius: 50%;
+  background: #ffce3b;
+  color: #46178f;
+  font-size: 86px;
+  font-weight: 900;
+  letter-spacing: -4px;
+  border-bottom: 8px solid #dca61b;
+  box-shadow: 0 0 0 17px #ffffff06;
+  animation: countdown-pop 600ms cubic-bezier(0.18, 0.75, 0.25, 1) both;
+}
+.round-countdown p {
+  margin: 25px 0 0;
+  color: #c7acdf;
+  font-size: 12px;
+}
+.countdown-shapes {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.countdown-shapes i {
+  position: absolute;
+  display: block;
+  width: 54px;
+  height: 54px;
+  background: #ffffff0b;
+  left: 13%;
+  top: 23%;
+  transform: rotate(20deg);
+  animation: countdown-drift 3s ease-out both;
+}
+.countdown-shapes i:nth-child(2) {
+  left: auto;
+  right: 14%;
+  top: 17%;
+  border-radius: 50%;
+  width: 72px;
+  height: 72px;
+  animation-delay: 100ms;
+}
+.countdown-shapes i:nth-child(3) {
+  left: 22%;
+  top: auto;
+  bottom: 13%;
+  width: 36px;
+  height: 36px;
+  border-radius: 2px;
+  animation-delay: 200ms;
+}
+.countdown-shapes i:nth-child(4) {
+  left: auto;
+  right: 22%;
+  top: auto;
+  bottom: 16%;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  animation-delay: 250ms;
+}
+.phase-countdown .content > .page-heading .eyebrow,
+.phase-countdown .content > .page-heading h1 {
+  display: none;
+}
+.phase-countdown .content > .page-heading {
+  margin-bottom: 14px;
+}
+.motion-question .answers .answer {
+  animation: answer-arrive 280ms cubic-bezier(0.2, 0.75, 0.25, 1) both;
+}
+.motion-question .answers .answer:nth-child(2) {
+  animation-delay: 45ms;
+}
+.motion-question .answers .answer:nth-child(3) {
+  animation-delay: 90ms;
+}
+.motion-question .answers .answer:nth-child(4) {
+  animation-delay: 135ms;
+}
+.motion-question h1,
+.motion-question h2 {
+  animation: question-arrive 250ms ease-out both;
+}
+.answer.correct {
+  animation: correct-pop 420ms ease-out both;
+}
+.answer.incorrect {
+  transition:
+    opacity 200ms,
+    filter 200ms;
+}
+.locked-answer {
+  animation: lock-arrive 300ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.locked-answer > svg {
+  animation: lock-check 380ms cubic-bezier(0.18, 0.85, 0.25, 1.15) both;
+}
+.locked-answer > svg path {
+  stroke-dasharray: 32;
+  stroke-dashoffset: 32;
+  animation: draw-check 320ms 100ms ease-out forwards;
+}
+.answer-feedback {
+  animation: feedback-arrive 320ms ease-out both;
+}
+.answer-feedback.positive strong {
+  display: inline-block;
+  animation: points-pop 420ms 80ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.timer.urgent {
+  animation: timer-pulse 900ms ease-in-out infinite;
+}
+.podium-place {
+  animation: podium-in 550ms cubic-bezier(0.18, 0.75, 0.2, 1) both;
+}
+.podium-place-3 {
+  animation-delay: 80ms;
+}
+.podium-place-2 {
+  animation-delay: 240ms;
+}
+.podium-place-1 {
+  animation-delay: 440ms;
+}
+.podium-trophy {
+  animation: trophy-pop 600ms 650ms cubic-bezier(0.18, 0.8, 0.2, 1.2) both;
+}
+.confetti-burst {
+  position: fixed;
+  inset: 0;
+  z-index: 12;
+  pointer-events: none;
+  overflow: hidden;
+}
+.confetti-burst i {
+  position: absolute;
+  top: -20px;
+  left: var(--piece-x);
+  width: 9px;
+  height: 15px;
+  border-radius: 2px;
+  background: var(--piece-color);
+  opacity: 0;
+  animation: confetti-fall 3000ms var(--piece-delay)
+    cubic-bezier(0.2, 0.55, 0.5, 1) both;
+}
+.confetti-burst i:nth-child(3n) {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+@keyframes countdown-pop {
+  0% {
+    transform: scale(0.82);
+    opacity: 0.5;
+  }
+  55% {
+    transform: scale(1.04);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@keyframes countdown-drift {
+  from {
+    translate: 0 15px;
+    opacity: 0.3;
+  }
+  to {
+    translate: 0 -10px;
+    opacity: 1;
+  }
+}
+@keyframes question-arrive {
+  from {
+    opacity: 0.7;
+    translate: 0 8px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+@keyframes answer-arrive {
+  from {
+    translate: 0 10px;
+    opacity: 0.8;
+  }
+  to {
+    translate: 0 0;
+    opacity: 1;
+  }
+}
+@keyframes correct-pop {
+  0% {
+    scale: 1;
+  }
+  45% {
+    scale: 1.025;
+  }
+  100% {
+    scale: 1;
+  }
+}
+@keyframes lock-arrive {
+  from {
+    translate: 0 8px;
+    opacity: 0.6;
+  }
+  to {
+    translate: 0 0;
+    opacity: 1;
+  }
+}
+@keyframes lock-check {
+  from {
+    scale: 0.6;
+    opacity: 0;
+  }
+  to {
+    scale: 1;
+    opacity: 1;
+  }
+}
+@keyframes draw-check {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes feedback-arrive {
+  from {
+    translate: 0 8px;
+    opacity: 0.4;
+  }
+  to {
+    translate: 0 0;
+    opacity: 1;
+  }
+}
+@keyframes points-pop {
+  from {
+    scale: 0.92;
+  }
+  to {
+    scale: 1;
+  }
+}
+@keyframes player-arrive {
+  from {
+    opacity: 0.5;
+    translate: 0 6px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+@keyframes timer-pulse {
+  50% {
+    scale: 1.035;
+  }
+}
+@keyframes trophy-pop {
+  from {
+    scale: 0.5;
+    opacity: 0;
+  }
+  to {
+    scale: 1;
+    opacity: 1;
+  }
+}
+@keyframes confetti-fall {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0);
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  82% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(var(--piece-drift), 100vh, 0)
+      rotate(var(--piece-spin));
+    opacity: 0;
+  }
+}
+@media (max-width: 700px) {
+  .student-header .motion-toggle span {
+    display: none;
+  }
+  .student-header .motion-toggle {
+    padding: 7px;
+    margin-right: 8px;
+  }
+  .top-right {
+    gap: 9px;
+  }
+  .top-right .motion-toggle span {
+    display: none;
+  }
+}
+@media (max-width: 560px) {
+  .round-countdown {
+    min-height: 365px;
+    padding: 25px 16px;
+  }
+  .round-countdown h2 {
+    font-size: 30px;
+  }
+  .countdown-number {
+    width: 128px;
+    height: 128px;
+    font-size: 74px;
+  }
+  .round-countdown p {
+    max-width: 230px;
+  }
+  .countdown-shapes i {
+    left: 7%;
+  }
+  .countdown-shapes i:nth-child(2) {
+    right: 6%;
+  }
+  .confetti-burst i:nth-child(n + 25) {
+    display: none;
+  }
+  .student-header .brand {
+    font-size: 25px;
+  }
+  .student-header .pill {
+    padding: 6px;
+    font-size: 7px;
+  }
+}
+.motion-root[data-reduced-motion="true"] *,
+.motion-root[data-reduced-motion="true"] *::before,
+.motion-root[data-reduced-motion="true"] *::after {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+.motion-root[data-reduced-motion="true"] .locked-answer > svg path {
+  stroke-dashoffset: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+  .locked-answer > svg path {
+    stroke-dashoffset: 0;
+  }
+}

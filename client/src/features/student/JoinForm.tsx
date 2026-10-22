@@ -1,0 +1,69 @@
+import { ArrowRight, ShieldCheck, Sparkles } from "lucide-react";
+import React from "react";
+
+export function JoinForm({
+  pin,
+  setPin,
+  name,
+  setName,
+  connected,
+  busy,
+  join,
+}: {
+  pin: string;
+  setPin: (pin: string) => void;
+  name: string;
+  setName: (name: string) => void;
+  connected: boolean;
+  busy: boolean;
+  join: (event: React.FormEvent) => Promise<void>;
+}) {
+  return (
+    <section className="join-card">
+      <span className="join-symbol">
+        <Sparkles size={35} />
+      </span>
+      <span className="eyebrow">LET’S GET EVERYONE IN</span>
+      <h1>
+        Game on<span className="green-text">.</span>
+      </h1>
+      <p>Enter your teacher’s game PIN and join the fun.</p>
+      <form onSubmit={join}>
+        <label className="field">
+          Game PIN
+          <input
+            autoFocus
+            inputMode="numeric"
+            pattern="[0-9]{6}"
+            maxLength={6}
+            value={pin}
+            onChange={(e) => setPin(e.target.value.replace(/\D/g, ""))}
+            placeholder="6-digit PIN"
+            required
+          />
+        </label>
+        <label className="field">
+          Your name
+          <input
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            maxLength={30}
+            placeholder="What should we call you?"
+            required
+          />
+        </label>
+        <button
+          className="btn primary"
+          disabled={!connected || busy || pin.length !== 6 || !name.trim()}
+        >
+          {busy ? "Joining…" : "Enter game"}
+          <ArrowRight size={18} />
+        </button>
+      </form>
+      <div className="join-footnote">
+        <ShieldCheck size={14} />
+        No account needed. Just you.
+      </div>
+    </section>
+  );
+}

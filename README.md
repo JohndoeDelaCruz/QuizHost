@@ -1,10 +1,12 @@
-# QuizHost 0.1.4 — offline classroom quizzes
+# QuizHost 0.1.4 Beta 1 — offline classroom quizzes
+
+**Beta release:** core features are implemented; final classroom acceptance testing is still pending. Test the Windows app on the teacher's laptop and the intended classroom network before final handover.
 
 QuizHost runs on a Windows teacher laptop. Individual players use phone browsers on the same local Wi-Fi. Shared-screen team games run entirely on the laptop. The installed app needs no Node.js, student app, account, paid hosting, or internet connection.
 
 ## Try the Windows app
 
-1. Open `release/QuizHost-0.1.4-Windows.exe`.
+1. Open `release/QuizHost-0.1.4-beta.1-Windows.exe`.
 2. Choose **Host game** on the included quiz.
 3. Choose **Everyone’s in** for individual phone play, or **Better together** for shared-screen teams.
 4. For phones, connect every device to the same classroom Wi-Fi. Open **Setup & connection**, use the displayed student address or QR code, and enter the room’s six-digit PIN.

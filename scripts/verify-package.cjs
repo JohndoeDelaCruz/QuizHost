@@ -22,6 +22,14 @@ const hash = (buffer) =>
   crypto.createHash("sha256").update(buffer).digest("hex");
 const readArchive = (file) =>
   asar.extractFile(archive, file.split("/").join(path.sep));
+const expectedVersion = JSON.parse(
+  fs.readFileSync("package.json", "utf8"),
+).version;
+if (
+  JSON.parse(readArchive("package.json").toString("utf8")).version !==
+  expectedVersion
+)
+  throw new Error("Packaged application version is stale.");
 const wasm = readArchive("node_modules/sql.js/dist/sql-wasm.wasm");
 if (
   hash(wasm) !== hash(fs.readFileSync("node_modules/sql.js/dist/sql-wasm.wasm"))

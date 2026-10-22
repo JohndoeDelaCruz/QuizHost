@@ -54,6 +54,24 @@ textarea::placeholder {
 .brand-dot {
   color: var(--yellow);
 }
+.brand-name {
+  position: relative;
+}
+.release-badge {
+  position: absolute;
+  top: calc(100% - 1px);
+  left: 0;
+  padding: 2px 6px;
+  border-radius: 3px;
+  background: var(--yellow);
+  color: #3b146e;
+  font-size: 9px;
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
 .brand-mark span {
   background: var(--red);
   opacity: 1;

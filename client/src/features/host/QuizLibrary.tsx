@@ -16,6 +16,7 @@ import type { Quiz } from "../../../../shared/types";
 import { Pill } from "../../components/Pill";
 import { AnswerShape } from "../../components/game/AnswerShape";
 import { api, download } from "../../lib";
+import { APP_VERSION } from "../../release";
 
 export function QuizLibrary({
   quizzes,
@@ -230,7 +231,7 @@ export function QuizLibrary({
       <div className="bottom-note">
         <ShieldCheck size={17} />
         <span>No accounts. No subscriptions. Just your classroom.</span>
-        <span>QUIZHOST / 0.1.4</span>
+        <span>QUIZHOST / {APP_VERSION}</span>
       </div>
     </>
   );

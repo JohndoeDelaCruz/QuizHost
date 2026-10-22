@@ -30,7 +30,7 @@ else {
         minHeight: 720,
         backgroundColor: "#f5f3f8",
         autoHideMenuBar: true,
-        title: "QuizHost",
+        title: app.getVersion().includes("-beta") ? "QuizHost Beta" : "QuizHost",
         icon: app.isPackaged
           ? path.join(process.resourcesPath, "icon.ico")
           : path.join(__dirname, "../assets/icon.ico"),

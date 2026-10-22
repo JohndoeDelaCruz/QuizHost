@@ -1,12 +1,20 @@
 # QuizHost builds
 
+## Version 0.1.4 Beta 1 — beta release label (23 October 2026)
+
+The package version is now 0.1.4-beta.1. Teacher and student branding shows a Beta badge, the library footer reads the version from package.json, and browser/window titles identify the beta. The Windows package and source archive filenames include beta.1. The app's data directory and game behavior remain the same.
+
+TypeScript, production build, and desktop-entry syntax checks passed. Browser checks confirmed the badge on teacher and student screens, the beta browser title, and the package-derived version in the library footer. Package inspection confirmed version 0.1.4-beta.1, matching compiled assets, and all seven custom icon sizes in both executables.
+
+Latest executable: release/QuizHost-0.1.4-beta.1-Windows.exe. Final classroom acceptance testing and native Windows startup verification remain pending.
+
 ## Version 0.1.4 — Windows application icon (23 October 2026)
 
 Added an original QuizHost icon using the existing four-color mark on a purple rounded tile. The editable SVG generates a seven-resolution Windows ICO, a PNG preview, and a matching browser favicon. The Windows build now edits executable resources while leaving code signing disabled. The portable launcher, application executable, and app window use the custom icon. The window icon is included as an extra packaged resource.
 
 TypeScript, production build, and desktop entry-point syntax checks passed. Read-only PE resource inspection confirmed all seven custom icon images inside both Windows executables. Package verification confirmed the current app code, the copied window ICO, and the browser favicon. No native app launch was performed for this update.
 
-Latest executable: release/QuizHost-0.1.4-Windows.exe. Earlier versioned builds are retained. Native Windows startup remains unverified.
+Executable: release/QuizHost-0.1.4-Windows.exe. Native Windows startup remains unverified.
 
 ## Version 0.1.3 — frontend organization (23 October 2026)
 

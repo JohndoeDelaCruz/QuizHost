@@ -19,6 +19,7 @@
 | `components/game/` | Shared answer tiles/shapes, timer, leaderboard, and podium |
 | `animation.tsx`, `animations.css` | Motion preference, preparation countdown, leaderboard movement, and celebration effects |
 | `lib.ts` | Shared HTTP, socket, authorization, and download helpers |
+| `release.ts` | Display version and release channel derived from package.json |
 
 Add new behavior to its feature. Keep the application entry and page composition files small. Components shared by teacher and student screens belong in `components/`; feature-specific pieces stay with their feature. Socket lifecycle and async state belong in the corresponding hook. Game rules, scoring, and authoritative timers remain in `server/game.ts`.
 

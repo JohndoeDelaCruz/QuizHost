@@ -1,6 +1,6 @@
 # QuizHost builds
 
-## Unreleased — page and question-tab transitions (24 October 2026)
+## Version 0.1.4 Beta 3 — page and question-tab transitions (24 October 2026)
 
 Workspace navigation and quiz-editor question tabs now use a short 220 ms fade and upward entrance. The effect animates the existing pane, so typing, live score updates, and timer changes do not replay it. Fast switches cancel the previous effect, and the shared reduced-motion setting and device preference disable it. The sticky toolbar stays in place.
 
@@ -8,7 +8,9 @@ Removed “YOUR CLASSROOM. GAME ON.” from the library heading and “No accoun
 
 TypeScript, production build, and all eight existing integration tests passed. Browser checks covered the four workspace pages, question switching with unsaved edits preserved, typing without a repeated entrance, reduced motion for both panes, and the sticky toolbar.
 
-These changes are available in the source and browser preview. The version and existing Windows executable remain at 0.1.4-beta.2; package the accumulated changes when the next release is ready.
+Windows package inspection confirmed version 0.1.4-beta.3, matching compiled frontend/server files, the desktop entry point, and the SQLite runtime. All seven custom icon sizes were verified in the app and portable launcher. The copied executable was checked against the release file by SHA-256.
+
+Windows executable: release/QuizHost-0.1.4-beta.3-Windows.exe. This release packages the page transitions and copy cleanup. The application identity and saved-data location are unchanged. Native Windows startup verification and final classroom acceptance testing remain pending.
 
 ## Version 0.1.4 Beta 2 — sticky teacher header (23 October 2026)
 
@@ -16,7 +18,7 @@ The teacher's top bar stays at the top of the viewport while scrolling through t
 
 Production build passed. Browser checks confirmed the header remains at viewport y=0 after scrolling and the quiz editor overlays it correctly.
 
-Latest executable: release/QuizHost-0.1.4-beta.2-Windows.exe. Final classroom acceptance testing and native Windows startup verification remain pending.
+Executable: release/QuizHost-0.1.4-beta.2-Windows.exe. Final classroom acceptance testing and native Windows startup verification remain pending.
 
 ## Version 0.1.4 Beta 1 — beta release label (23 October 2026)
 

@@ -1,4 +1,4 @@
-# QuizHost 0.1.4 Beta 2 — offline classroom quizzes
+# QuizHost 0.1.4 Beta 3 — offline classroom quizzes
 
 **Beta release:** core features are implemented; final classroom acceptance testing is still pending. Test the Windows app on the teacher's laptop and the intended classroom network before final handover.
 
@@ -6,7 +6,7 @@ QuizHost runs on a Windows teacher laptop. Individual players use phone browsers
 
 ## Try the Windows app
 
-1. Open `release/QuizHost-0.1.4-beta.2-Windows.exe`.
+1. Open `release/QuizHost-0.1.4-beta.3-Windows.exe`.
 2. Choose **Host game** on the included quiz.
 3. Choose **Everyone’s in** for individual phone play, or **Better together** for shared-screen teams.
 4. For phones, connect every device to the same classroom Wi-Fi. Open **Setup & connection**, use the displayed student address or QR code, and enter the room’s six-digit PIN.
@@ -15,6 +15,8 @@ QuizHost runs on a Windows teacher laptop. Individual players use phone browsers
 Team play: enter 2–8 team names, start the room, pick a question tile, reveal the answer, and mark the team’s answer correct or missed. Turns rotate automatically. Question point values are used in team mode; individual correct answers earn 500–1,000 points based on time remaining.
 
 Each question begins with a shared three-second countdown. The full answer time starts afterward. Answer tiles enter in sequence, locked answers and correct-answer feedback animate, leaderboard rows move into their new positions, and the final podium has a short confetti celebration. Use **Animations on** in the header to switch to reduced motion on that device; the app also respects the device’s reduced-motion preference. All effects work offline.
+
+Workspace pages and quiz-editor question tabs also have short entrance transitions. Typing and live score updates do not replay them.
 
 This initial development build is unsigned. It has not been tested with 50 physical phones. Use a suitable access point and run a classroom pilot before promising that capacity.
 

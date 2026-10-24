@@ -1,5 +1,15 @@
 # QuizHost builds
 
+## Unreleased — page and question-tab transitions (24 October 2026)
+
+Workspace navigation and quiz-editor question tabs now use a short 220 ms fade and upward entrance. The effect animates the existing pane, so typing, live score updates, and timer changes do not replay it. Fast switches cancel the previous effect, and the shared reduced-motion setting and device preference disable it. The sticky toolbar stays in place.
+
+Removed “YOUR CLASSROOM. GAME ON.” from the library heading and “No accounts. No subscriptions. Just your classroom.” from its footer. The version remains visible in the footer, including on smaller screens.
+
+TypeScript, production build, and all eight existing integration tests passed. Browser checks covered the four workspace pages, question switching with unsaved edits preserved, typing without a repeated entrance, reduced motion for both panes, and the sticky toolbar.
+
+These changes are available in the source and browser preview. The version and existing Windows executable remain at 0.1.4-beta.2; package the accumulated changes when the next release is ready.
+
 ## Version 0.1.4 Beta 2 — sticky teacher header (23 October 2026)
 
 The teacher's top bar stays at the top of the viewport while scrolling through the workspace. Its stacking level keeps page content beneath it and editor/dialog overlays above it.

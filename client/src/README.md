@@ -16,6 +16,7 @@
 | `features/student/useStudentSession.ts`, `identity.ts` | Joining, reconnection, answer submission, and session identity |
 | `features/student/JoinForm.tsx`, `StudentLobby.tsx`, `StudentQuestion.tsx`, `StudentFinish.tsx` | Individual student screens |
 | `components/` | Shared branding and small visual components |
+| `components/useSwitchMotion.ts` | Page and question-tab entrance transitions, respecting the shared motion preference |
 | `components/game/` | Shared answer tiles/shapes, timer, leaderboard, and podium |
 | `animation.tsx`, `animations.css` | Motion preference, preparation countdown, leaderboard movement, and celebration effects |
 | `lib.ts` | Shared HTTP, socket, authorization, and download helpers |

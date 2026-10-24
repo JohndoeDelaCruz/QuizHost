@@ -6,7 +6,6 @@ import {
   MoreHorizontal,
   Play,
   Plus,
-  ShieldCheck,
   Sparkles,
   Trash2,
   Upload,
@@ -44,7 +43,6 @@ export function QuizLibrary({
     <>
       <div className="page-heading">
         <div>
-          <span className="eyebrow">YOUR CLASSROOM. GAME ON.</span>
           <h1>
             Ready, set, quiz<span className="green-text">!</span>
           </h1>
@@ -229,8 +227,6 @@ export function QuizLibrary({
         </button>
       </div>
       <div className="bottom-note">
-        <ShieldCheck size={17} />
-        <span>No accounts. No subscriptions. Just your classroom.</span>
         <span>QUIZHOST / {APP_VERSION}</span>
       </div>
     </>

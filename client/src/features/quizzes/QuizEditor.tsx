@@ -3,6 +3,7 @@ import { useState } from "react";
 import type { Question, Quiz } from "../../../../shared/types";
 import { Pill } from "../../components/Pill";
 import { AnswerShape } from "../../components/game/AnswerShape";
+import { useSwitchMotion } from "../../components/useSwitchMotion";
 import { freshQuestion } from "./question";
 
 export function QuizEditor({
@@ -23,6 +24,7 @@ export function QuizEditor({
   const [validation, setValidation] = useState("");
   const [discard, setDiscard] = useState(false);
   const current = draft.questions[index];
+  const questionRef = useSwitchMotion(current.id);
   function question(change: Partial<Question>) {
     setDraft({
       ...draft,
@@ -133,7 +135,7 @@ export function QuizEditor({
               Add question
             </button>
           </aside>
-          <div className="question-editor">
+          <div className="question-editor" ref={questionRef}>
             <div className="section-heading">
               <Pill>QUESTION {index + 1}</Pill>
               <button

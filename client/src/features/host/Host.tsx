@@ -15,6 +15,7 @@ import {
 import { MotionToggle } from "../../animation";
 import { Logo } from "../../components/Logo";
 import { Pill } from "../../components/Pill";
+import { useSwitchMotion } from "../../components/useSwitchMotion";
 import { hostToken } from "../../lib";
 import { QuizEditor } from "../quizzes/QuizEditor";
 import { DeleteQuizDialog } from "./DeleteQuizDialog";
@@ -56,6 +57,7 @@ export function Host() {
     openRoom,
     removeQuiz,
   } = useHostWorkspace();
+  const pageRef = useSwitchMotion(tab);
   if (!hostToken)
     return (
       <div className="access-screen">
@@ -146,7 +148,7 @@ export function Host() {
             <span className="top-avatar">T</span>
           </div>
         </header>
-        <div className="content">
+        <div className="content" ref={pageRef}>
           {error && (
             <div className="alert error" role="alert">
               {error}

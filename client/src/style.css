@@ -1978,9 +1978,6 @@ textarea::placeholder {
   .new-quiz-card {
     min-height: 250px;
   }
-  .bottom-note span:last-child {
-    display: none;
-  }
   .bottom-note {
     font-size: 9px;
     align-items: flex-start;

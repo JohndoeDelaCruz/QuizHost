@@ -4,6 +4,7 @@ export type Mode = "individual" | "teams";
 export type Phase =
   | "lobby"
   | "board"
+  | "preparing"
   | "countdown"
   | "question"
   | "reveal"
@@ -37,6 +38,11 @@ export interface Score {
   correct: number;
   avatar?: AvatarId;
 }
+export interface JoinNotice {
+  id: string;
+  roomId: string;
+  player: Pick<Score, "id" | "name" | "avatar">;
+}
 export interface PublicQuestion {
   id: string;
   prompt: string;
@@ -57,6 +63,7 @@ export interface RoomView {
   question: PublicQuestion | null;
   preview: Pick<PublicQuestion, "id" | "prompt" | "image"> | null;
   preparationMs: number;
+  preQuestionMs: number;
   ranking: { previousScores: Score[]; readyAt: number } | null;
   deadline: number | null;
   startsAt: number | null;

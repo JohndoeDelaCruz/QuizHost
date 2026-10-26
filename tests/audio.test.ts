@@ -218,6 +218,8 @@ test("scene selection keeps personal results private and derives countdown time 
   assert.equal(hostAudioScene(base, "room", true)?.music, "question");
   assert.equal(hostAudioScene(base, "setup", true), null);
   assert.equal(hostAudioScene(base, "library", false), null);
+  assert.equal(roomAudioScene({ ...base, phase: "preparing" }, "host").music, "thinking");
+  assert.equal(roomAudioScene({ ...base, phase: "preparing" }, "student").countdown, null);
   assert.equal(roomAudioScene(base, "host", 1000).countdown?.endsAt, 9000);
   assert.equal(roomAudioScene(base, "host").feedback, null);
   const locked = { ...base, myAnswer: { index: 1 } };

@@ -11,7 +11,7 @@ import { Game, type GameTimings } from "./game";
 import { MediaStore } from "./media";
 import { backupSchema, quizSchema } from "./quizValidation";
 import { MAX_BACKUP_BYTES, MAX_IMAGE_BYTES } from "../shared/media";
-import type { Ack, Quiz } from "../shared/types";
+import type { Ack, JoinNotice, Quiz } from "../shared/types";
 
 const createRoomSchema = z.object({
   quizId: z.string(),
@@ -378,9 +378,20 @@ export async function startServer(options: {
         );
       if (socket.data.isHost)
         throw new Error("Open the student page in another tab to join.");
+      const previousCount = room.players.size;
       const player = room.join(data.name, data.token, socket.id);
       socket.data.gameId = room.id;
       socket.data.playerId = player.id;
+      if (room.players.size > previousCount) {
+        const notice: JoinNotice = {
+          id: randomUUID(), roomId: room.id,
+          player: { id: player.id, name: player.name, avatar: player.avatar },
+        };
+        for (const recipient of io.sockets.sockets.values()) {
+          if (recipient.data.isHost || recipient.data.gameId === room.id)
+            recipient.emit("room:player-joined", notice);
+        }
+      }
       return {
         id: player.id,
         token: player.token,

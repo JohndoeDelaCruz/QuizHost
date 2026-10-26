@@ -42,6 +42,14 @@ Use the speaker button to enable or mute sound, and the adjacent Sound settings 
 
 Audio files are served over the same local Wi-Fi as the rest of the game; internet access is not required. Music and sound controls were introduced in Windows Beta 5; library music is included in Beta 6.
 
+## Current source preview: countdowns and classroom celebrations
+
+The source preview adds a separate five-second Get ready countdown before every question in both modes. A progress bar and avatar mascot appear while the prompt, photo, and choices remain hidden. The existing five-second question-reading stage follows, then the full answer timer begins. Preparation and reading deadlines come from the server and survive reconnection.
+
+When a new student joins, the teacher, existing students, and joining student see a brief avatar welcome popup. The joining student gets a personal welcome. Arrivals are limited to three visible cards at once, can be dismissed, and expire automatically. Reconnecting does not announce a new arrival. Game screens use a short bounce and sparkle entrance when stages or questions change; score updates and timer ticks do not replay it. The shared reduced-motion setting disables decorative movement while preserving progress and game timing.
+
+These changes are in the source/browser preview and have not yet been packaged into the Windows Beta 6 executable. Update client and server together because the room protocol includes the new preparation phase and arrival event.
+
 ## Development
 
 Git keeps the source code, dependency lockfile, documentation, and icon assets. Installed dependencies, compiled output, packaged EXEs, local databases, test work files, and internal project notes stay on this laptop. After cloning, install dependencies and build using the commands below.

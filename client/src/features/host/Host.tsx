@@ -18,6 +18,7 @@ import { Pill } from "../../components/Pill";
 import { useSwitchMotion } from "../../components/useSwitchMotion";
 import { Avatar } from "../../components/game/Avatar";
 import { AudioControls } from "../../audio/AudioControls";
+import { JoinPopups } from "../../components/game/JoinPopups";
 import { useAudio, useHostAudio } from "../../audio/AudioProvider";
 import { hostToken } from "../../lib";
 import { QuizEditor } from "../quizzes/QuizEditor";
@@ -31,6 +32,8 @@ import { useHostWorkspace } from "./useHostWorkspace";
 
 export function Host() {
   const {
+    joinNotices,
+    dismissJoinNotice,
     tab,
     setTab,
     quizzes,
@@ -95,6 +98,7 @@ export function Host() {
         (tab === "room" && room ? " is-playing phase-" + room.phase : "")
       }
     >
+      {tab === "room" && <JoinPopups room={room} notices={joinNotices} onDismiss={dismissJoinNotice} />}
       <aside className="sidebar">
         <Logo />
         <div className="workspace-label">YOUR CLASSROOM</div>

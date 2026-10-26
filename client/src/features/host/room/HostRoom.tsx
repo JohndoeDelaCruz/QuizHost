@@ -8,6 +8,8 @@ import { FinishedRoom } from "./FinishedRoom";
 import { HostQuestion } from "./HostQuestion";
 import { RoomLobby } from "./RoomLobby";
 import { TeamBoard } from "./TeamBoard";
+import { GameStage } from "../../../components/game/GameStage";
+import { PreQuestionCountdown } from "../../../components/game/PreQuestionCountdown";
 
 export function HostRoom({ room, network, busy, act }: HostRoomProps) {
   const [confirmEnd, setConfirmEnd] = useState(false);
@@ -46,6 +48,8 @@ export function HostRoom({ room, network, busy, act }: HostRoomProps) {
           </button>
         )}
       </div>
+      <GameStage stageKey={`${room.id}:${room.phase}:${room.questionIndex}`}>
+      {room.phase === "preparing" && <PreQuestionCountdown room={room} />}
       {room.phase === "countdown" && <QuestionIntro room={room} />}
       {room.phase === "ranking" && (
         <Rankings
@@ -65,6 +69,7 @@ export function HostRoom({ room, network, busy, act }: HostRoomProps) {
       {room.phase === "finished" && (
         <FinishedRoom room={room} busy={busy} act={act} />
       )}
+      </GameStage>
       {confirmEnd && (
         <div className="modal-backdrop">
           <div className="modal small-modal">

@@ -31,7 +31,7 @@ export function roomAudioScene(
 ): AudioScene {
   const music: Track | null =
     room.phase === "lobby" || room.phase === "board" ? "lobby" :
-    room.phase === "countdown" ? "thinking" :
+    room.phase === "preparing" || room.phase === "countdown" ? "thinking" :
     room.phase === "question" ? (role === "student" && room.myAnswer ? "thinking" : "question") :
     room.phase === "ranking" ? "ranking" :
     room.phase === "finished" ? "victory" : null;

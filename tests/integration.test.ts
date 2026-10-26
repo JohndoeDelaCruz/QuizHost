@@ -4,11 +4,12 @@ import { mkdtempSync, rmSync } from "node:fs";
 import path from "node:path";
 import { io, type Socket } from "socket.io-client";
 import { startServer } from "../server/index";
-import type { Ack, Quiz, RoomView } from "../shared/types";
+import type { Ack, JoinNotice, Quiz, RoomView } from "../shared/types";
 import { AVATAR_IDS } from "../shared/avatars";
 import type { GameTimings } from "../server/game";
 const states = new WeakMap<Socket, RoomView | null>();
 const TEST_TIMINGS: GameTimings = {
+  preQuestionMs: 150,
   readingMs: 500,
   feedbackMs: 500,
   rankingMs: 400,
@@ -284,6 +285,9 @@ test("both game modes send image references after preparation without sending im
       });
     await cmd(host, "host:start");
     if (mode === "teams") await cmd(host, "host:pick", 0);
+    const hidden = await state(student ?? host, (r) => r.phase === "preparing");
+    assert.equal(hidden.question, null);
+    assert.equal(hidden.preview, null);
     assert.equal(
       (await state(host, (r) => r.phase === "countdown")).question,
       null,
@@ -479,19 +483,37 @@ test("SQLite quizzes and results survive closing and reopening the store", async
   store.close();
 });
 
-test("question reading exposes only the prompt, rejects early answers, resumes consistently, and preserves full answer time", async (t) => {
+test("five-second preparation hides the question, then reading and reconnection preserve the full answer time", async (t) => {
   const f = await fixture(t, {});
   const quiz: Quiz = await f.api("/quizzes", quizBody());
   const host = await f.socket(true);
   await cmd(host, "host:create", { quizId: quiz.id, mode: "individual" });
   const lobby = await state(host, (r) => r.phase === "lobby");
-  const student = await f.socket();
+  let student = await f.socket();
   const player = await cmd<{ id: string; token: string }>(
     student,
     "player:join",
     { pin: lobby.pin, name: "Ready learner" },
   );
   await cmd(host, "host:start");
+  const hidden = await state(student, (r) => r.phase === "preparing");
+  assert.equal(hidden.preQuestionMs, 5000);
+  assert.equal(hidden.question, null);
+  assert.equal(hidden.preview, null);
+  assert.equal(hidden.deadline, null);
+  assert.ok(hidden.startsAt && hidden.startsAt - hidden.serverNow >= 4950);
+  assert.equal((await state(host, (r) => r.phase === "preparing")).startsAt, hidden.startsAt);
+  await assert.rejects(cmd(student, "player:answer", 1), /closed/);
+  await assert.rejects(cmd(host, "host:reveal"), /no open question/);
+  student.disconnect();
+  student = await f.socket();
+  const earlyReturn = await cmd<{ room: RoomView }>(student, "player:join", {
+    pin: lobby.pin, name: "Ready learner", token: player.token,
+  });
+  assert.equal(earlyReturn.room.phase, "preparing");
+  assert.equal(earlyReturn.room.startsAt, hidden.startsAt);
+  assert.equal(earlyReturn.room.question, null);
+  assert.equal(earlyReturn.room.preview, null);
   const prep = await state(student, (r) => r.phase === "countdown");
   assert.equal(prep.question, null);
   assert.equal(prep.preview?.prompt, "Question 1");
@@ -500,6 +522,7 @@ test("question reading exposes only the prompt, rejects early answers, resumes c
   assert.equal(prep.preparationMs, 5000);
   assert.equal(prep.deadline, null);
   assert.ok(prep.startsAt && prep.startsAt > prep.serverNow);
+  assert.ok(prep.serverNow >= hidden.startsAt! - 25);
   await assert.rejects(cmd(student, "player:answer", 1), /closed/);
   await assert.rejects(cmd(host, "host:reveal"), /no open question/);
   student.disconnect();
@@ -523,27 +546,65 @@ test("question reading exposes only the prompt, rejects early answers, resumes c
   );
 });
 
-test("ending a room during countdown cancels the scheduled question", async (t) => {
+test("ending during preparation or question reading cancels both scheduled stages", async (t) => {
   const f = await fixture(t);
   const quiz: Quiz = await f.api("/quizzes", quizBody());
   const host = await f.socket(true);
-  await cmd(host, "host:create", {
-    quizId: quiz.id,
-    mode: "teams",
-    teams: ["Sun", "Moon"],
-  });
-  await cmd(host, "host:start");
-  await cmd(host, "host:pick", 0);
-  await state(host, (r) => r.phase === "countdown");
-  await cmd(host, "host:end");
-  const ended = await state(host, (r) => r.phase === "finished");
-  assert.equal(ended.startsAt, null);
-  assert.equal(ended.deadline, null);
-  await new Promise((resolve) =>
-    setTimeout(resolve, TEST_TIMINGS.readingMs + 100),
-  );
-  assert.equal(states.get(host)?.phase, "finished");
-  assert.equal((await f.api("/results")).length, 1);
+  for (const phase of ["preparing", "countdown"]) {
+    await cmd(host, "host:create", {
+      quizId: quiz.id, mode: "teams", teams: ["Sun", "Moon"],
+    });
+    await cmd(host, "host:start");
+    await cmd(host, "host:pick", 0);
+    await state(host, (r) => r.phase === phase);
+    await cmd(host, "host:end");
+    const ended = await state(host, (r) => r.phase === "finished");
+    assert.equal(ended.startsAt, null);
+    assert.equal(ended.deadline, null);
+    await new Promise((resolve) => setTimeout(resolve, TEST_TIMINGS.preQuestionMs + TEST_TIMINGS.readingMs + 100));
+    assert.equal(states.get(host)?.phase, "finished");
+  }
+  assert.equal((await f.api("/results")).length, 2);
+});
+
+test("new arrivals notify the teacher, joining student, and room peers, without reconnect replays or outsider leaks", async (t) => {
+  const f = await fixture(t);
+  const quiz: Quiz = await f.api("/quizzes", quizBody());
+  const host = await f.socket(true);
+  const outsider = await f.socket();
+  const alex = await f.socket();
+  const bea = await f.socket();
+  const hostNotices: JoinNotice[] = [];
+  const alexNotices: JoinNotice[] = [];
+  const beaNotices: JoinNotice[] = [];
+  const outsiderNotices: JoinNotice[] = [];
+  host.on("room:player-joined", (n) => hostNotices.push(n));
+  alex.on("room:player-joined", (n) => alexNotices.push(n));
+  bea.on("room:player-joined", (n) => beaNotices.push(n));
+  outsider.on("room:player-joined", (n) => outsiderNotices.push(n));
+  await cmd(host, "host:create", { quizId: quiz.id, mode: "individual" });
+  const lobby = await state(host, (r) => r.phase === "lobby");
+  const a = await cmd<{ id: string; token: string; avatar: string }>(alex, "player:join", { pin: lobby.pin, name: "Alex" });
+  await state(host, (r) => r.scores.length === 1);
+  assert.equal(hostNotices.length, 1);
+  assert.equal(alexNotices.length, 1);
+  assert.equal(beaNotices.length, 0);
+  assert.equal(hostNotices[0].roomId, lobby.id);
+  assert.deepEqual(hostNotices[0].player, { id: a.id, name: "Alex", avatar: a.avatar });
+  assert.equal("token" in hostNotices[0].player, false);
+  await cmd(bea, "player:join", { pin: lobby.pin, name: "Bea" });
+  await state(host, (r) => r.scores.length === 2);
+  assert.equal(hostNotices.length, 2);
+  assert.equal(alexNotices.length, 2);
+  assert.equal(beaNotices.length, 1);
+  assert.equal(beaNotices[0].player.name, "Bea");
+  alex.disconnect();
+  const returning = await f.socket();
+  await cmd(returning, "player:join", { pin: lobby.pin, name: "Alex", token: a.token });
+  await new Promise((resolve) => setTimeout(resolve, 30));
+  assert.equal(hostNotices.length, 2);
+  assert.equal(beaNotices.length, 1);
+  assert.equal(outsiderNotices.length, 0);
 });
 
 test("random avatars cover the supplied pack before repeating and survive reconnects and results", async (t) => {

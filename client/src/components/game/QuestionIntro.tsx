@@ -31,7 +31,7 @@ export function QuestionIntro({ room }: { room: RoomView }) {
         <Hourglass size={18} />
         <span>
           {remaining > 0
-            ? `Answers open in ${Math.ceil(remaining / 1000)} seconds`
+            ? `Answers open in ${Math.ceil(remaining / 1000)} ${Math.ceil(remaining / 1000) === 1 ? "second" : "seconds"}`
             : "Opening answers…"}
         </span>
       </div>

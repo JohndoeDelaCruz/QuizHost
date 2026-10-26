@@ -15,11 +15,13 @@ interface Player extends Score {
   answers: Map<number, { index: number; correct: boolean; earned: number }>;
 }
 export interface GameTimings {
+  preQuestionMs: number;
   readingMs: number;
   feedbackMs: number;
   rankingMs: number;
 }
 const DEFAULT_TIMINGS: GameTimings = {
+  preQuestionMs: 5000,
   readingMs: 5000,
   feedbackMs: 2500,
   rankingMs: 2500,
@@ -151,8 +153,16 @@ export class Game {
     this.previousScores = structuredClone(this.scoreboard());
     this.rankingReadyAt = null;
     this.questionIndex = index;
-    this.phase = "countdown";
+    this.phase = "preparing";
     this.deadline = null;
+    this.startsAt = Date.now() + this.timings.preQuestionMs;
+    this.timer = setTimeout(() => {
+      this.beginReading(index);
+      this.changed();
+    }, this.timings.preQuestionMs);
+  }
+  private beginReading(index: number) {
+    this.phase = "countdown";
     this.startsAt = Date.now() + this.timings.readingMs;
     this.timer = setTimeout(() => {
       this.phase = "question";
@@ -300,6 +310,7 @@ export class Game {
             }
           : null,
       preparationMs: this.timings.readingMs,
+      preQuestionMs: this.timings.preQuestionMs,
       ranking:
         this.phase === "ranking" && this.rankingReadyAt !== null
           ? {
@@ -308,7 +319,7 @@ export class Game {
             }
           : null,
       question:
-        q && this.phase !== "countdown"
+        q && this.phase !== "countdown" && this.phase !== "preparing"
           ? {
               id: q.id,
               prompt: q.prompt,

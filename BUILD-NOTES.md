@@ -1,5 +1,15 @@
 # QuizHost builds
 
+## Unreleased — pre-question countdown, join popups, and game transitions (26 October 2026)
+
+Added a server-controlled five-second preparation phase before each question, followed by the existing five-second reading phase and full answer time. Preparation exposes neither the prompt nor its photo or choices. Teacher and student screens show a progress bar, changing number, and avatar mascot. Reconnection preserves deadlines; ending a game cancels either scheduled preparation stage. Team tile selection follows the same flow.
+
+New joins emit a room-scoped arrival event to authenticated teachers and participants, including the joining student. The payload contains the public avatar/name/ID and no reconnect token. Reconnects do not emit a new arrival. Both views show dismissible avatar cards with a brief bounce and sparkles, capped at three visible cards and expiring after 4.2 seconds. Hidden pages skip old welcomes, and connection/room cleanup removes pending cards.
+
+Game stages enter with a 440 ms bounce and edge sparkles, keyed to the room, phase, and question rather than live scores or countdown ticks. Reduced motion removes decorative movement without changing timing. The five-second countdown and popup layouts were checked at 390×844 without horizontal overflow. Browser checks covered own and peer welcomes, no reconnect replay, animated teacher transitions, static reduced-motion student countdown, prompt/photo hiding, question reading, individual answering/rankings, and shared-screen team turns.
+
+TypeScript and production build passed. All 24 tests passed, including real five-second preparation plus five-second reading, full answer time, reconnecting in each stage, cancellation during either stage, arrival recipients, reconnect suppression, and outsider isolation. The Windows EXE remains 0.1.4-beta.6; this update is source/browser preview only.
+
 ## Version 0.1.4 Beta 6 — music in the Quiz library (26 October 2026)
 
 The Quiz library now plays Lobby Bounce after the first workspace click or a tap on Enable sound. Saved mute, volume, and Background music preferences remain effective. Opening a game lobby continues the same music loop. Library playback is selected independently from any game running in the background, so question countdowns and team feedback do not play on the library screen. Results, Setup & connection, and an empty Live room remain silent. Returning to the library resumes its music.

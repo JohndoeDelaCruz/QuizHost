@@ -23,6 +23,9 @@
 | `components/game/Avatar.tsx`, `shared/avatars.ts`, `client/public/avatars/` | Local avatar artwork and the fixed set of IDs assigned randomly by the host |
 | `components/game/QuestionIntro.tsx`, `useServerClock.ts` | Question-only reading stage and server-synchronized progress |
 | `components/game/Rankings.tsx`, `gameplay.css` | Round rankings, point counters, row movement, and responsive gameplay styling |
+| `components/game/PreQuestionCountdown.tsx` | Server-timed preparation with hidden prompts and a progress bar before question reading |
+| `components/game/useJoinNotices.ts`, `JoinPopups.tsx` | Room arrival events, bounded expiring welcome cards, and personal/peer greetings |
+| `components/game/GameStage.tsx`, `celebrations.css` | Game-stage entrances, avatar countdown styling, join animations, and responsive layout |
 | `dark-theme.css` | Dark purple workspace, editor, dialog, and student surfaces |
 | `animation.tsx`, `animations.css` | Motion preference, leaderboard movement, and celebration effects |
 | `audio/` | Device sound preferences, persistent Web Audio mixer, game-stage selection, and accessible sound controls |
@@ -32,7 +35,7 @@
 
 Add new behavior to its feature. Keep the application entry and page composition files small. Components shared by teacher and student screens belong in `components/`; feature-specific pieces stay with their feature. Socket lifecycle and async state belong in the corresponding hook. Game rules, scoring, and authoritative timers remain in `server/game.ts`.
 
-Global layout remains in `style.css`, with visual theme rules in `theme.css`. Keep their import order in `main.tsx`: layout, theme, images, animations, dark theme, gameplay, then audio controls. Reduced-motion overrides use the shared preference and device settings.
+Global layout remains in `style.css`, with visual theme rules in `theme.css`. Keep their import order in `main.tsx`: layout, theme, images, animations, dark theme, gameplay, audio controls, then classroom celebrations. Reduced-motion overrides use the shared preference and device settings. `GameStage` animates its existing container only when the stage key changes, preserving controls and avoiding replays on room score updates.
 
 `AudioProvider` owns a mixer for the lifetime of the page, rather than individual game screens. Unlock playback synchronously from user actions before awaiting network requests. `useGameAudio` maps student room state into music, private feedback, and a deadline-aligned cue. `useHostAudio` selects library music separately from the active room, keeping Results and Setup silent. A teacher workspace click activates playback while respecting saved mute settings. Music does not restart on ordinary state updates, and pending audio work must be cancelled when its scene or sound settings become stale. Keep score/game timers independent of audio. Never broadcast a student's correctness before reveal or attach individual success/failure sounds to the teacher's individual-mode screen.
 

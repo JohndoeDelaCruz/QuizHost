@@ -12,9 +12,14 @@ import { StudentQuestion } from "./StudentQuestion";
 import { useStudentSession } from "./useStudentSession";
 import { AudioControls } from "../../audio/AudioControls";
 import { useGameAudio } from "../../audio/AudioProvider";
+import { JoinPopups } from "../../components/game/JoinPopups";
+import { GameStage } from "../../components/game/GameStage";
+import { PreQuestionCountdown } from "../../components/game/PreQuestionCountdown";
 
 export function Student() {
   const {
+    joinNotices,
+    dismissJoinNotice,
     connected,
     room,
     identity,
@@ -32,6 +37,7 @@ export function Student() {
   useGameAudio(room, connected);
   return (
     <div className="student-shell">
+      <JoinPopups room={room} notices={joinNotices} playerId={identity?.id} onDismiss={dismissJoinNotice} />
       <header className="student-header">
         <Logo />
         <MotionToggle />
@@ -70,6 +76,8 @@ export function Student() {
                 <strong>{me?.score.toLocaleString() ?? 0} pts</strong>
               </span>
             </div>
+            <GameStage stageKey={`${room.id}:${room.phase}:${room.questionIndex}`}>
+            {room.phase === "preparing" && <PreQuestionCountdown room={room} avatar={identity?.avatar} />}
             {room.phase === "countdown" && <QuestionIntro room={room} />}
             {room.phase === "ranking" && (
               <Rankings
@@ -93,6 +101,7 @@ export function Student() {
             {room.phase === "finished" && (
               <StudentFinish room={room} identity={identity} me={me} />
             )}
+            </GameStage>
           </>
         )}
       </main>

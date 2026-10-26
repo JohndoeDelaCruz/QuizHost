@@ -10,6 +10,7 @@ import type {
 import { api, command, connect, hostToken } from "../../lib";
 import { freshQuestion } from "../quizzes/question";
 import { useAudio } from "../../audio/AudioProvider";
+import { useJoinNotices } from "../../components/game/useJoinNotices";
 
 export function useHostWorkspace() {
   const { unlock } = useAudio();
@@ -23,6 +24,7 @@ export function useHostWorkspace() {
   const [network, setNetwork] = useState<NetworkInfo | null>(null);
   const [connected, setConnected] = useState(false);
   const [socket, setSocket] = useState<Socket | null>(null);
+  const arrivals = useJoinNotices(socket);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [editor, setEditor] = useState<Quiz | null>(null);
@@ -141,6 +143,7 @@ export function useHostWorkspace() {
     }
   }
   return {
+    ...arrivals,
     tab,
     setTab,
     quizzes,

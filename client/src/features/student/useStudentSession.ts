@@ -5,11 +5,13 @@ import { command, connect } from "../../lib";
 import type { Identity } from "./identity";
 import { saveIdentity, storedIdentity } from "./identity";
 import { useAudio } from "../../audio/AudioProvider";
+import { useJoinNotices } from "../../components/game/useJoinNotices";
 
 export function useStudentSession() {
   const { unlock } = useAudio();
   const initial = useRef(storedIdentity());
   const [socket, setSocket] = useState<Socket | null>(null);
+  const arrivals = useJoinNotices(socket);
   const [connected, setConnected] = useState(false);
   const [room, setRoom] = useState<RoomView | null>(null);
   const [identity, setIdentity] = useState<Identity | null>(initial.current);
@@ -102,6 +104,7 @@ export function useStudentSession() {
   }, [room?.phase, room?.questionIndex]);
 
   return {
+    ...arrivals,
     connected,
     room,
     identity,

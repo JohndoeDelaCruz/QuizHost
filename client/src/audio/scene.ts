@@ -9,6 +9,21 @@ export interface AudioScene {
   countdown: { key: string; endsAt: number } | null;
 }
 
+export function hostAudioScene(
+  room: RoomView | null,
+  tab: string,
+  connected: boolean,
+): AudioScene | null {
+  if (!connected) return null;
+  if (tab === "library") {
+    return {
+      round: "workspace:library", phase: "lobby", music: "lobby",
+      feedback: null, countdown: null,
+    };
+  }
+  return tab === "room" && room ? roomAudioScene(room, "host") : null;
+}
+
 export function roomAudioScene(
   room: RoomView,
   role: AudioRole,

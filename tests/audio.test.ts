@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { GameAudioEngine } from "../client/src/audio/engine";
 import { defaultSoundSettings, TRACKS, type Track } from "../client/src/audio/catalog";
-import { roomAudioScene, type AudioScene } from "../client/src/audio/scene";
+import { hostAudioScene, roomAudioScene, type AudioScene } from "../client/src/audio/scene";
 import type { RoomView } from "../shared/types";
 
 class FakeGain {
@@ -73,6 +73,9 @@ test("audio stays gesture-gated, preserves loops on updates, and stops on mute/l
   assert.equal(f.active("lobby").length, 1);
   assert.equal(f.active("lobby")[0].loop, true);
   const original = f.active("lobby")[0];
+  f.engine.setScene(hostAudioScene(null, "library", true));
+  await flush();
+  assert.equal(f.active("lobby")[0], original, "Browsing the library keeps the same loop");
   f.engine.setScene(scene()); await f.engine.unlock(); await flush();
   assert.equal(f.active("lobby")[0], original);
   f.engine.setSettings({ ...defaultSoundSettings("host"), volume: 0.6 });
@@ -208,6 +211,13 @@ test("native browser timers are invoked without an engine receiver", async () =>
 test("scene selection keeps personal results private and derives countdown time from the server", () => {
   const base = { id: "room", questionIndex: 0, mode: "individual", phase: "question",
     deadline: 20000, serverNow: 12000, scores: [] } as unknown as RoomView;
+  const library = hostAudioScene(base, "library", true)!;
+  assert.equal(library.music, "lobby", "Library music is independent of a background game");
+  assert.equal(library.countdown, null);
+  assert.equal(library.feedback, null);
+  assert.equal(hostAudioScene(base, "room", true)?.music, "question");
+  assert.equal(hostAudioScene(base, "setup", true), null);
+  assert.equal(hostAudioScene(base, "library", false), null);
   assert.equal(roomAudioScene(base, "host", 1000).countdown?.endsAt, 9000);
   assert.equal(roomAudioScene(base, "host").feedback, null);
   const locked = { ...base, myAnswer: { index: 1 } };

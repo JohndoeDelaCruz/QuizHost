@@ -2,7 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 import type { RoomView } from "../../../shared/types";
 import { readSoundSettings, type AudioRole, type SoundSettings } from "./catalog";
 import { GameAudioEngine, type AudioSnapshot } from "./engine";
-import { roomAudioScene, type AudioScene } from "./scene";
+import { hostAudioScene, roomAudioScene, type AudioScene } from "./scene";
 
 interface SoundContext {
   role: AudioRole;
@@ -63,5 +63,13 @@ export function useGameAudio(room: RoomView | null, active: boolean) {
   useEffect(() => {
     setScene(active && room ? roomAudioScene(room, role) : null);
   }, [room, active, role, setScene]);
+  useEffect(() => () => setScene(null), [setScene]);
+}
+
+export function useHostAudio(room: RoomView | null, tab: string, connected: boolean) {
+  const { setScene } = useAudio();
+  useEffect(() => {
+    setScene(hostAudioScene(room, tab, connected));
+  }, [room, tab, connected, setScene]);
   useEffect(() => () => setScene(null), [setScene]);
 }

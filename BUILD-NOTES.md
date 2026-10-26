@@ -1,5 +1,11 @@
 # QuizHost builds
 
+## Version 0.1.4 Beta 6 — music in the Quiz library (26 October 2026)
+
+The Quiz library now plays Lobby Bounce after the first workspace click or a tap on Enable sound. Saved mute, volume, and Background music preferences remain effective. Opening a game lobby continues the same music loop. Library playback is selected independently from any game running in the background, so question countdowns and team feedback do not play on the library screen. Results, Setup & connection, and an empty Live room remain silent. Returning to the library resumes its music.
+
+TypeScript, production build, and all 23 tests passed. Existing audio regression checks now cover the library-to-lobby loop and library routing while a question is active. Browser checks confirmed first-click activation in the library, Lobby Bounce playback status, mute/unmute, silence on Setup, and resuming library music without console errors. Windows executable: release/QuizHost-0.1.4-beta.6-Windows.exe. The app identity and saved-data location are unchanged. Native Windows startup remains untested.
+
 ## Version 0.1.4 Beta 5 — offline music, avatars, and round rankings (26 October 2026)
 
 Imported the supplied eight-track MP3/OGG music pack unchanged as local assets. A page-level Web Audio mixer plays lobby/team-board, question-reading, answering, ranking, and victory music. Deadline-aligned final-five-second effects stop on reveal or when a student locks an answer. Individual students hear correct/wrong feedback only after reveal; shared-screen team awards have matching effects. Music lowers briefly under effects. Teacher music is on by default; student music is optional, with game sounds on by default. Every device has mute, volume, music, and effects controls; teacher and student preferences use separate storage keys.

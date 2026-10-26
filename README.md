@@ -1,4 +1,4 @@
-# QuizHost 0.1.4 Beta 5 — offline classroom quizzes
+# QuizHost 0.1.4 Beta 6 — offline classroom quizzes
 
 **Beta release:** core features are implemented; final classroom acceptance testing is still pending. Test the Windows app on the teacher's laptop and the intended classroom network before final handover.
 
@@ -6,7 +6,7 @@ QuizHost runs on a Windows teacher laptop. Individual players use phone browsers
 
 ## Try the Windows app
 
-1. Open `release/QuizHost-0.1.4-beta.5-Windows.exe`.
+1. Open `release/QuizHost-0.1.4-beta.6-Windows.exe`.
 2. Choose **Host game** on the included quiz.
 3. Choose **Everyone’s in** for individual phone play, or **Better together** for shared-screen teams.
 4. For phones, connect every device to the same classroom Wi-Fi. Open **Setup & connection**, use the displayed student address or QR code, and enter the room’s six-digit PIN.
@@ -36,11 +36,11 @@ These features are included in Windows Beta 5.
 
 ## Offline music
 
-The supplied eight-track music pack is included locally. Teacher music changes with the lobby/team board, question reading, answering, rankings, and final podium. The last five seconds use a deadline-aligned countdown sound. Students hear their own correct/wrong result after the answer is revealed; student background music is off by default and can be enabled. Shared-screen team awards play correct/wrong effects on the teacher's laptop.
+The supplied eight-track music pack is included locally. The Quiz library plays Lobby Bounce after the first click or a tap on Enable sound. Teacher music then changes with the lobby/team board, question reading, answering, rankings, and final podium. The last five seconds use a deadline-aligned countdown sound. Students hear their own correct/wrong result after the answer is revealed; student background music is off by default and can be enabled. Shared-screen team awards play correct/wrong effects on the teacher's laptop.
 
-Use the speaker button to enable or mute sound, and the adjacent Sound settings control to adjust volume, Background music, and Game sounds independently. These preferences are saved per device, with separate teacher/student settings. Opening a game room, joining, answering, or tapping Enable sound activates browser playback. A page reload or device interruption may require another tap. Sound stops when leaving the teacher's Live room, closing the room, disconnecting, or hiding the page. Reconnection resumes music without replaying old feedback. Audio loading and playback failures do not affect scoring or game progression.
+Use the speaker button to enable or mute sound, and the adjacent Sound settings control to adjust volume, Background music, and Game sounds independently. These preferences are saved per device, with separate teacher/student settings. Clicking in the teacher workspace, joining, answering, or tapping Enable sound activates browser playback. A page reload or device interruption may require another tap. Library music resumes when returning from Live room. Results, Setup & connection, and an empty Live room are silent. Sound also stops on disconnection or when hiding the page. Reconnection resumes music without replaying old feedback. Audio loading and playback failures do not affect scoring or game progression.
 
-Audio files are served over the same local Wi-Fi as the rest of the game; internet access is not required. Music and sound controls are included in Windows Beta 5.
+Audio files are served over the same local Wi-Fi as the rest of the game; internet access is not required. Music and sound controls were introduced in Windows Beta 5; library music is included in Beta 6.
 
 ## Development
 

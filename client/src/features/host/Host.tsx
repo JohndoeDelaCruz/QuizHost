@@ -18,7 +18,7 @@ import { Pill } from "../../components/Pill";
 import { useSwitchMotion } from "../../components/useSwitchMotion";
 import { Avatar } from "../../components/game/Avatar";
 import { AudioControls } from "../../audio/AudioControls";
-import { useGameAudio } from "../../audio/AudioProvider";
+import { useAudio, useHostAudio } from "../../audio/AudioProvider";
 import { hostToken } from "../../lib";
 import { QuizEditor } from "../quizzes/QuizEditor";
 import { DeleteQuizDialog } from "./DeleteQuizDialog";
@@ -61,7 +61,14 @@ export function Host() {
     removeQuiz,
   } = useHostWorkspace();
   const pageRef = useSwitchMotion(tab);
-  useGameAudio(room, connected && tab === "room");
+  const audio = useAudio();
+  useHostAudio(room, tab, connected);
+  function activateSound() {
+    if (!audio.settings.muted && audio.settings.volume > 0 &&
+      (audio.snapshot.status === "locked" || audio.snapshot.status === "paused")) {
+      audio.unlock();
+    }
+  }
   if (!hostToken)
     return (
       <div className="access-screen">
@@ -82,6 +89,7 @@ export function Host() {
   const active = room && room.phase !== "finished";
   return (
     <div
+      onClickCapture={activateSound}
       className={
         "host-shell" +
         (tab === "room" && room ? " is-playing phase-" + room.phase : "")

@@ -63,6 +63,10 @@ for (const file of fs
   )
     throw new Error("Packaged avatar is missing or stale: " + file);
 }
+for (const file of fs.readdirSync("client/public/audio").filter((file) => /\.(mp3|ogg)$/.test(file))) {
+  if (hash(readArchive("dist/client/audio/" + file)) !== hash(fs.readFileSync("client/public/audio/" + file)))
+    throw new Error("Packaged audio is missing or stale: " + file);
+}
 if (
   hash(readArchive("dist/client/index.html")) !==
   hash(fs.readFileSync("dist/client/index.html"))

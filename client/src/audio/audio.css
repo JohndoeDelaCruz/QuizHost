@@ -1,0 +1,63 @@
+.audio-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  flex: 0 0 auto;
+}
+.sound-toggle,
+.sound-settings > summary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 30px;
+  padding: 7px 9px;
+  border: 1px solid #986dba;
+  border-radius: 5px;
+  background: #4a2670;
+  color: #ead6ff;
+  font-size: 10px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.sound-toggle[aria-pressed="true"] { color: #ffdf67; }
+.sound-toggle:focus-visible,
+.sound-settings > summary:focus-visible { outline: 2px solid #ffce3b; outline-offset: 3px; }
+.sound-settings { position: relative; }
+.sound-settings > summary { list-style: none; padding: 7px; }
+.sound-settings > summary::-webkit-details-marker { display: none; }
+.sound-panel {
+  position: absolute;
+  z-index: 100;
+  top: calc(100% + 12px);
+  right: 0;
+  width: 250px;
+  max-width: calc(100vw - 30px);
+  padding: 19px;
+  display: grid;
+  gap: 16px;
+  background: #36165b;
+  border: 1px solid #986dba;
+  border-radius: 12px;
+  box-shadow: 0 12px 36px #130721a6;
+  color: #f8efff;
+  text-align: left;
+}
+.sound-panel > strong { font-size: 14px; }
+.volume-field { display: grid; gap: 10px; font-size: 12px; }
+.volume-field > span { display: flex; justify-content: space-between; gap: 12px; }
+.sound-panel input[type="range"] { width: 100%; padding: 0; accent-color: #ffce3b; box-shadow: none; }
+.sound-option { display: flex; align-items: center; gap: 9px; font-size: 12px; cursor: pointer; }
+.sound-option input { width: 17px; height: 17px; margin: 0; accent-color: #ffce3b; }
+.sound-panel p { margin: 0; font-size: 11px; color: #ffdf67; line-height: 1.5; }
+.sound-panel small { font-size: 10px; color: #c9b6df; }
+@media (max-width: 1000px) {
+  .sound-toggle > span { display: none; }
+}
+@media (max-width: 700px) {
+  .student-header { gap: 8px; }
+  .student-header > .brand { margin-right: auto; }
+  .student-header > .motion-toggle { margin-left: 0; }
+  .student-header .sound-panel { right: -60px; }
+  .top-right { gap: 8px; }
+}

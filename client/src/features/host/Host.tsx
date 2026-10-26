@@ -17,6 +17,8 @@ import { Logo } from "../../components/Logo";
 import { Pill } from "../../components/Pill";
 import { useSwitchMotion } from "../../components/useSwitchMotion";
 import { Avatar } from "../../components/game/Avatar";
+import { AudioControls } from "../../audio/AudioControls";
+import { useGameAudio } from "../../audio/AudioProvider";
 import { hostToken } from "../../lib";
 import { QuizEditor } from "../quizzes/QuizEditor";
 import { DeleteQuizDialog } from "./DeleteQuizDialog";
@@ -59,6 +61,7 @@ export function Host() {
     removeQuiz,
   } = useHostWorkspace();
   const pageRef = useSwitchMotion(tab);
+  useGameAudio(room, connected && tab === "room");
   if (!hostToken)
     return (
       <div className="access-screen">
@@ -141,6 +144,7 @@ export function Host() {
             </strong>
           </div>
           <div className="top-right">
+            <AudioControls />
             <MotionToggle />
             <Pill kind={connected ? "green" : "red"}>
               {connected ? <Wifi size={13} /> : <WifiOff size={13} />}{" "}

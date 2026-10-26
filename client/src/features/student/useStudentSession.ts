@@ -4,8 +4,10 @@ import type { RoomView } from "../../../../shared/types";
 import { command, connect } from "../../lib";
 import type { Identity } from "./identity";
 import { saveIdentity, storedIdentity } from "./identity";
+import { useAudio } from "../../audio/AudioProvider";
 
 export function useStudentSession() {
+  const { unlock } = useAudio();
   const initial = useRef(storedIdentity());
   const [socket, setSocket] = useState<Socket | null>(null);
   const [connected, setConnected] = useState(false);
@@ -55,6 +57,7 @@ export function useStudentSession() {
   }, []);
   async function join(e: React.FormEvent) {
     e.preventDefault();
+    unlock();
     if (!socket) return;
     setBusy(true);
     setError("");
@@ -81,6 +84,7 @@ export function useStudentSession() {
     }
   }
   async function answer(index: number) {
+    unlock();
     if (!socket) return;
     setBusy(true);
     setError("");

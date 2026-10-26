@@ -1,5 +1,15 @@
 # QuizHost builds
 
+## Unreleased — offline game music (26 October 2026)
+
+Imported the supplied eight-track MP3/OGG music pack unchanged as local assets. A page-level Web Audio mixer plays lobby/team-board, question-reading, answering, ranking, and victory music. Deadline-aligned final-five-second effects stop on reveal or when a student locks an answer. Individual students hear correct/wrong feedback only after reveal; shared-screen team awards have matching effects. Music lowers briefly under effects. Teacher music is on by default; student music is optional, with game sounds on by default. Every device has mute, volume, music, and effects controls; teacher and student preferences use separate storage keys.
+
+Playback unlocks during user gestures before asynchronous room commands. Ordinary state updates do not restart tracks. Hidden pages, disconnection, leaving the teacher's Live room, and closing a room stop playback. Delayed decoding cannot start an obsolete track or cue. Rejoining results does not replay old feedback. The client tries the other local audio format if decoding fails, and audio failures do not block game commands. The package verifier now checks all bundled audio files.
+
+TypeScript, production build, and all 23 tests passed. Nine audio tests cover user activation, native timer receivers, repeated updates, mute/visibility/leave cleanup, late decoding, duplicate/reconnect feedback, deadline timing and cancellation, student defaults, team-result selection, and local asset signatures. Browser checks covered teacher stage changes through final podium, individual reveal/rankings, team awards, mute/unmute, leaving Live room, student preferences after reload, optional student music, and a 390×844 student layout. An initial browser timer-receiver error was fixed and regression-tested; the repaired build completed both game flows without new console errors. Physical phone speakers and the native Windows executable were not tested in this source-preview change.
+
+Source and browser preview only; Windows packaging remains pending. The current released executable is still 0.1.4-beta.4.
+
 ## Unreleased — random avatars, dark surfaces, and round rankings (26 October 2026)
 
 Added the ten supplied transparent PNG avatars as local assets. The host randomly assigns avatars without replacement until the pack is exhausted, then refills the pool. Avatars remain stable across reconnection and appear in the lobby, player header, score lists, rankings, saved results, and podium. Teams also receive random avatars. There is no avatar picker.

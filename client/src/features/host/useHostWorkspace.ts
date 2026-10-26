@@ -9,8 +9,10 @@ import type {
 } from "../../../../shared/types";
 import { api, command, connect, hostToken } from "../../lib";
 import { freshQuestion } from "../quizzes/question";
+import { useAudio } from "../../audio/AudioProvider";
 
 export function useHostWorkspace() {
+  const { unlock } = useAudio();
   const [tab, setTab] = useState("library");
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
   const [results, setResults] = useState<Result[]>([]);
@@ -66,6 +68,7 @@ export function useHostWorkspace() {
     }
   }, [notice]);
   async function act(event: string, payload: unknown = null) {
+    unlock();
     if (!socket || !connected) {
       setError("Wait for the host connection to return.");
       return false;

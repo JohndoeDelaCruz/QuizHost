@@ -34,6 +34,14 @@ Each question first shows its prompt and optional image with a five-second readi
 
 These preview changes have not yet been packaged into the Windows Beta 4 executable linked above.
 
+## Offline music in the source preview
+
+The supplied eight-track music pack is included locally. Teacher music changes with the lobby/team board, question reading, answering, rankings, and final podium. The last five seconds use a deadline-aligned countdown sound. Students hear their own correct/wrong result after the answer is revealed; student background music is off by default and can be enabled. Shared-screen team awards play correct/wrong effects on the teacher's laptop.
+
+Use the speaker button to enable or mute sound, and the adjacent Sound settings control to adjust volume, Background music, and Game sounds independently. These preferences are saved per device, with separate teacher/student settings. Opening a game room, joining, answering, or tapping Enable sound activates browser playback. A page reload or device interruption may require another tap. Sound stops when leaving the teacher's Live room, closing the room, disconnecting, or hiding the page. Reconnection resumes music without replaying old feedback. Audio loading and playback failures do not affect scoring or game progression.
+
+Audio files are served over the same local Wi-Fi as the rest of the game; internet access is not required. These source-preview additions are not yet included in the Windows Beta 4 executable.
+
 ## Development
 
 Git keeps the source code, dependency lockfile, documentation, and icon assets. Installed dependencies, compiled output, packaged EXEs, local databases, test work files, and internal project notes stay on this laptop. After cloning, install dependencies and build using the commands below.

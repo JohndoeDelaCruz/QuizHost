@@ -10,6 +10,8 @@ import { StudentFinish } from "./StudentFinish";
 import { StudentLobby } from "./StudentLobby";
 import { StudentQuestion } from "./StudentQuestion";
 import { useStudentSession } from "./useStudentSession";
+import { AudioControls } from "../../audio/AudioControls";
+import { useGameAudio } from "../../audio/AudioProvider";
 
 export function Student() {
   const {
@@ -27,11 +29,13 @@ export function Student() {
     answer,
     me,
   } = useStudentSession();
+  useGameAudio(room, connected);
   return (
     <div className="student-shell">
       <header className="student-header">
         <Logo />
         <MotionToggle />
+        <AudioControls />
         <Pill kind={connected ? "green" : "red"}>
           {connected ? <Wifi size={13} /> : <WifiOff size={13} />}{" "}
           {connected ? "Connected" : "Reconnecting"}

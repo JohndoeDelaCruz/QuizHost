@@ -8,6 +8,7 @@ import "./images.css";
 import "./animations.css";
 import "./dark-theme.css";
 import "./gameplay.css";
+import "./audio/audio.css";
 
 createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

@@ -1,4 +1,4 @@
-# QuizHost 0.1.4 Beta 4 — offline classroom quizzes
+# QuizHost 0.1.4 Beta 5 — offline classroom quizzes
 
 **Beta release:** core features are implemented; final classroom acceptance testing is still pending. Test the Windows app on the teacher's laptop and the intended classroom network before final handover.
 
@@ -6,15 +6,15 @@ QuizHost runs on a Windows teacher laptop. Individual players use phone browsers
 
 ## Try the Windows app
 
-1. Open `release/QuizHost-0.1.4-beta.4-Windows.exe`.
+1. Open `release/QuizHost-0.1.4-beta.5-Windows.exe`.
 2. Choose **Host game** on the included quiz.
 3. Choose **Everyone’s in** for individual phone play, or **Better together** for shared-screen teams.
 4. For phones, connect every device to the same classroom Wi-Fi. Open **Setup & connection**, use the displayed student address or QR code, and enter the room’s six-digit PIN.
-5. Start the game. Reveal answers and continue to the next question. Results save automatically at the end.
+5. Start the game. Read the question, answer, watch the rankings, and continue to the next question. Results save automatically at the end.
 
-Team play: enter 2–8 team names, start the room, pick a question tile, reveal the answer, and mark the team’s answer correct or missed. Turns rotate automatically. Question point values are used in team mode; individual correct answers earn 500–1,000 points based on time remaining.
+Team play: enter 2–8 team names, start the room, pick a question tile, reveal the answer, and mark the team’s answer correct or missed. Watch the rankings, then continue to rotate turns. Question point values are used in team mode; individual correct answers earn 500–1,000 points based on time remaining.
 
-Each question begins with a shared three-second countdown. The full answer time starts afterward. Answer tiles enter in sequence, locked answers and correct-answer feedback animate, leaderboard rows move into their new positions, and the final podium has a short confetti celebration. Use **Animations on** in the header to switch to reduced motion on that device; the app also respects the device’s reduced-motion preference. All effects work offline.
+Each question begins with a shared five-second reading progress bar, showing the prompt and optional photo before answer choices appear. The full answer time starts afterward. Answer tiles enter in sequence, locked answers and correct-answer feedback animate, leaderboard rows move into their new positions, and the final podium has a short confetti celebration. Use **Animations on** in the header to switch to reduced motion on that device; the app also respects the device’s reduced-motion preference. All effects work offline.
 
 Workspace pages and quiz-editor question tabs also have short entrance transitions. Typing and live score updates do not replay them.
 
@@ -24,23 +24,23 @@ This initial development build is unsigned. It has not been tested with 50 physi
 
 QuizHost supports one optional image per question, across all subjects. In the quiz editor, use **Add image** below the question text to upload a JPG, PNG, or WebP file up to 10 MB. Images are resized to a maximum edge of 1,600 pixels and stored locally, up to 2 MB each. Add an optional description, replace or remove an image, and open its preview with zoom controls.
 
-Teacher and student screens show the same image during the question and reveal phases in both play modes. Images use cached local URLs instead of being resent with score updates. In the Windows Beta 4 release, they remain hidden during preparation; the source preview also shows them during the reading stage described below. Quiz backups include the referenced images, and QuizHost can import older text-only backups. Image backups require version 0.1.4-beta.4 or later and may be up to 40 MB.
+Teacher and student screens show the same image during reading, answering, and reveal in both play modes. Images use cached local URLs instead of being resent with score updates. Quiz backups include the referenced images, and QuizHost can import older text-only backups. Image backups require version 0.1.4-beta.4 or later and may be up to 40 MB.
 
-## Avatars and new round flow in the source preview
+## Avatars and round rankings
 
-The source preview uses dark purple surfaces across the teacher workspace, editor, dialogs, and student screens. Ten supplied avatars are bundled locally. The host assigns avatars randomly without repeating until all ten have been used, then starts a fresh random pool. Reconnection preserves each player's avatar, and finished results retain it. Teams receive random avatars as well.
+QuizHost uses dark purple surfaces across the teacher workspace, editor, dialogs, and student screens. Ten supplied avatars are bundled locally. The host assigns avatars randomly without repeating until all ten have been used, then starts a fresh random pool. Reconnection preserves each player's avatar, and finished results retain it. Teams receive random avatars as well.
 
 Each question first shows its prompt and optional image with a five-second reading progress bar. Answer choices stay hidden, and the full answer timer starts afterward. Individual play reveals answers when everyone has answered, when time runs out, or when the teacher reveals early. After 2.5 seconds of feedback, an animated top-five ranking screen counts up points and moves players to their new positions. Students also see their own rank and points gained. The teacher can continue after the ranking animation's minimum 2.5-second display. Team play shows rankings after Correct or Missed it, then returns to the board or opens the final podium. Reduced motion displays final scores immediately while preserving the game stages.
 
-These preview changes have not yet been packaged into the Windows Beta 4 executable linked above.
+These features are included in Windows Beta 5.
 
-## Offline music in the source preview
+## Offline music
 
 The supplied eight-track music pack is included locally. Teacher music changes with the lobby/team board, question reading, answering, rankings, and final podium. The last five seconds use a deadline-aligned countdown sound. Students hear their own correct/wrong result after the answer is revealed; student background music is off by default and can be enabled. Shared-screen team awards play correct/wrong effects on the teacher's laptop.
 
 Use the speaker button to enable or mute sound, and the adjacent Sound settings control to adjust volume, Background music, and Game sounds independently. These preferences are saved per device, with separate teacher/student settings. Opening a game room, joining, answering, or tapping Enable sound activates browser playback. A page reload or device interruption may require another tap. Sound stops when leaving the teacher's Live room, closing the room, disconnecting, or hiding the page. Reconnection resumes music without replaying old feedback. Audio loading and playback failures do not affect scoring or game progression.
 
-Audio files are served over the same local Wi-Fi as the rest of the game; internet access is not required. These source-preview additions are not yet included in the Windows Beta 4 executable.
+Audio files are served over the same local Wi-Fi as the rest of the game; internet access is not required. Music and sound controls are included in Windows Beta 5.
 
 ## Development
 

@@ -1,16 +1,14 @@
 # QuizHost builds
 
-## Unreleased — offline game music (26 October 2026)
+## Version 0.1.4 Beta 5 — offline music, avatars, and round rankings (26 October 2026)
 
 Imported the supplied eight-track MP3/OGG music pack unchanged as local assets. A page-level Web Audio mixer plays lobby/team-board, question-reading, answering, ranking, and victory music. Deadline-aligned final-five-second effects stop on reveal or when a student locks an answer. Individual students hear correct/wrong feedback only after reveal; shared-screen team awards have matching effects. Music lowers briefly under effects. Teacher music is on by default; student music is optional, with game sounds on by default. Every device has mute, volume, music, and effects controls; teacher and student preferences use separate storage keys.
 
 Playback unlocks during user gestures before asynchronous room commands. Ordinary state updates do not restart tracks. Hidden pages, disconnection, leaving the teacher's Live room, and closing a room stop playback. Delayed decoding cannot start an obsolete track or cue. Rejoining results does not replay old feedback. The client tries the other local audio format if decoding fails, and audio failures do not block game commands. The package verifier now checks all bundled audio files.
 
-TypeScript, production build, and all 23 tests passed. Nine audio tests cover user activation, native timer receivers, repeated updates, mute/visibility/leave cleanup, late decoding, duplicate/reconnect feedback, deadline timing and cancellation, student defaults, team-result selection, and local asset signatures. Browser checks covered teacher stage changes through final podium, individual reveal/rankings, team awards, mute/unmute, leaving Live room, student preferences after reload, optional student music, and a 390×844 student layout. An initial browser timer-receiver error was fixed and regression-tested; the repaired build completed both game flows without new console errors. Physical phone speakers and the native Windows executable were not tested in this source-preview change.
+TypeScript, production build, and all 23 tests passed. Nine audio tests cover user activation, native timer receivers, repeated updates, mute/visibility/leave cleanup, late decoding, duplicate/reconnect feedback, deadline timing and cancellation, student defaults, team-result selection, and local asset signatures. Browser checks covered teacher stage changes through final podium, individual reveal/rankings, team awards, mute/unmute, leaving Live room, student preferences after reload, optional student music, and a 390×844 student layout. Both game flows completed without console errors in the final build. Physical phone speakers and native Windows startup remain untested.
 
-Source and browser preview only; Windows packaging remains pending. The current released executable is still 0.1.4-beta.4.
-
-## Unreleased — random avatars, dark surfaces, and round rankings (26 October 2026)
+### Random avatars, dark surfaces, and round rankings
 
 Added the ten supplied transparent PNG avatars as local assets. The host randomly assigns avatars without replacement until the pack is exhausted, then refills the pool. Avatars remain stable across reconnection and appear in the lobby, player header, score lists, rankings, saved results, and podium. Teams also receive random avatars. There is no avatar picker.
 
@@ -20,7 +18,9 @@ The server now presents the question and optional image with a five-second readi
 
 TypeScript and production build checks passed. All 14 integration tests passed, including the existing 50-client scenario, random assignment and persistence, hidden choices and scores, full answer time, ranking gates, changes of leader, team rotation, and cancellation during preparation/feedback. Browser checks confirmed five-player row movement and point counting, avatar reconnection, dark surfaces, photo reading layout at 1280×720 and 390×844, student ranking layout with long names, team scoring and podiums, and reduced motion. The package verifier now checks bundled avatar files.
 
-Source and browser preview only. The existing Windows executable remains 0.1.4-beta.4; package these changes when the next release is requested.
+Also removed the requested classroom-capacity note from Setup & connection. The Windows executable for this release is release/QuizHost-0.1.4-beta.5-Windows.exe. Application identity and the saved-data location are unchanged.
+
+Windows package inspection confirmed version 0.1.4-beta.5, matching frontend/server files, the desktop entry point, the SQLite runtime, all ten avatars, and all sixteen MP3/OGG assets. All seven custom icon sizes were verified in the application and portable launcher. The delivered EXE copy was checked against the release file by SHA-256. Native Windows startup and final classroom acceptance testing remain pending.
 
 ## Version 0.1.4 Beta 4 — question images (26 October 2026)
 

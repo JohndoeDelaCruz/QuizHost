@@ -1,5 +1,15 @@
 # QuizHost builds
 
+## Unreleased source preview — full-volume sound and fading welcomes (26 October 2026)
+
+Teacher and student sound now defaults to on at 100%, with both Background music and Game sounds enabled. A new preference key applies these defaults once instead of inheriting earlier quiet/muted defaults; subsequent choices remain saved separately for each role. Browser playback still unlocks on a user gesture.
+
+New arrivals appear as a single avatar welcome inside the teacher's Who’s here panel and the student's waiting card. The latest arrival replaces the previous highlight. Manual dismissal and the existing 4.2-second expiry fade the card away; reconnects still do not announce another arrival.
+
+Workspace pages, question tabs, game stages, and welcome cards now fade out their previous view while the live view updates immediately. The outgoing copy lasts 320 ms, is inert and hidden from assistive technology, has duplicate identifiers removed, and cannot receive input. Rapid changes and unmounting clean up copies. Countdown digits also fade between numbers. Independently updating countdown text and point counters refresh the cached visual at most ten times per second; progress-bar style updates do not cause copies or restart entrances. Reduced motion skips these effects without changing server timing.
+
+TypeScript and production build passed; all 25 tests passed. Browser checks confirmed 100% sound defaults and saved choices, welcomes within both panels, 390×844 layout without horizontal overflow, dismiss/expiry fade cleanup, inert outgoing game views, overlapping fading countdown digits, and reduced motion with advancing progress. No console errors appeared in the checked teacher flow. The Windows EXE remains 0.1.4-beta.7 and does not contain this preview yet.
+
 ## Version 0.1.4 Beta 7 — pre-question countdown, join popups, and game transitions (26 October 2026)
 
 Added a server-controlled five-second preparation phase before each question, followed by the existing five-second reading phase and full answer time. Preparation exposes neither the prompt nor its photo or choices. Teacher and student screens show a progress bar, changing number, and avatar mascot. Reconnection preserves deadlines; ending a game cancels either scheduled preparation stage. Team tile selection follows the same flow.

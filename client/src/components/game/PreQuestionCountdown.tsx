@@ -3,6 +3,7 @@ import type { AvatarId } from "../../../../shared/avatars";
 import type { RoomView } from "../../../../shared/types";
 import { Avatar } from "./Avatar";
 import { useServerClock } from "./useServerClock";
+import { CountdownNumber } from "./CountdownNumber";
 
 export function PreQuestionCountdown({ room, avatar }: { room: RoomView; avatar?: AvatarId }) {
   const now = useServerClock(room.serverNow);
@@ -16,7 +17,7 @@ export function PreQuestionCountdown({ room, avatar }: { room: RoomView; avatar?
       <h1>Ready, curious minds?</h1>
       <div className="countdown-buddies" aria-hidden="true">
         <div className="countdown-mascot"><Avatar avatar={avatar} size={104} /></div>
-        <span className="countdown-number" key={seconds}>{seconds || "Go!"}</span>
+        <CountdownNumber value={seconds || "Go!"} />
         <span className="countdown-star">✦</span>
       </div>
       <strong className="pre-question-caption">{seconds ? `Question opens in ${seconds} ${seconds === 1 ? "second" : "seconds"}` : "Here comes the question!"}</strong>

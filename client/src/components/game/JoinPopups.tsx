@@ -1,6 +1,7 @@
 import { PartyPopper, Sparkles, X } from "lucide-react";
 import type { JoinNotice, RoomView } from "../../../../shared/types";
 import { Avatar } from "./Avatar";
+import { useSwitchMotion } from "../useSwitchMotion";
 
 export function JoinPopups({ room, notices, playerId, onDismiss }: {
   room: RoomView | null;
@@ -8,13 +9,12 @@ export function JoinPopups({ room, notices, playerId, onDismiss }: {
   playerId?: string;
   onDismiss: (id: string) => void;
 }) {
-  if (!room || room.phase !== "lobby") return null;
-  const arrivals = notices.filter((notice) => notice.roomId === room.id);
+  const notice = room?.phase === "lobby" ? notices.filter((item) => item.roomId === room.id).at(-1) : undefined;
+  const ref = useSwitchMotion(notice?.id ?? "empty", "popup");
+  const own = notice?.player.id === playerId;
   return (
-    <aside className="join-popups" aria-label="Players joining" aria-live="polite" aria-relevant="additions">
-      {arrivals.map((notice) => {
-        const own = notice.player.id === playerId;
-        return (
+    <div className="join-popups" ref={ref} aria-label="Players joining" aria-live="polite" aria-relevant="additions" aria-atomic="true">
+      {notice && (
           <div className="join-popup" key={notice.id}>
             <div className="join-popup-avatar"><Avatar avatar={notice.player.avatar} size={72} /></div>
             <div className="join-popup-copy">
@@ -26,8 +26,7 @@ export function JoinPopups({ room, notices, playerId, onDismiss }: {
             <button className="join-popup-close" aria-label={`Dismiss welcome for ${notice.player.name}`} onClick={() => onDismiss(notice.id)}><X size={14} /></button>
             <div className="join-popup-sparkles" aria-hidden="true"><i>✦</i><i>✦</i><i>●</i></div>
           </div>
-        );
-      })}
-    </aside>
+      )}
+    </div>
   );
 }

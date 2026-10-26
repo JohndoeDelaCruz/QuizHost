@@ -3,9 +3,10 @@ import { Pill } from "../../../components/Pill";
 import { Scores } from "../../../components/game/Scores";
 import { ConnectionCard } from "../ConnectionCard";
 import { Avatar } from "../../../components/game/Avatar";
+import { JoinPopups } from "../../../components/game/JoinPopups";
 import type { HostRoomProps } from "../types";
 
-export function RoomLobby({ room, busy, act, network }: HostRoomProps) {
+export function RoomLobby({ room, busy, act, network, joinNotices, dismissJoinNotice }: HostRoomProps) {
   return (
     <div className="room-grid">
       <section className="card lobby-card">
@@ -67,12 +68,15 @@ export function RoomLobby({ room, busy, act, network }: HostRoomProps) {
           Close this room
         </button>
       </section>
-      <section className="card">
+      <section className="card roster-panel">
         <div className="section-heading">
           <h3>{room.mode === "individual" ? "Who’s here" : "Your teams"}</h3>
           <Pill>{room.scores.length}</Pill>
         </div>
-        <Scores room={room} />
+        <div className="roster-body">
+          <Scores room={room} />
+          <JoinPopups room={room} notices={joinNotices} onDismiss={dismissJoinNotice} />
+        </div>
         <p className="helper">
           {room.mode === "individual"
             ? "Names appear as students join. They can reconnect using the same browser tab."

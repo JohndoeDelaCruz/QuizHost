@@ -18,7 +18,6 @@ import { Pill } from "../../components/Pill";
 import { useSwitchMotion } from "../../components/useSwitchMotion";
 import { Avatar } from "../../components/game/Avatar";
 import { AudioControls } from "../../audio/AudioControls";
-import { JoinPopups } from "../../components/game/JoinPopups";
 import { useAudio, useHostAudio } from "../../audio/AudioProvider";
 import { hostToken } from "../../lib";
 import { QuizEditor } from "../quizzes/QuizEditor";
@@ -63,7 +62,7 @@ export function Host() {
     openRoom,
     removeQuiz,
   } = useHostWorkspace();
-  const pageRef = useSwitchMotion(tab);
+  const pageRef = useSwitchMotion(tab + (tab === "room" ? `:${room?.id ?? "empty"}` : ""));
   const audio = useAudio();
   useHostAudio(room, tab, connected);
   function activateSound() {
@@ -98,7 +97,6 @@ export function Host() {
         (tab === "room" && room ? " is-playing phase-" + room.phase : "")
       }
     >
-      {tab === "room" && <JoinPopups room={room} notices={joinNotices} onDismiss={dismissJoinNotice} />}
       <aside className="sidebar">
         <Logo />
         <div className="workspace-label">YOUR CLASSROOM</div>
@@ -198,6 +196,8 @@ export function Host() {
           )}
           {tab === "room" && (
             <LiveRoomPage
+              joinNotices={joinNotices}
+              dismissJoinNotice={dismissJoinNotice}
               room={room}
               network={network}
               busy={busy}

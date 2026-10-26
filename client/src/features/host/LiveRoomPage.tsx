@@ -1,5 +1,5 @@
 import { ArrowRight, Radio } from "lucide-react";
-import type { NetworkInfo, RoomView } from "../../../../shared/types";
+import type { JoinNotice, NetworkInfo, RoomView } from "../../../../shared/types";
 import { Pill } from "../../components/Pill";
 import { HostRoom } from "./room/HostRoom";
 import type { HostAction } from "./types";
@@ -10,12 +10,16 @@ export function LiveRoomPage({
   busy,
   act,
   onBrowse,
+  joinNotices,
+  dismissJoinNotice,
 }: {
   room: RoomView | null;
   network: NetworkInfo | null;
   busy: boolean;
   act: HostAction;
   onBrowse: () => void;
+  joinNotices: JoinNotice[];
+  dismissJoinNotice: (id: string) => void;
 }) {
   return (
     <>
@@ -36,7 +40,7 @@ export function LiveRoomPage({
         )}
       </div>
       {room ? (
-        <HostRoom room={room} network={network} busy={busy} act={act} />
+        <HostRoom room={room} network={network} busy={busy} act={act} joinNotices={joinNotices} dismissJoinNotice={dismissJoinNotice} />
       ) : (
         <div className="empty-state card">
           <Radio size={42} />

@@ -16,13 +16,14 @@ export interface SoundSettings {
   effects: boolean;
   volume: number;
 }
-export function defaultSoundSettings(role: AudioRole): SoundSettings {
-  return { muted: false, music: role === "host", effects: true, volume: 0.3 };
+export function defaultSoundSettings(_role: AudioRole): SoundSettings {
+  return { muted: false, music: true, effects: true, volume: 1 };
 }
-export function readSoundSettings(role: AudioRole): SoundSettings {
+export const soundSettingsKey = (role: AudioRole) => `quizhost:sound:v2:${role}`;
+export function readSoundSettings(role: AudioRole, storage?: Pick<Storage, "getItem">): SoundSettings {
   const defaults = defaultSoundSettings(role);
   try {
-    const saved = JSON.parse(localStorage.getItem(`quizhost:sound:${role}`) ?? "null");
+    const saved = JSON.parse((storage ?? localStorage).getItem(soundSettingsKey(role)) ?? "null");
     if (!saved || typeof saved !== "object") return defaults;
     return {
       muted: typeof saved.muted === "boolean" ? saved.muted : defaults.muted,

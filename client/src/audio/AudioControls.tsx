@@ -10,7 +10,7 @@ export function AudioControls() {
     snapshot.status === "unavailable" ? "Retry sound" : "Enable sound";
   function toggle() {
     if (silent) {
-      update({ muted: false, volume: settings.volume || 0.3,
+      update({ muted: false, volume: settings.volume || 1,
         ...(!settings.music && !settings.effects ? { effects: true } : {}) });
       unlock();
     } else if (ready) update({ muted: true });

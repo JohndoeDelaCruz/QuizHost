@@ -11,7 +11,7 @@ import { TeamBoard } from "./TeamBoard";
 import { GameStage } from "../../../components/game/GameStage";
 import { PreQuestionCountdown } from "../../../components/game/PreQuestionCountdown";
 
-export function HostRoom({ room, network, busy, act }: HostRoomProps) {
+export function HostRoom({ room, network, busy, act, joinNotices, dismissJoinNotice }: HostRoomProps) {
   const [confirmEnd, setConfirmEnd] = useState(false);
   const questionVisible = room.phase === "question" || room.phase === "reveal";
   return (
@@ -60,7 +60,7 @@ export function HostRoom({ room, network, busy, act }: HostRoomProps) {
         />
       )}
       {room.phase === "lobby" && (
-        <RoomLobby room={room} busy={busy} act={act} network={network} />
+        <RoomLobby room={room} busy={busy} act={act} network={network} joinNotices={joinNotices} dismissJoinNotice={dismissJoinNotice} />
       )}
       {room.phase === "board" && (
         <TeamBoard room={room} busy={busy} act={act} />

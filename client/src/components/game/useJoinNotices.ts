@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import type { Socket } from "socket.io-client";
 import type { JoinNotice } from "../../../../shared/types";
 
-// Keep a small, live-only stack. Reconnecting does not replay past arrivals.
+// One live highlight: new arrivals replace it, rather than stacking toasts.
 export function useJoinNotices(socket: Socket | null) {
   const [notices, setNotices] = useState<JoinNotice[]>([]);
   const dismiss = useCallback((id: string) => {
@@ -16,7 +16,7 @@ export function useJoinNotices(socket: Socket | null) {
       if (seen.has(notice.id)) return;
       seen.add(notice.id);
       if (document.hidden) return;
-      setNotices((current) => [...current, notice].slice(-3));
+      setNotices([notice]);
       timers.set(notice.id, setTimeout(() => {
         dismiss(notice.id);
         timers.delete(notice.id);

@@ -1,18 +1,26 @@
 import { CheckCircle2, Users } from "lucide-react";
-import type { RoomView } from "../../../../shared/types";
+import type { JoinNotice, RoomView } from "../../../../shared/types";
 import { Pill } from "../../components/Pill";
 import type { Identity } from "./identity";
 import { Avatar } from "../../components/game/Avatar";
+import { JoinPopups } from "../../components/game/JoinPopups";
 
 export function StudentLobby({
   room,
   identity,
+  joinNotices,
+  dismissJoinNotice,
 }: {
   room: RoomView;
   identity: Identity | null;
+  joinNotices: JoinNotice[];
+  dismissJoinNotice: (id: string) => void;
 }) {
   return (
     <section className="student-wait card">
+      <div className="student-welcome-slot">
+        <JoinPopups room={room} notices={joinNotices} playerId={identity?.id} onDismiss={dismissJoinNotice} />
+      </div>
       <div className="waiting-art">
         <Avatar
           avatar={identity?.avatar}

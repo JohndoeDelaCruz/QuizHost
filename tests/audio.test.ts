@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { GameAudioEngine } from "../client/src/audio/engine";
-import { defaultSoundSettings, TRACKS, type Track } from "../client/src/audio/catalog";
+import { defaultSoundSettings, readSoundSettings, soundSettingsKey, TRACKS, type Track } from "../client/src/audio/catalog";
 import { hostAudioScene, roomAudioScene, type AudioScene } from "../client/src/audio/scene";
 import type { RoomView } from "../shared/types";
 
@@ -113,7 +113,7 @@ test("late decoding cannot resurrect old music or a cancelled result cue", async
 
 test("result cues play once, skip reconnect results, and respect student music preferences", async () => {
   const f = fixture();
-  f.engine.setSettings(defaultSoundSettings("student"));
+  f.engine.setSettings({ ...defaultSoundSettings("student"), music: false });
   f.engine.setScene(scene({ phase: "reveal", music: null, feedback: "correct" }));
   await f.engine.unlock(); await flush();
   assert.equal(f.active("correct").length, 0);
@@ -233,6 +233,19 @@ test("scene selection keeps personal results private and derives countdown time 
   assert.equal(roomAudioScene(teams, "host").feedback, "correct");
   teams.scores[0].score = 0;
   assert.equal(roomAudioScene(teams, "host").feedback, "wrong");
+});
+
+test("both views start with sound on at 100%, migrate old defaults once, and retain new preferences", () => {
+  const saved = new Map<string, string>([
+    ["quizhost:sound:host", JSON.stringify({ muted: true, music: false, effects: false, volume: 0.3 })],
+  ]);
+  const storage = { getItem: (key: string) => saved.get(key) ?? null };
+  for (const role of ["host", "student"] as const) {
+    assert.deepEqual(readSoundSettings(role, storage), { muted: false, music: true, effects: true, volume: 1 });
+    const chosen = { muted: true, music: false, effects: true, volume: 0.45 };
+    saved.set(soundSettingsKey(role), JSON.stringify(chosen));
+    assert.deepEqual(readSoundSettings(role, storage), chosen);
+  }
 });
 
 test("the complete offline pack is present in both formats", () => {

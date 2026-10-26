@@ -12,7 +12,7 @@ import { StudentQuestion } from "./StudentQuestion";
 import { useStudentSession } from "./useStudentSession";
 import { AudioControls } from "../../audio/AudioControls";
 import { useGameAudio } from "../../audio/AudioProvider";
-import { JoinPopups } from "../../components/game/JoinPopups";
+import { useSwitchMotion } from "../../components/useSwitchMotion";
 import { GameStage } from "../../components/game/GameStage";
 import { PreQuestionCountdown } from "../../components/game/PreQuestionCountdown";
 
@@ -35,9 +35,9 @@ export function Student() {
     me,
   } = useStudentSession();
   useGameAudio(room, connected);
+  const pageRef = useSwitchMotion(room?.id ?? "join");
   return (
     <div className="student-shell">
-      <JoinPopups room={room} notices={joinNotices} playerId={identity?.id} onDismiss={dismissJoinNotice} />
       <header className="student-header">
         <Logo />
         <MotionToggle />
@@ -47,7 +47,7 @@ export function Student() {
           {connected ? "Connected" : "Reconnecting"}
         </Pill>
       </header>
-      <main className="student-main">
+      <main className="student-main" ref={pageRef}>
         {error && (
           <div className="alert error" role="alert">
             {error}
@@ -87,7 +87,7 @@ export function Student() {
               />
             )}
             {room.phase === "lobby" && (
-              <StudentLobby room={room} identity={identity} />
+              <StudentLobby room={room} identity={identity} joinNotices={joinNotices} dismissJoinNotice={dismissJoinNotice} />
             )}
             {(room.phase === "question" || room.phase === "reveal") && (
               <StudentQuestion

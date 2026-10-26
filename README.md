@@ -4,6 +4,16 @@
 
 QuizHost runs on a Windows teacher laptop. Individual players use phone browsers on the same local Wi-Fi. Shared-screen team games run entirely on the laptop. The installed app needs no Node.js, student app, account, paid hosting, or internet connection.
 
+## Current source preview
+
+The source and browser preview include changes beyond the packaged Windows Beta 7:
+
+- Teacher and student sound starts on at 100%, with Background music and Game sounds enabled. Earlier sound preferences reset once; later adjustments remain saved. Browser playback may still require a tap.
+- New arrivals pop up inside **Who’s here** on the teacher's screen and inside the student's waiting card. One welcome appears at a time, then fades away when dismissed or after 4.2 seconds.
+- Pages, question tabs, game stages, welcome cards, and countdown digits fade out as the next view appears. Controls and server timers update immediately. Reduced motion skips decorative effects.
+
+These changes have passed the build and all 25 tests. They will be included in the next requested EXE rebuild; the current Beta 7 executable retains the behavior described below.
+
 ## Try the Windows app
 
 1. Open `release/QuizHost-0.1.4-beta.7-Windows.exe`.

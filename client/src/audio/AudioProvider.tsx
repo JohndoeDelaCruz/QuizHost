@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import type { RoomView } from "../../../shared/types";
-import { readSoundSettings, type AudioRole, type SoundSettings } from "./catalog";
+import { readSoundSettings, soundSettingsKey, type AudioRole, type SoundSettings } from "./catalog";
 import { GameAudioEngine, type AudioSnapshot } from "./engine";
 import { hostAudioScene, roomAudioScene, type AudioScene } from "./scene";
 
@@ -41,7 +41,7 @@ export function AudioProvider({ role, children }: { role: AudioRole; children: R
     settingsRef.current = next;
     setSettings(next);
     engineRef.current?.setSettings(next);
-    try { localStorage.setItem(`quizhost:sound:${role}`, JSON.stringify(next)); } catch { /* Session-only preference. */ }
+    try { localStorage.setItem(soundSettingsKey(role), JSON.stringify(next)); } catch { /* Session-only preference. */ }
   }, [role]);
   const setScene = useCallback((scene: AudioScene | null) => {
     sceneRef.current = scene;

@@ -1,4 +1,4 @@
-import { RotateCcw, Users } from "lucide-react";
+import { RotateCcw } from "lucide-react";
 import type { NetworkInfo } from "../../../../shared/types";
 import { ConnectionCard } from "./ConnectionCard";
 
@@ -52,18 +52,6 @@ export function Setup({
             Open the student address on a phone, join a room, and answer a
             question. Keep the laptop awake and phones on the Wi-Fi even if they
             say “no internet.”
-          </p>
-        </div>
-      </div>
-      <div className="card practical-note">
-        <Users size={27} />
-        <div>
-          <h3>Planning for 50 students?</h3>
-          <p>
-            Use an access point with enough capacity and test with the actual
-            phones. Simulated players check the app; a classroom test checks the
-            network. For shared-screen team play, you only need this laptop and
-            a display.
           </p>
         </div>
       </div>

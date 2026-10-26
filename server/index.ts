@@ -8,21 +8,11 @@ import QRCode from "qrcode";
 import { z } from "zod";
 import { Store } from "./store";
 import { Game } from "./game";
+import { MediaStore } from "./media";
+import { backupSchema, quizSchema } from "./quizValidation";
+import { MAX_BACKUP_BYTES, MAX_IMAGE_BYTES } from "../shared/media";
 import type { Ack, Quiz } from "../shared/types";
 
-const questionSchema = z.object({
-  id: z.string().max(80).optional(),
-  prompt: z.string().trim().min(1).max(600),
-  options: z.array(z.string().trim().min(1).max(250)).length(4),
-  correctIndex: z.number().int().min(0).max(3),
-  seconds: z.number().int().min(5).max(120),
-  points: z.number().int().min(10).max(2000),
-});
-const quizSchema = z.object({
-  title: z.string().trim().min(1).max(120),
-  description: z.string().trim().max(600).default(""),
-  questions: z.array(questionSchema).min(1).max(100),
-});
 const createRoomSchema = z.object({
   quizId: z.string(),
   mode: z.enum(["individual", "teams"]),
@@ -40,6 +30,7 @@ export async function startServer(options: {
   hostToken?: string;
 }) {
   const store = await Store.open(options.dataDir);
+  const media = new MediaStore(options.dataDir);
   const hostToken = options.hostToken ?? randomBytes(32).toString("hex");
   const validHost = (token: unknown) =>
     typeof token === "string" &&
@@ -56,7 +47,6 @@ export async function startServer(options: {
     );
     next();
   });
-  app.use(express.json({ limit: "1mb" }));
   const http = createServer(app);
   const io = new Server(http, {
     maxHttpBufferSize: 16384,
@@ -96,6 +86,21 @@ export async function startServer(options: {
     }
   }
   app.get("/api/health", (_req, res) => res.json({ ok: true }));
+  app.get("/media/:id", (req, res) => {
+    const id = String(req.params.id);
+    if (!media.has(id)) {
+      res.status(404).end();
+      return;
+    }
+    res.setHeader("Cross-Origin-Resource-Policy", "same-origin");
+    res
+      .type(media.contentType(id))
+      .sendFile(media.file(id), {
+        maxAge: "1y",
+        immutable: true,
+        dotfiles: "allow",
+      });
+  });
   app.get("/api/config", (_req, res) =>
     res.json({ port, addresses: addresses(), qr: null }),
   );
@@ -107,16 +112,14 @@ export async function startServer(options: {
         res.status(404).end();
         return;
       }
-      res
-        .type("svg")
-        .send(
-          await QRCode.toString(address, {
-            type: "svg",
-            margin: 1,
-            width: 220,
-            color: { dark: "#172d31", light: "#ffffff" },
-          }),
-        );
+      res.type("svg").send(
+        await QRCode.toString(address, {
+          type: "svg",
+          margin: 1,
+          width: 220,
+          color: { dark: "#172d31", light: "#ffffff" },
+        }),
+      );
     } catch (error) {
       next(error);
     }
@@ -132,21 +135,50 @@ export async function startServer(options: {
     next();
   });
   app.get("/api/quizzes", (_req, res) => res.json(store.quizzes()));
+  app.use("/api/import", express.json({ limit: MAX_BACKUP_BYTES }));
+  app.use(express.json({ limit: "1mb" }));
+  app.post(
+    "/api/images",
+    express.raw({
+      type: ["image/png", "image/jpeg", "image/webp"],
+      limit: MAX_IMAGE_BYTES,
+    }),
+    (req, res) => {
+      if (!Buffer.isBuffer(req.body)) {
+        res.status(400).json({ error: "Choose a JPG, PNG, or WebP image." });
+        return;
+      }
+      try {
+        res.json({
+          id: media.save(
+            req.body,
+            req.get("content-type")?.split(";")[0] ?? "",
+          ),
+        });
+      } catch (error) {
+        res.status(400).json({ error: (error as Error).message });
+      }
+    },
+  );
   app.post("/api/quizzes", (req, res) => {
     const parsed = quizSchema.safeParse(req.body);
     if (!parsed.success) {
-      res
-        .status(400)
-        .json({
-          error:
-            "Add a title and 1–100 questions, each with four answers, a correct answer, and a 5–120 second timer.",
-        });
+      res.status(400).json({
+        error:
+          "Add a title and 1–100 questions, each with four answers, a correct answer, and a 5–120 second timer.",
+      });
       return;
     }
     const id =
       typeof req.body.id === "string" && store.quiz(req.body.id)
         ? req.body.id
         : randomUUID();
+    if (parsed.data.questions.some((q) => q.image && !media.has(q.image.id))) {
+      res.status(400).json({
+        error: "An image is missing. Add it again before saving the quiz.",
+      });
+      return;
+    }
     const quiz: Quiz = {
       ...parsed.data,
       id,
@@ -164,16 +196,39 @@ export async function startServer(options: {
   });
   app.get("/api/results", (_req, res) => res.json(store.results()));
   app.get("/api/backup", (_req, res) =>
-    res.json({ version: 1, quizzes: store.quizzes() }),
+    res.json({
+      version: 2,
+      quizzes: store.quizzes(),
+      images: media.backup(
+        store
+          .quizzes()
+          .flatMap((q) =>
+            q.questions.flatMap((question) =>
+              question.image ? [question.image.id] : [],
+            ),
+          ),
+      ),
+    }),
   );
   app.post("/api/import", (req, res) => {
-    const parsed = z
-      .object({ quizzes: z.array(quizSchema).min(1).max(200) })
-      .safeParse(req.body);
+    const parsed = backupSchema.safeParse(req.body);
     if (!parsed.success) {
       res
         .status(400)
         .json({ error: "Choose a QuizHost JSON backup with valid quizzes." });
+      return;
+    }
+    try {
+      media.restore(
+        parsed.data.images,
+        parsed.data.quizzes.flatMap((q) =>
+          q.questions.flatMap((question) =>
+            question.image ? [question.image.id] : [],
+          ),
+        ),
+      );
+    } catch (error) {
+      res.status(400).json({ error: (error as Error).message });
       return;
     }
     for (const q of parsed.data.quizzes)
@@ -202,16 +257,23 @@ export async function startServer(options: {
       res: express.Response,
       _next: express.NextFunction,
     ) => {
+      if ((error as { type?: string })?.type === "entity.too.large") {
+        res.status(413).json({
+          error:
+            _req.path === "/api/import"
+              ? "Choose a quiz backup up to 40 MB."
+              : "This image is too large. Choose an image up to 2 MB after resizing.",
+        });
+        return;
+      }
       console.error(
         "Request failed:",
         error instanceof Error ? error.message : "Unknown error",
       );
-      res
-        .status(400)
-        .json({
-          error:
-            "The request could not be completed. Check your input and try again.",
-        });
+      res.status(400).json({
+        error:
+          "The request could not be completed. Check your input and try again.",
+      });
     },
   );
 

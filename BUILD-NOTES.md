@@ -1,5 +1,15 @@
 # QuizHost builds
 
+## Unreleased — question images (26 October 2026)
+
+Added one optional image per question below the prompt in the quiz editor. Teachers can upload JPG, PNG, or WebP files up to 10 MB, add a description, replace or remove an image, and open a preview with zoom controls. Uploads are resized to a maximum edge of 1,600 pixels and capped at 2 MB after processing. The feature works across subjects; a physics graph was used for browser testing.
+
+Images are stored in the local data/images directory and served through cached URLs. Room updates contain only the image reference and description, preserving the existing countdown and answer hiding. Both individual and team games display images during questions and reveal. Backups now include referenced image files in version 2 JSON, with a 40 MB import limit; older text-only backups remain supported. Missing and corrupted backup images are rejected before quizzes are imported. Move the entire data folder when migrating an installation.
+
+TypeScript and production builds passed. All 11 integration tests passed, including upload authorization, supported formats and size limits, caching, backup restoration to another data directory, legacy backups, persistence, both game modes, and the existing 50-player scenario. Browser checks covered upload, replace, remove, descriptions, saving/reopening, image enlargement and zoom, individual answering, team scoring, backup export/import, and phone-sized layout.
+
+Source and preview update only. The existing Windows executable is still 0.1.4-beta.3; package this feature in the next release.
+
 ## Version 0.1.4 Beta 3 — page and question-tab transitions (24 October 2026)
 
 Workspace navigation and quiz-editor question tabs now use a short 220 ms fade and upward entrance. The effect animates the existing pane, so typing, live score updates, and timer changes do not replay it. Fast switches cancel the previous effect, and the shared reduced-motion setting and device preference disable it. The sticky toolbar stays in place.

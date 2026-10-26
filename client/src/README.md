@@ -12,18 +12,20 @@
 | `features/host/LaunchDialog.tsx`, `DeleteQuizDialog.tsx` | Room launch options and quiz deletion confirmation |
 | `features/host/room/` | Host room toolbar, lobby, team board, live question, and final results |
 | `features/quizzes/` | Quiz editor and new-question defaults |
+| `features/quizzes/QuestionImageEditor.tsx`, `uploadImage.ts` | Optional question images, resizing, upload progress, and descriptions |
 | `features/student/Student.tsx` | Student layout and game-phase composition |
 | `features/student/useStudentSession.ts`, `identity.ts` | Joining, reconnection, answer submission, and session identity |
 | `features/student/JoinForm.tsx`, `StudentLobby.tsx`, `StudentQuestion.tsx`, `StudentFinish.tsx` | Individual student screens |
 | `components/` | Shared branding and small visual components |
 | `components/useSwitchMotion.ts` | Page and question-tab entrance transitions, respecting the shared motion preference |
 | `components/game/` | Shared answer tiles/shapes, timer, leaderboard, and podium |
+| `components/game/QuestionImage.tsx`, `images.css` | Question images and accessible, zoomable previews on teacher/student screens |
 | `animation.tsx`, `animations.css` | Motion preference, preparation countdown, leaderboard movement, and celebration effects |
 | `lib.ts` | Shared HTTP, socket, authorization, and download helpers |
 | `release.ts` | Display version and release channel derived from package.json |
 
 Add new behavior to its feature. Keep the application entry and page composition files small. Components shared by teacher and student screens belong in `components/`; feature-specific pieces stay with their feature. Socket lifecycle and async state belong in the corresponding hook. Game rules, scoring, and authoritative timers remain in `server/game.ts`.
 
-Global layout remains in `style.css`, with visual theme rules in `theme.css`. Keep their import order in `main.tsx`: layout, theme, then animations.
+Global layout remains in `style.css`, with visual theme rules in `theme.css`. Keep their import order in `main.tsx`: layout, theme, images, then animations.
 
 Validate changes from the project root with `npm run check`, `npm test`, and `npm run build`. For frontend changes, also check the affected teacher/student flow in the browser.

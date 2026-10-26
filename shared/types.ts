@@ -6,6 +6,10 @@ export type Phase =
   | "question"
   | "reveal"
   | "finished";
+export interface QuestionImage {
+  id: string;
+  description: string;
+}
 export interface Question {
   id: string;
   prompt: string;
@@ -13,6 +17,7 @@ export interface Question {
   correctIndex: number;
   seconds: number;
   points: number;
+  image?: QuestionImage;
 }
 export interface Quiz {
   id: string;
@@ -34,6 +39,7 @@ export interface PublicQuestion {
   options: string[];
   seconds: number;
   points: number;
+  image?: QuestionImage;
   correctIndex?: number;
 }
 export interface RoomView {

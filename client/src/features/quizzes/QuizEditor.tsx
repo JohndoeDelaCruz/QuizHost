@@ -5,6 +5,7 @@ import { Pill } from "../../components/Pill";
 import { AnswerShape } from "../../components/game/AnswerShape";
 import { useSwitchMotion } from "../../components/useSwitchMotion";
 import { freshQuestion } from "./question";
+import { QuestionImageEditor } from "./QuestionImageEditor";
 
 export function QuizEditor({
   quiz,
@@ -23,15 +24,16 @@ export function QuizEditor({
   const [index, setIndex] = useState(0);
   const [validation, setValidation] = useState("");
   const [discard, setDiscard] = useState(false);
+  const [imageBusy, setImageBusy] = useState(false);
   const current = draft.questions[index];
   const questionRef = useSwitchMotion(current.id);
   function question(change: Partial<Question>) {
-    setDraft({
-      ...draft,
-      questions: draft.questions.map((q, i) =>
-        i === index ? { ...q, ...change } : q,
+    setDraft((previous) => ({
+      ...previous,
+      questions: previous.questions.map((q) =>
+        q.id === current.id ? { ...q, ...change } : q,
       ),
-    });
+    }));
   }
   function save() {
     const invalid = draft.questions.findIndex(
@@ -112,6 +114,7 @@ export function QuizEditor({
               {draft.questions.map((q, i) => (
                 <button
                   key={q.id}
+                  disabled={imageBusy}
                   className={i === index ? "active" : ""}
                   onClick={() => setIndex(i)}
                 >
@@ -122,7 +125,7 @@ export function QuizEditor({
             </div>
             <button
               className="btn secondary small"
-              disabled={draft.questions.length >= 100}
+              disabled={imageBusy || draft.questions.length >= 100}
               onClick={() => {
                 setDraft({
                   ...draft,
@@ -140,7 +143,7 @@ export function QuizEditor({
               <Pill>QUESTION {index + 1}</Pill>
               <button
                 className="btn subtle small"
-                disabled={draft.questions.length <= 1}
+                disabled={imageBusy || draft.questions.length <= 1}
                 onClick={() => {
                   setDraft({
                     ...draft,
@@ -164,6 +167,13 @@ export function QuizEditor({
                 placeholder="Type your question here…"
               />
             </label>
+            <QuestionImageEditor
+              key={current.id}
+              image={current.image}
+              onChange={(image) => question({ image })}
+              onBusyChange={setImageBusy}
+              disabled={busy}
+            />
             <p className="answer-help">
               <CheckCircle2 size={15} />
               Select the circle beside the correct answer.
@@ -249,7 +259,11 @@ export function QuizEditor({
         </div>
         <div className="modal-footer">
           <span className="muted">Saved locally. Ready offline.</span>
-          <button className="btn primary" disabled={busy} onClick={save}>
+          <button
+            className="btn primary"
+            disabled={busy || imageBusy}
+            onClick={save}
+          >
             <Save size={17} />
             {busy ? "Saving…" : "Save quiz"}
           </button>

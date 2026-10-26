@@ -244,6 +244,7 @@ export class Game {
               options: q.options,
               seconds: q.seconds,
               points: q.points,
+              ...(q.image ? { image: q.image } : {}),
               ...(canReveal ? { correctIndex: q.correctIndex } : {}),
             }
           : null,

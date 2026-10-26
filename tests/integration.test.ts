@@ -99,6 +99,193 @@ function quizBody(count = 1) {
   };
 }
 
+const imageBytes = Buffer.from(
+  "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jN2UAAAAASUVORK5CYII=",
+  "base64",
+);
+async function addImage(f: Awaited<ReturnType<typeof fixture>>) {
+  const response = await fetch(f.url + "/api/images", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${f.server.hostToken}`,
+      "Content-Type": "image/png",
+    },
+    body: imageBytes,
+  });
+  assert.equal(response.status, 200);
+  return (await response.json()).id as string;
+}
+
+test("question images require teacher uploads, validate files, and use cached local URLs", async (t) => {
+  const f = await fixture(t);
+  const headers = {
+    Authorization: `Bearer ${f.server.hostToken}`,
+    "Content-Type": "image/png",
+  };
+  assert.equal(
+    (
+      await fetch(f.url + "/api/images", {
+        method: "POST",
+        headers: { "Content-Type": "image/png" },
+        body: imageBytes,
+      })
+    ).status,
+    401,
+  );
+  for (const [type, bytes] of [
+    ["image/svg+xml", Buffer.from("<svg/>")],
+    ["image/png", Buffer.from("not an image")],
+    ["image/jpeg", imageBytes],
+  ] as const)
+    assert.equal(
+      (
+        await fetch(f.url + "/api/images", {
+          method: "POST",
+          headers: { ...headers, "Content-Type": type },
+          body: bytes,
+        })
+      ).status,
+      400,
+    );
+  assert.equal(
+    (
+      await fetch(f.url + "/api/images", {
+        method: "POST",
+        headers,
+        body: Buffer.alloc(2 * 1024 * 1024 + 1),
+      })
+    ).status,
+    413,
+  );
+  const id = await addImage(f);
+  assert.equal(await addImage(f), id, "The same image should be stored once.");
+  const image = await fetch(f.url + "/media/" + id);
+  assert.equal(image.headers.get("content-type"), "image/png");
+  assert.match(image.headers.get("cache-control") ?? "", /immutable/);
+  assert.deepEqual(Buffer.from(await image.arrayBuffer()), imageBytes);
+  assert.equal(
+    (await fetch(f.url + "/media/" + "0".repeat(64) + ".png")).status,
+    404,
+  );
+  const missing = await fetch(f.url + "/api/quizzes", {
+    method: "POST",
+    headers: { ...headers, "Content-Type": "application/json" },
+    body: JSON.stringify({
+      ...quizBody(),
+      questions: [
+        {
+          ...quizBody().questions[0],
+          image: { id: "0".repeat(64) + ".png", description: "Missing" },
+        },
+      ],
+    }),
+  });
+  assert.equal(missing.status, 400);
+});
+
+test("photo backups restore on another laptop, reject broken references, and retain legacy imports", async (t) => {
+  const source = await fixture(t);
+  const id = await addImage(source);
+  const body = quizBody(2);
+  await source.api("/quizzes", {
+    ...body,
+    title: "Photo backup",
+    questions: body.questions.map((q) => ({
+      ...q,
+      image: { id, description: "A labelled diagram" },
+    })),
+  });
+  const backup = await source.api("/backup");
+  assert.equal(backup.version, 2);
+  assert.equal(backup.images.length, 1);
+  const target = await fixture(t);
+  await target.api("/import", { ...backup, notes: " ".repeat(1100000) });
+  const restored: Quiz = (await target.api("/quizzes")).find(
+    (q: Quiz) => q.title === "Photo backup",
+  );
+  assert.deepEqual(restored.questions[0].image, {
+    id,
+    description: "A labelled diagram",
+  });
+  assert.deepEqual(
+    Buffer.from(await (await fetch(target.url + "/media/" + id)).arrayBuffer()),
+    imageBytes,
+  );
+  const { Store } = await import("../server/store");
+  const reopened = await Store.open(target.directory);
+  assert.equal(reopened.quiz(restored.id)?.questions[0].image?.id, id);
+  reopened.close();
+  const before = (await target.api("/quizzes")).length;
+  const broken = {
+    ...backup,
+    images: [{ id, data: Buffer.from("broken").toString("base64") }],
+  };
+  const response = await fetch(target.url + "/api/import", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${target.server.hostToken}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(broken),
+  });
+  assert.equal(response.status, 400);
+  assert.equal(
+    (await target.api("/quizzes")).length,
+    before,
+    "A damaged import must not add partial quizzes.",
+  );
+  await target.api("/import", { version: 1, quizzes: [quizBody()] });
+  assert.equal((await target.api("/quizzes")).length, before + 1);
+});
+
+test("both game modes send image references after preparation without sending image bytes", async (t) => {
+  const f = await fixture(t);
+  const id = await addImage(f);
+  const image = { id, description: "Examine the diagram." };
+  const quiz: Quiz = await f.api("/quizzes", {
+    ...quizBody(),
+    questions: [{ ...quizBody().questions[0], image }],
+  });
+  const host = await f.socket(true);
+  for (const mode of ["individual", "teams"]) {
+    await cmd(host, "host:create", {
+      quizId: quiz.id,
+      mode,
+      teams: ["Sun", "Moon"],
+    });
+    const lobby = await state(host, (r) => r.phase === "lobby");
+    const student = mode === "individual" ? await f.socket() : null;
+    if (student)
+      await cmd(student, "player:join", {
+        pin: lobby.pin,
+        name: "Visual learner",
+      });
+    await cmd(host, "host:start");
+    if (mode === "teams") await cmd(host, "host:pick", 0);
+    assert.equal(
+      (await state(host, (r) => r.phase === "countdown")).question,
+      null,
+    );
+    const question = await state(
+      student ?? host,
+      (r) => r.phase === "question",
+    );
+    assert.deepEqual(question.question?.image, image);
+    assert.equal(question.question?.correctIndex, undefined);
+    assert.ok(
+      !JSON.stringify(question).includes(imageBytes.toString("base64")),
+    );
+    if (student) await cmd(student, "player:answer", 1);
+    await cmd(host, "host:reveal");
+    assert.deepEqual(
+      (await state(host, (r) => r.phase === "reveal")).question?.image,
+      image,
+    );
+    await cmd(host, "host:end");
+    student?.disconnect();
+  }
+});
+
 test("teacher APIs and room controls reject unauthenticated clients", async (t) => {
   const f = await fixture(t);
   assert.equal((await fetch(f.url + "/api/quizzes")).status, 401);

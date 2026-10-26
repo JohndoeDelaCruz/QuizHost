@@ -3,6 +3,7 @@ import type { RoomView } from "../../../../shared/types";
 import { Pill } from "../../components/Pill";
 import { Answers } from "../../components/game/Answers";
 import { Timer } from "../../components/game/Timer";
+import { QuestionImageView } from "../../components/game/QuestionImage";
 
 export function StudentQuestion({
   room,
@@ -31,6 +32,7 @@ export function StudentQuestion({
         )}
       </div>
       <h1>{room.question?.prompt}</h1>
+      <QuestionImageView image={room.question?.image} />
       {room.phase === "question" && room.myAnswer ? (
         <div className="locked-answer">
           <CheckCircle2 size={44} />

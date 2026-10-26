@@ -20,6 +20,14 @@ Workspace pages and quiz-editor question tabs also have short entrance transitio
 
 This initial development build is unsigned. It has not been tested with 50 physical phones. Use a suitable access point and run a classroom pilot before promising that capacity.
 
+## Question images in the source preview
+
+The source preview supports one optional image per question, across all subjects. In the quiz editor, use **Add image** below the question text to upload a JPG, PNG, or WebP file up to 10 MB. Images are resized to a maximum edge of 1,600 pixels and stored locally, up to 2 MB each. Add an optional description, replace or remove an image, and open its preview with zoom controls.
+
+Teacher and student screens show the same image during the question and reveal phases in both play modes. Images use cached local URLs instead of being resent with score updates. They remain hidden during preparation. Quiz backups include the referenced images, and the source preview can import older text-only backups. Image backups require the image-support build and may be up to 40 MB.
+
+This feature has not yet been packaged into the Windows executable linked above.
+
 ## Development
 
 Git keeps the source code, dependency lockfile, documentation, and icon assets. Installed dependencies, compiled output, packaged EXEs, local databases, test work files, and internal project notes stay on this laptop. After cloning, install dependencies and build using the commands below.
@@ -81,7 +89,7 @@ See `client/src/README.md` for the frontend module map and guidance on where fut
 
 Desktop data is stored in `%APPDATA%/QuizHost/data/quizhost.sqlite` (the exact application folder can vary by Electron environment). Command-line mode uses `data/quizhost.sqlite` in the project directory. Override the CLI directory using `QUIZHOST_DATA_DIR`; override the CLI port with `PORT`.
 
-Use **Back up** in the library to export quizzes to JSON. **Import** adds copies of quizzes from a QuizHost backup. Results export as CSV. Quiz backups do not include result history; to move the entire database, close the application and copy `quizhost.sqlite` to the new application data folder.
+Use **Back up** in the library to export quizzes to JSON. **Import** adds copies of quizzes from a QuizHost backup. Results export as CSV. Quiz backups do not include result history; to move all data, close the application and copy the entire data folder, including `quizhost.sqlite` and its `images/` directory, to the new application data folder.
 
 Quizzes and finished results survive an app restart. An unfinished live room is held in memory and does not survive the host application closing, the laptop restarting, or a crash. Keep the laptop awake. A student can reconnect during a running game with the same browser tab; identity is held in that tab’s session storage. A new tab, cleared browser storage, or a new host session can require rejoining before the game starts.
 

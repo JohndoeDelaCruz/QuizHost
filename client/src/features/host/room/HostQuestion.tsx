@@ -3,6 +3,7 @@ import { Pill } from "../../../components/Pill";
 import { Answers } from "../../../components/game/Answers";
 import { Scores } from "../../../components/game/Scores";
 import { Timer } from "../../../components/game/Timer";
+import { QuestionImageView } from "../../../components/game/QuestionImage";
 import type { GameScreenProps } from "../types";
 
 export function HostQuestion({ room, busy, act }: GameScreenProps) {
@@ -35,7 +36,14 @@ export function HostQuestion({ room, busy, act }: GameScreenProps) {
             {team?.name}’s turn · {room.question?.points} points
           </p>
         )}
-        <h2>{room.question?.prompt}</h2>
+        <div
+          className={
+            "question-stimulus" + (room.question?.image ? " with-image" : "")
+          }
+        >
+          <h2>{room.question?.prompt}</h2>
+          <QuestionImageView image={room.question?.image} />
+        </div>
         <Answers room={room} />
         <div className="question-controls">
           {room.phase === "question" ? (

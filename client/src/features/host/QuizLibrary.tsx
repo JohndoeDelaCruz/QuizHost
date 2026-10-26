@@ -16,6 +16,7 @@ import { Pill } from "../../components/Pill";
 import { AnswerShape } from "../../components/game/AnswerShape";
 import { api, download } from "../../lib";
 import { APP_VERSION } from "../../release";
+import { MAX_BACKUP_BYTES } from "../../../../shared/media";
 
 export function QuizLibrary({
   quizzes,
@@ -110,8 +111,8 @@ export function QuizLibrary({
               e.target.value = "";
               if (!file) return;
               try {
-                if (file.size > 1000000)
-                  throw new Error("Choose a backup smaller than 1 MB.");
+                if (file.size > MAX_BACKUP_BYTES)
+                  throw new Error("Choose a quiz backup up to 40 MB.");
                 const response = await api<{ count: number }>(
                   "/import",
                   JSON.parse(await file.text()),

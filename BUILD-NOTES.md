@@ -1,6 +1,6 @@
 # QuizHost builds
 
-## Unreleased — pre-question countdown, join popups, and game transitions (26 October 2026)
+## Version 0.1.4 Beta 7 — pre-question countdown, join popups, and game transitions (26 October 2026)
 
 Added a server-controlled five-second preparation phase before each question, followed by the existing five-second reading phase and full answer time. Preparation exposes neither the prompt nor its photo or choices. Teacher and student screens show a progress bar, changing number, and avatar mascot. Reconnection preserves deadlines; ending a game cancels either scheduled preparation stage. Team tile selection follows the same flow.
 
@@ -8,7 +8,9 @@ New joins emit a room-scoped arrival event to authenticated teachers and partici
 
 Game stages enter with a 440 ms bounce and edge sparkles, keyed to the room, phase, and question rather than live scores or countdown ticks. Reduced motion removes decorative movement without changing timing. The five-second countdown and popup layouts were checked at 390×844 without horizontal overflow. Browser checks covered own and peer welcomes, no reconnect replay, animated teacher transitions, static reduced-motion student countdown, prompt/photo hiding, question reading, individual answering/rankings, and shared-screen team turns.
 
-TypeScript and production build passed. All 24 tests passed, including real five-second preparation plus five-second reading, full answer time, reconnecting in each stage, cancellation during either stage, arrival recipients, reconnect suppression, and outsider isolation. The Windows EXE remains 0.1.4-beta.6; this update is source/browser preview only.
+TypeScript and production build passed. All 24 tests passed, including real five-second preparation plus five-second reading, full answer time, reconnecting in each stage, cancellation during either stage, arrival recipients, reconnect suppression, and outsider isolation. Windows executable: release/QuizHost-0.1.4-beta.7-Windows.exe. Application identity and the saved-data location are unchanged. Reload student pages after updating the teacher app. Native Windows startup and final classroom acceptance testing remain pending.
+
+Windows package inspection confirmed version 0.1.4-beta.7, matching compiled frontend/server files, the desktop entry point, SQLite runtime, ten avatars, and all sixteen music files. The custom icon was verified at all seven sizes in both executables. Download and deliverable EXE copies were checked against the release file by SHA-256.
 
 ## Version 0.1.4 Beta 6 — music in the Quiz library (26 October 2026)
 

@@ -1,4 +1,4 @@
-# QuizHost 0.1.4 Beta 6 — offline classroom quizzes
+# QuizHost 0.1.4 Beta 7 — offline classroom quizzes
 
 **Beta release:** core features are implemented; final classroom acceptance testing is still pending. Test the Windows app on the teacher's laptop and the intended classroom network before final handover.
 
@@ -6,7 +6,7 @@ QuizHost runs on a Windows teacher laptop. Individual players use phone browsers
 
 ## Try the Windows app
 
-1. Open `release/QuizHost-0.1.4-beta.6-Windows.exe`.
+1. Open `release/QuizHost-0.1.4-beta.7-Windows.exe`.
 2. Choose **Host game** on the included quiz.
 3. Choose **Everyone’s in** for individual phone play, or **Better together** for shared-screen teams.
 4. For phones, connect every device to the same classroom Wi-Fi. Open **Setup & connection**, use the displayed student address or QR code, and enter the room’s six-digit PIN.
@@ -14,7 +14,7 @@ QuizHost runs on a Windows teacher laptop. Individual players use phone browsers
 
 Team play: enter 2–8 team names, start the room, pick a question tile, reveal the answer, and mark the team’s answer correct or missed. Watch the rankings, then continue to rotate turns. Question point values are used in team mode; individual correct answers earn 500–1,000 points based on time remaining.
 
-Each question begins with a shared five-second reading progress bar, showing the prompt and optional photo before answer choices appear. The full answer time starts afterward. Answer tiles enter in sequence, locked answers and correct-answer feedback animate, leaderboard rows move into their new positions, and the final podium has a short confetti celebration. Use **Animations on** in the header to switch to reduced motion on that device; the app also respects the device’s reduced-motion preference. All effects work offline.
+Each question begins with a shared five-second Get ready countdown and progress bar while the question remains hidden. Next, a five-second reading stage shows the prompt and optional photo before answer choices appear. The full answer time starts afterward. Answer tiles enter in sequence, locked answers and correct-answer feedback animate, leaderboard rows move into their new positions, and the final podium has a short confetti celebration. Use **Animations on** in the header to switch to reduced motion on that device; the app also respects the device’s reduced-motion preference. All effects work offline.
 
 Workspace pages and quiz-editor question tabs also have short entrance transitions. Typing and live score updates do not replay them.
 
@@ -30,7 +30,7 @@ Teacher and student screens show the same image during reading, answering, and r
 
 QuizHost uses dark purple surfaces across the teacher workspace, editor, dialogs, and student screens. Ten supplied avatars are bundled locally. The host assigns avatars randomly without repeating until all ten have been used, then starts a fresh random pool. Reconnection preserves each player's avatar, and finished results retain it. Teams receive random avatars as well.
 
-Each question first shows its prompt and optional image with a five-second reading progress bar. Answer choices stay hidden, and the full answer timer starts afterward. Individual play reveals answers when everyone has answered, when time runs out, or when the teacher reveals early. After 2.5 seconds of feedback, an animated top-five ranking screen counts up points and moves players to their new positions. Students also see their own rank and points gained. The teacher can continue after the ranking animation's minimum 2.5-second display. Team play shows rankings after Correct or Missed it, then returns to the board or opens the final podium. Reduced motion displays final scores immediately while preserving the game stages.
+After the Get ready countdown, each question shows its prompt and optional image with a five-second reading progress bar. Answer choices stay hidden, and the full answer timer starts afterward. Individual play reveals answers when everyone has answered, when time runs out, or when the teacher reveals early. After 2.5 seconds of feedback, an animated top-five ranking screen counts up points and moves players to their new positions. Students also see their own rank and points gained. The teacher can continue after the ranking animation's minimum 2.5-second display. Team play shows rankings after Correct or Missed it, then returns to the board or opens the final podium. Reduced motion displays final scores immediately while preserving the game stages.
 
 These features are included in Windows Beta 5.
 
@@ -42,13 +42,13 @@ Use the speaker button to enable or mute sound, and the adjacent Sound settings 
 
 Audio files are served over the same local Wi-Fi as the rest of the game; internet access is not required. Music and sound controls were introduced in Windows Beta 5; library music is included in Beta 6.
 
-## Current source preview: countdowns and classroom celebrations
+## Countdowns and classroom celebrations
 
-The source preview adds a separate five-second Get ready countdown before every question in both modes. A progress bar and avatar mascot appear while the prompt, photo, and choices remain hidden. The existing five-second question-reading stage follows, then the full answer timer begins. Preparation and reading deadlines come from the server and survive reconnection.
+A separate five-second Get ready countdown appears before every question in both modes. A progress bar and avatar mascot appear while the prompt, photo, and choices remain hidden. The five-second question-reading stage follows, then the full answer timer begins. Preparation and reading deadlines come from the server and survive reconnection.
 
 When a new student joins, the teacher, existing students, and joining student see a brief avatar welcome popup. The joining student gets a personal welcome. Arrivals are limited to three visible cards at once, can be dismissed, and expire automatically. Reconnecting does not announce a new arrival. Game screens use a short bounce and sparkle entrance when stages or questions change; score updates and timer ticks do not replay it. The shared reduced-motion setting disables decorative movement while preserving progress and game timing.
 
-These changes are in the source/browser preview and have not yet been packaged into the Windows Beta 6 executable. Update client and server together because the room protocol includes the new preparation phase and arrival event.
+These features are included in Windows Beta 7. After updating the teacher's app, reload student pages before joining the new room so they receive the current interface.
 
 ## Development
 

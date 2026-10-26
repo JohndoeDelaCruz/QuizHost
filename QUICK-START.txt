@@ -1,19 +1,21 @@
-QUIZHOST 0.1.4 BETA 6 — CLASSROOM PILOT
+QUIZHOST 0.1.4 BETA 7 — CLASSROOM PILOT
 
-1. Open release\QuizHost-0.1.4-beta.6-Windows.exe on the teacher's Windows x64 laptop.
+1. Open release\QuizHost-0.1.4-beta.7-Windows.exe on the teacher's Windows x64 laptop.
 2. Click Host game on the sample quiz.
 3. Choose a play mode and open the room.
 
 UPDATING FROM AN EARLIER BUILD
 Finish the current game and close the earlier QuizHost window.
 Run the new EXE. Saved quizzes and finished results use the same data folder.
+Reload student pages before joining the new room after an update.
 
 INDIVIDUAL PHONE MODE
 Connect the laptop and phones to the same local Wi-Fi.
 Open the address displayed in Setup & connection on each phone.
 Students enter the game PIN and their name.
 Click Start game. Students receive random avatars that stay on reconnection.
-Each question and optional photo appear with a five-second reading bar.
+A five-second Get ready countdown and progress bar appear before each question.
+The question and optional photo then appear with a five-second reading bar.
 Answer choices then open with the full answer timer. Answers reveal when
 everyone has answered, time expires, or the teacher clicks Reveal answer.
 After feedback, watch the animated rankings and continue to the next question.
@@ -25,6 +27,9 @@ Mark Correct or Missed it. Watch the rankings, then continue to rotate teams.
 Student phones and Wi-Fi are not needed for this mode.
 
 ANIMATIONS
+New students receive an avatar welcome popup. Teachers and classmates see
+them arrive too. Reconnecting does not replay a new-arrival announcement.
+Game stages have short bounce and sparkle entrances.
 Answer tiles, feedback, leaderboard changes, and the final podium animate.
 Workspace pages and quiz-editor question tabs have short entrance transitions.
 Click Animations on in the header to use reduced motion on that device.

@@ -1,6 +1,6 @@
 # QuizHost builds
 
-## Unreleased — question images (26 October 2026)
+## Version 0.1.4 Beta 4 — question images (26 October 2026)
 
 Added one optional image per question below the prompt in the quiz editor. Teachers can upload JPG, PNG, or WebP files up to 10 MB, add a description, replace or remove an image, and open a preview with zoom controls. Uploads are resized to a maximum edge of 1,600 pixels and capped at 2 MB after processing. The feature works across subjects; a physics graph was used for browser testing.
 
@@ -8,7 +8,9 @@ Images are stored in the local data/images directory and served through cached U
 
 TypeScript and production builds passed. All 11 integration tests passed, including upload authorization, supported formats and size limits, caching, backup restoration to another data directory, legacy backups, persistence, both game modes, and the existing 50-player scenario. Browser checks covered upload, replace, remove, descriptions, saving/reopening, image enlargement and zoom, individual answering, team scoring, backup export/import, and phone-sized layout.
 
-Source and preview update only. The existing Windows executable is still 0.1.4-beta.3; package this feature in the next release.
+Windows package inspection confirmed version 0.1.4-beta.4, matching compiled frontend/server files, the desktop entry point, and SQLite runtime. All seven custom icon sizes were verified in both executables, and the download copy was checked against the release file by SHA-256.
+
+Windows executable: release/QuizHost-0.1.4-beta.4-Windows.exe. This release packages question photos, descriptions, zoomable previews, and image-inclusive backups. Application identity and the saved-data location are unchanged. Native Windows startup verification and final classroom acceptance testing remain pending.
 
 ## Version 0.1.4 Beta 3 — page and question-tab transitions (24 October 2026)
 

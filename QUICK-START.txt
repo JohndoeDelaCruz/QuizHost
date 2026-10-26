@@ -1,6 +1,6 @@
-QUIZHOST 0.1.4 BETA 3 — CLASSROOM PILOT
+QUIZHOST 0.1.4 BETA 4 — CLASSROOM PILOT
 
-1. Open release\QuizHost-0.1.4-beta.3-Windows.exe on the teacher's Windows x64 laptop.
+1. Open release\QuizHost-0.1.4-beta.4-Windows.exe on the teacher's Windows x64 laptop.
 2. Click Host game on the sample quiz.
 3. Choose a play mode and open the room.
 
@@ -27,9 +27,19 @@ Workspace pages and quiz-editor question tabs have short entrance transitions.
 Click Animations on in the header to use reduced motion on that device.
 The app also follows the device's reduced-motion preference.
 
+QUESTION PHOTOS
+In the quiz editor, click Add image below the question text.
+Choose a JPG, PNG, or WebP file up to 10 MB. Add an optional description.
+Replace or remove the image as needed, then save the quiz.
+The photo appears with the question in both play modes. Click Enlarge
+and use the zoom controls to read details. Photos work offline and are
+included in quiz backups. Photo backups require Beta 4 or later.
+
 AFTER CLASS
 Finished scores are saved under Results. Export CSV to keep a copy.
 Use Back up in the library to export your quizzes.
+When moving all data to another laptop, copy the entire data folder,
+including quizhost.sqlite and the images folder, with the app closed.
 
 BEFORE FINAL DELIVERY
 This is an unsigned beta build. Run a pilot on the school's laptop.

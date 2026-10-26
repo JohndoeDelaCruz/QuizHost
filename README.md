@@ -1,4 +1,4 @@
-# QuizHost 0.1.4 Beta 3 — offline classroom quizzes
+# QuizHost 0.1.4 Beta 4 — offline classroom quizzes
 
 **Beta release:** core features are implemented; final classroom acceptance testing is still pending. Test the Windows app on the teacher's laptop and the intended classroom network before final handover.
 
@@ -6,7 +6,7 @@ QuizHost runs on a Windows teacher laptop. Individual players use phone browsers
 
 ## Try the Windows app
 
-1. Open `release/QuizHost-0.1.4-beta.3-Windows.exe`.
+1. Open `release/QuizHost-0.1.4-beta.4-Windows.exe`.
 2. Choose **Host game** on the included quiz.
 3. Choose **Everyone’s in** for individual phone play, or **Better together** for shared-screen teams.
 4. For phones, connect every device to the same classroom Wi-Fi. Open **Setup & connection**, use the displayed student address or QR code, and enter the room’s six-digit PIN.
@@ -20,13 +20,11 @@ Workspace pages and quiz-editor question tabs also have short entrance transitio
 
 This initial development build is unsigned. It has not been tested with 50 physical phones. Use a suitable access point and run a classroom pilot before promising that capacity.
 
-## Question images in the source preview
+## Question images
 
-The source preview supports one optional image per question, across all subjects. In the quiz editor, use **Add image** below the question text to upload a JPG, PNG, or WebP file up to 10 MB. Images are resized to a maximum edge of 1,600 pixels and stored locally, up to 2 MB each. Add an optional description, replace or remove an image, and open its preview with zoom controls.
+QuizHost supports one optional image per question, across all subjects. In the quiz editor, use **Add image** below the question text to upload a JPG, PNG, or WebP file up to 10 MB. Images are resized to a maximum edge of 1,600 pixels and stored locally, up to 2 MB each. Add an optional description, replace or remove an image, and open its preview with zoom controls.
 
-Teacher and student screens show the same image during the question and reveal phases in both play modes. Images use cached local URLs instead of being resent with score updates. They remain hidden during preparation. Quiz backups include the referenced images, and the source preview can import older text-only backups. Image backups require the image-support build and may be up to 40 MB.
-
-This feature has not yet been packaged into the Windows executable linked above.
+Teacher and student screens show the same image during the question and reveal phases in both play modes. Images use cached local URLs instead of being resent with score updates. They remain hidden during preparation. Quiz backups include the referenced images, and QuizHost can import older text-only backups. Image backups require version 0.1.4-beta.4 or later and may be up to 40 MB.
 
 ## Development
 

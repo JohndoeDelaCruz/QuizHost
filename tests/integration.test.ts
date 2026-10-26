@@ -5,8 +5,18 @@ import path from "node:path";
 import { io, type Socket } from "socket.io-client";
 import { startServer } from "../server/index";
 import type { Ack, Quiz, RoomView } from "../shared/types";
+import { AVATAR_IDS } from "../shared/avatars";
+import type { GameTimings } from "../server/game";
 const states = new WeakMap<Socket, RoomView | null>();
-async function fixture(t: { after: (callback: () => Promise<void>) => void }) {
+const TEST_TIMINGS: GameTimings = {
+  readingMs: 500,
+  feedbackMs: 500,
+  rankingMs: 400,
+};
+async function fixture(
+  t: { after: (callback: () => Promise<void>) => void },
+  timings: Partial<GameTimings> = TEST_TIMINGS,
+) {
   const base = path.resolve("tests");
   const directory = mkdtempSync(path.join(base, ".tmp-"));
   const sockets: Socket[] = [];
@@ -14,6 +24,7 @@ async function fixture(t: { after: (callback: () => Promise<void>) => void }) {
     dataDir: directory,
     staticDir: path.resolve("dist/client"),
     port: 0,
+    timings,
   });
   const url = `http://127.0.0.1:${server.port}`;
   async function socket(host = false) {
@@ -74,7 +85,7 @@ async function state(socket: Socket, predicate: (view: RoomView) => boolean) {
     const timer = setTimeout(() => {
       socket.off("room:state", handler);
       reject(new Error("Expected room state was not received"));
-    }, 5000);
+    }, 10000);
     function handler(view: RoomView) {
       if (view && predicate(view)) {
         clearTimeout(timer);
@@ -84,6 +95,17 @@ async function state(socket: Socket, predicate: (view: RoomView) => boolean) {
     }
     socket.on("room:state", handler);
   });
+}
+async function continueAfterRanking(host: Socket) {
+  const ranking = await state(host, (r) => r.phase === "ranking");
+  assert.ok(ranking.ranking);
+  await new Promise((resolve) =>
+    setTimeout(
+      resolve,
+      Math.max(0, ranking.ranking!.readyAt - Date.now() + 20),
+    ),
+  );
+  await cmd(host, "host:next");
 }
 function quizBody(count = 1) {
   return {
@@ -276,7 +298,7 @@ test("both game modes send image references after preparation without sending im
       !JSON.stringify(question).includes(imageBytes.toString("base64")),
     );
     if (student) await cmd(student, "player:answer", 1);
-    await cmd(host, "host:reveal");
+    if (!student) await cmd(host, "host:reveal");
     assert.deepEqual(
       (await state(host, (r) => r.phase === "reveal")).question?.image,
       image,
@@ -325,17 +347,19 @@ test("50 simultaneous players answer once; answers and scores stay hidden until 
   await cmd(host, "host:start");
   const question = await state(students[0], (r) => r.phase === "question");
   assert.equal(question.question?.correctIndex, undefined);
-  await Promise.all(students.map((s) => cmd(s, "player:answer", 1)));
+  await Promise.all(
+    students.slice(0, -1).map((s) => cmd(s, "player:answer", 1)),
+  );
   await assert.rejects(cmd(students[0], "player:answer", 2), /already locked/);
-  const locked = await state(students[0], (r) => r.answeredCount === 50);
+  const locked = await state(students[0], (r) => r.answeredCount === 49);
   assert.equal(locked.myAnswer?.correct, undefined);
   assert.ok(locked.scores.every((s) => s.score === 0));
-  await cmd(host, "host:reveal");
+  await cmd(students[49], "player:answer", 1);
   const revealed = await state(students[0], (r) => r.phase === "reveal");
   assert.equal(revealed.question?.correctIndex, 1);
   assert.equal(revealed.myAnswer?.correct, true);
   assert.ok(revealed.scores.every((s) => s.score >= 500 && s.score <= 1000));
-  await cmd(host, "host:next");
+  await continueAfterRanking(host);
   await state(host, (r) => r.phase === "finished");
   const results = await f.api("/results");
   assert.equal(results.length, 1);
@@ -367,8 +391,7 @@ test("reconnection preserves identity, score and locked answer", async (t) => {
   );
   assert.equal(resumed.id, player.id);
   assert.equal(resumed.room.myAnswer?.index, 1);
-  await assert.rejects(cmd(second, "player:answer", 0), /already locked/);
-  await cmd(host, "host:reveal");
+  await assert.rejects(cmd(second, "player:answer", 0), /closed/);
   assert.ok(
     (await state(second, (r) => r.phase === "reveal")).scores[0].score >= 500,
   );
@@ -390,6 +413,7 @@ test("team tiles enforce reveal, rotate turns, award once, and save final scores
   await state(host, (r) => r.phase === "question");
   await cmd(host, "host:reveal");
   await cmd(host, "host:award", true);
+  await continueAfterRanking(host);
   const after = await state(
     host,
     (r) => r.phase === "board" && r.activeTeam !== originalTeam,
@@ -401,6 +425,7 @@ test("team tiles enforce reveal, rotate turns, award once, and save final scores
   await state(host, (r) => r.phase === "question");
   await cmd(host, "host:reveal");
   await cmd(host, "host:award", false);
+  await continueAfterRanking(host);
   const final = await state(host, (r) => r.phase === "finished");
   assert.equal(final.scores[0].score, 200);
   assert.equal((await f.api("/results")).length, 1);
@@ -445,6 +470,7 @@ test("SQLite quizzes and results survive closing and reopening the store", async
   await state(host, (r) => r.phase === "question");
   await cmd(host, "host:reveal");
   await cmd(host, "host:award", true);
+  await continueAfterRanking(host);
   // Read a separate database instance from the saved file to verify disk persistence.
   const { Store } = await import("../server/store");
   const store = await Store.open(f.directory);
@@ -453,8 +479,8 @@ test("SQLite quizzes and results survive closing and reopening the store", async
   store.close();
 });
 
-test("countdown hides questions, rejects early answers, resumes consistently, and preserves full answer time", async (t) => {
-  const f = await fixture(t);
+test("question reading exposes only the prompt, rejects early answers, resumes consistently, and preserves full answer time", async (t) => {
+  const f = await fixture(t, {});
   const quiz: Quiz = await f.api("/quizzes", quizBody());
   const host = await f.socket(true);
   await cmd(host, "host:create", { quizId: quiz.id, mode: "individual" });
@@ -468,6 +494,10 @@ test("countdown hides questions, rejects early answers, resumes consistently, an
   await cmd(host, "host:start");
   const prep = await state(student, (r) => r.phase === "countdown");
   assert.equal(prep.question, null);
+  assert.equal(prep.preview?.prompt, "Question 1");
+  assert.equal("options" in prep.preview!, false);
+  assert.equal("correctIndex" in prep.preview!, false);
+  assert.equal(prep.preparationMs, 5000);
   assert.equal(prep.deadline, null);
   assert.ok(prep.startsAt && prep.startsAt > prep.serverNow);
   await assert.rejects(cmd(student, "player:answer", 1), /closed/);
@@ -482,12 +512,12 @@ test("countdown hides questions, rejects early answers, resumes consistently, an
   assert.equal(back.room.phase, "countdown");
   assert.equal(back.room.startsAt, prep.startsAt);
   assert.equal(back.room.question, null);
+  assert.deepEqual(back.room.preview, prep.preview);
   const opened = await state(resumed, (r) => r.phase === "question");
   assert.equal(opened.startsAt, null);
   assert.ok(opened.deadline && opened.deadline - opened.serverNow >= 9950);
   assert.equal(opened.question?.prompt, "Question 1");
   await cmd(resumed, "player:answer", 1);
-  await cmd(host, "host:reveal");
   assert.ok(
     (await state(resumed, (r) => r.phase === "reveal")).scores[0].score >= 500,
   );
@@ -509,7 +539,151 @@ test("ending a room during countdown cancels the scheduled question", async (t) 
   const ended = await state(host, (r) => r.phase === "finished");
   assert.equal(ended.startsAt, null);
   assert.equal(ended.deadline, null);
-  await new Promise((resolve) => setTimeout(resolve, 3200));
+  await new Promise((resolve) =>
+    setTimeout(resolve, TEST_TIMINGS.readingMs + 100),
+  );
+  assert.equal(states.get(host)?.phase, "finished");
+  assert.equal((await f.api("/results")).length, 1);
+});
+
+test("random avatars cover the supplied pack before repeating and survive reconnects and results", async (t) => {
+  const f = await fixture(t);
+  const quiz: Quiz = await f.api("/quizzes", quizBody());
+  const host = await f.socket(true);
+  await cmd(host, "host:create", { quizId: quiz.id, mode: "individual" });
+  const lobby = await state(host, (r) => r.phase === "lobby");
+  const identities: { id: string; token: string; avatar: (typeof AVATAR_IDS)[number] }[] = [];
+  for (let index = 0; index < 11; index++) {
+    const student = await f.socket();
+    identities.push(
+      await cmd<{
+        id: string;
+        token: string;
+        avatar: (typeof AVATAR_IDS)[number];
+      }>(student, "player:join", {
+        pin: lobby.pin,
+        name: `Avatar ${index}`,
+        avatar: "bunny-buddy",
+      }),
+    );
+  }
+  assert.deepEqual(
+    identities
+      .slice(0, 10)
+      .map((identity) => identity.avatar)
+      .sort(),
+    [...AVATAR_IDS].sort(),
+  );
+  assert.ok(AVATAR_IDS.includes(identities[10].avatar));
+  const returning = await f.socket();
+  const resumed = await cmd<{ id: string; avatar: string }>(
+    returning,
+    "player:join",
+    {
+      pin: lobby.pin,
+      name: "Avatar 0",
+      token: identities[0].token,
+      avatar: "not-a-real-avatar",
+    },
+  );
+  assert.equal(resumed.id, identities[0].id);
+  assert.equal(resumed.avatar, identities[0].avatar);
+  const lobbyWithAvatars = await state(host, (r) => r.scores.length === 11);
+  assert.ok(
+    lobbyWithAvatars.scores.every(
+      (score) => score.avatar && AVATAR_IDS.includes(score.avatar),
+    ),
+  );
+  await cmd(host, "host:end");
+  const results = await f.api("/results");
+  assert.equal(
+    results[0].scores.find(
+      (score: { id: string }) => score.id === identities[0].id,
+    ).avatar,
+    identities[0].avatar,
+  );
+  for (const avatar of AVATAR_IDS)
+    assert.equal((await fetch(f.url + `/avatars/${avatar}.png`)).status, 200);
+});
+
+test("ranking waits for the animation, preserves previous standings, reconnects, and can change the leader", async (t) => {
+  const f = await fixture(t);
+  const quiz: Quiz = await f.api("/quizzes", quizBody(2));
+  const host = await f.socket(true);
+  await cmd(host, "host:create", { quizId: quiz.id, mode: "individual" });
+  const lobby = await state(host, (r) => r.phase === "lobby");
+  const alex = await f.socket();
+  const bea = await f.socket();
+  const a = await cmd<{ id: string }>(alex, "player:join", {
+    pin: lobby.pin,
+    name: "Alex",
+  });
+  const b = await cmd<{ id: string; token: string }>(bea, "player:join", {
+    pin: lobby.pin,
+    name: "Bea",
+  });
+  await cmd(host, "host:start");
+  await assert.rejects(cmd(host, "host:next"), /rankings/);
+  await state(alex, (r) => r.phase === "question");
+  await new Promise((resolve) => setTimeout(resolve, 300));
+  await cmd(alex, "player:answer", 1);
+  const pending = await state(host, (r) => r.answeredCount === 1);
+  assert.ok(pending.scores.every((score) => score.score === 0));
+  await cmd(bea, "player:answer", 0);
+  await state(host, (r) => r.phase === "reveal");
+  const first = await state(host, (r) => r.phase === "ranking");
+  assert.equal(first.scores[0].id, a.id);
+  assert.ok(first.ranking?.previousScores.every((score) => score.score === 0));
+  await assert.rejects(cmd(host, "host:next"), /animation/);
+  await assert.rejects(cmd(bea, "host:next"), /Only the teacher/);
+  bea.disconnect();
+  const returning = await f.socket();
+  const back = await cmd<{ room: RoomView }>(returning, "player:join", {
+    pin: lobby.pin,
+    name: "Bea",
+    token: b.token,
+  });
+  assert.equal(back.room.phase, "ranking");
+  assert.equal(back.room.ranking?.readyAt, first.ranking?.readyAt);
+  await continueAfterRanking(host);
+  const next = await state(
+    host,
+    (r) => r.phase === "countdown" && r.questionIndex === 1,
+  );
+  assert.equal(next.question, null);
+  assert.equal(next.preview?.prompt, "Question 2");
+  await state(returning, (r) => r.phase === "question");
+  await cmd(returning, "player:answer", 1);
+  await cmd(alex, "player:answer", 0);
+  const second = await state(
+    host,
+    (r) => r.phase === "ranking" && r.questionIndex === 1,
+  );
+  assert.equal(second.ranking?.previousScores[0].id, a.id);
+  assert.equal(second.scores[0].id, b.id);
+  assert.ok(second.scores[0].score > second.scores[1].score);
+  await continueAfterRanking(host);
+  await state(host, (r) => r.phase === "finished");
+  assert.equal((await f.api("/results"))[0].scores[0].id, b.id);
+});
+
+test("ending during answer feedback cancels automatic rankings and saves once", async (t) => {
+  const f = await fixture(t);
+  const quiz: Quiz = await f.api("/quizzes", quizBody());
+  const host = await f.socket(true);
+  await cmd(host, "host:create", { quizId: quiz.id, mode: "individual" });
+  const lobby = await state(host, (r) => r.phase === "lobby");
+  const student = await f.socket();
+  await cmd(student, "player:join", { pin: lobby.pin, name: "Finish check" });
+  await cmd(host, "host:start");
+  await state(student, (r) => r.phase === "question");
+  await cmd(student, "player:answer", 1);
+  await state(host, (r) => r.phase === "reveal");
+  await cmd(host, "host:end");
+  await state(host, (r) => r.phase === "finished");
+  await new Promise((resolve) =>
+    setTimeout(resolve, TEST_TIMINGS.feedbackMs + 100),
+  );
   assert.equal(states.get(host)?.phase, "finished");
   assert.equal((await f.api("/results")).length, 1);
 });

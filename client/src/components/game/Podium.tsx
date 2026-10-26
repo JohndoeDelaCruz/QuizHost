@@ -1,5 +1,6 @@
 import { Trophy } from "lucide-react";
 import type { RoomView } from "../../../../shared/types";
+import { Avatar } from "./Avatar";
 
 export function Podium({ scores }: { scores: RoomView["scores"] }) {
   return (
@@ -14,6 +15,7 @@ export function Podium({ scores }: { scores: RoomView["scores"] }) {
             {index === 0 && (
               <Trophy className="podium-trophy" size={32} aria-hidden="true" />
             )}
+            <Avatar avatar={scores[index].avatar} size={98} />
             <strong className="podium-name">{scores[index].name}</strong>
             <span className="podium-score">
               {scores[index].score.toLocaleString()} pts

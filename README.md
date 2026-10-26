@@ -24,7 +24,15 @@ This initial development build is unsigned. It has not been tested with 50 physi
 
 QuizHost supports one optional image per question, across all subjects. In the quiz editor, use **Add image** below the question text to upload a JPG, PNG, or WebP file up to 10 MB. Images are resized to a maximum edge of 1,600 pixels and stored locally, up to 2 MB each. Add an optional description, replace or remove an image, and open its preview with zoom controls.
 
-Teacher and student screens show the same image during the question and reveal phases in both play modes. Images use cached local URLs instead of being resent with score updates. They remain hidden during preparation. Quiz backups include the referenced images, and QuizHost can import older text-only backups. Image backups require version 0.1.4-beta.4 or later and may be up to 40 MB.
+Teacher and student screens show the same image during the question and reveal phases in both play modes. Images use cached local URLs instead of being resent with score updates. In the Windows Beta 4 release, they remain hidden during preparation; the source preview also shows them during the reading stage described below. Quiz backups include the referenced images, and QuizHost can import older text-only backups. Image backups require version 0.1.4-beta.4 or later and may be up to 40 MB.
+
+## Avatars and new round flow in the source preview
+
+The source preview uses dark purple surfaces across the teacher workspace, editor, dialogs, and student screens. Ten supplied avatars are bundled locally. The host assigns avatars randomly without repeating until all ten have been used, then starts a fresh random pool. Reconnection preserves each player's avatar, and finished results retain it. Teams receive random avatars as well.
+
+Each question first shows its prompt and optional image with a five-second reading progress bar. Answer choices stay hidden, and the full answer timer starts afterward. Individual play reveals answers when everyone has answered, when time runs out, or when the teacher reveals early. After 2.5 seconds of feedback, an animated top-five ranking screen counts up points and moves players to their new positions. Students also see their own rank and points gained. The teacher can continue after the ranking animation's minimum 2.5-second display. Team play shows rankings after Correct or Missed it, then returns to the board or opens the final podium. Reduced motion displays final scores immediately while preserving the game stages.
+
+These preview changes have not yet been packaged into the Windows Beta 4 executable linked above.
 
 ## Development
 

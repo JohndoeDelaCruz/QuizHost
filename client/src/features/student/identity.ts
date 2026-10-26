@@ -3,6 +3,18 @@ export interface Identity {
   token: string;
   name: string;
   pin: string;
+  avatar?: AvatarId;
+}
+export function saveIdentity(data: Identity): Identity {
+  const identity = {
+    id: data.id,
+    token: data.token,
+    name: data.name,
+    pin: data.pin,
+    avatar: data.avatar,
+  };
+  sessionStorage.setItem("quizhost:player", JSON.stringify(identity));
+  return identity;
 }
 export function storedIdentity(): Identity | null {
   try {
@@ -11,3 +23,4 @@ export function storedIdentity(): Identity | null {
     return null;
   }
 }
+import type { AvatarId } from "../../../../shared/avatars";

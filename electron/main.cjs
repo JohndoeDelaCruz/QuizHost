@@ -28,7 +28,7 @@ else {
         height: 960,
         minWidth: 1000,
         minHeight: 720,
-        backgroundColor: "#f5f3f8",
+        backgroundColor: "#2c104e",
         autoHideMenuBar: true,
         title: app.getVersion().includes("-beta") ? "QuizHost Beta" : "QuizHost",
         icon: app.isPackaged

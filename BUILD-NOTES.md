@@ -1,5 +1,17 @@
 # QuizHost builds
 
+## Unreleased — random avatars, dark surfaces, and round rankings (26 October 2026)
+
+Added the ten supplied transparent PNG avatars as local assets. The host randomly assigns avatars without replacement until the pack is exhausted, then refills the pool. Avatars remain stable across reconnection and appear in the lobby, player header, score lists, rankings, saved results, and podium. Teams also receive random avatars. There is no avatar picker.
+
+Replaced light interface panels with purple surfaces in the teacher workspace, quiz editor, dialogs, image viewer, and student screens. The Electron loading background is purple, and QR codes use dark purple on yellow. Uploaded question-image contents are preserved.
+
+The server now presents the question and optional image with a five-second reading progress bar before exposing choices and starting the full answer timer. Individual play automatically reveals after all answers or timeout, with teacher reveal still available. Feedback lasts 2.5 seconds, followed by a dedicated ranking stage. Rankings animate from the previous standings, count up new points, and show gains and rank increases. The teacher cannot advance until the ranking stage's 2.5-second minimum has elapsed. Team awards enter the same ranking stage before team rotation and the next tile. Reconnection preserves stage deadlines, and ending the game cancels pending stage transitions. Reduced motion skips decorative score movement while retaining authoritative timings.
+
+TypeScript and production build checks passed. All 14 integration tests passed, including the existing 50-client scenario, random assignment and persistence, hidden choices and scores, full answer time, ranking gates, changes of leader, team rotation, and cancellation during preparation/feedback. Browser checks confirmed five-player row movement and point counting, avatar reconnection, dark surfaces, photo reading layout at 1280×720 and 390×844, student ranking layout with long names, team scoring and podiums, and reduced motion. The package verifier now checks bundled avatar files.
+
+Source and browser preview only. The existing Windows executable remains 0.1.4-beta.4; package these changes when the next release is requested.
+
 ## Version 0.1.4 Beta 4 — question images (26 October 2026)
 
 Added one optional image per question below the prompt in the quiz editor. Teachers can upload JPG, PNG, or WebP files up to 10 MB, add a description, replace or remove an image, and open a preview with zoom controls. Uploads are resized to a maximum edge of 1,600 pixels and capped at 2 MB after processing. The feature works across subjects; a physics graph was used for browser testing.

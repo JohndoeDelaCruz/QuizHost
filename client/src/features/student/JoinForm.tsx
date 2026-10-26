@@ -1,5 +1,6 @@
-import { ArrowRight, ShieldCheck, Sparkles } from "lucide-react";
+import { ArrowRight, ShieldCheck } from "lucide-react";
 import React from "react";
+import { Avatar } from "../../components/game/Avatar";
 
 export function JoinForm({
   pin,
@@ -20,14 +21,17 @@ export function JoinForm({
 }) {
   return (
     <section className="join-card">
-      <span className="join-symbol">
-        <Sparkles size={35} />
-      </span>
+      <div className="join-avatars" aria-hidden="true">
+        <Avatar avatar="dino-dude" size={64} />
+        <Avatar avatar="friendly-robot" size={88} />
+        <Avatar avatar="bunny-buddy" size={64} />
+      </div>
       <span className="eyebrow">LET’S GET EVERYONE IN</span>
       <h1>
         Game on<span className="green-text">.</span>
       </h1>
       <p>Enter your teacher’s game PIN and join the fun.</p>
+      <p className="avatar-hint">Your random avatar is waiting for you.</p>
       <form onSubmit={join}>
         <label className="field">
           Game PIN

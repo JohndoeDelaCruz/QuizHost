@@ -1,6 +1,7 @@
 import { Trophy } from "lucide-react";
 import type { RoomView } from "../../../../shared/types";
 import { useScoreMotion } from "../../animation";
+import { Avatar } from "./Avatar";
 
 export function Scores({
   room,
@@ -21,6 +22,7 @@ export function Scores({
           <span className={"rank rank-" + i}>
             {i < 3 && i === 0 ? <Trophy size={17} /> : i + 1}
           </span>
+          <Avatar avatar={s.avatar} size={36} />
           <span className="score-name">
             {s.name}
             {s.id === playerId && <small>You</small>}

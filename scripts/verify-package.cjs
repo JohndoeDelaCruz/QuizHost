@@ -54,6 +54,15 @@ for (const file of fs.readdirSync("dist/client/assets")) {
   )
     throw new Error("Packaged frontend is stale: " + file);
 }
+for (const file of fs
+  .readdirSync("client/public/avatars")
+  .filter((file) => file.endsWith(".png"))) {
+  if (
+    hash(readArchive("dist/client/avatars/" + file)) !==
+    hash(fs.readFileSync("client/public/avatars/" + file))
+  )
+    throw new Error("Packaged avatar is missing or stale: " + file);
+}
 if (
   hash(readArchive("dist/client/index.html")) !==
   hash(fs.readFileSync("dist/client/index.html"))

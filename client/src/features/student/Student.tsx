@@ -1,5 +1,8 @@
 import { Wifi, WifiOff, X } from "lucide-react";
-import { Countdown, MotionToggle } from "../../animation";
+import { MotionToggle } from "../../animation";
+import { QuestionIntro } from "../../components/game/QuestionIntro";
+import { Rankings } from "../../components/game/Rankings";
+import { Avatar } from "../../components/game/Avatar";
 import { Logo } from "../../components/Logo";
 import { Pill } from "../../components/Pill";
 import { JoinForm } from "./JoinForm";
@@ -58,11 +61,19 @@ export function Student() {
             <div className="student-game-top">
               <Pill>ROOM {room.pin}</Pill>
               <span>
+                <Avatar avatar={identity?.avatar} size={34} />
                 {identity?.name}{" "}
                 <strong>{me?.score.toLocaleString() ?? 0} pts</strong>
               </span>
             </div>
-            {room.phase === "countdown" && <Countdown room={room} />}
+            {room.phase === "countdown" && <QuestionIntro room={room} />}
+            {room.phase === "ranking" && (
+              <Rankings
+                key={room.id + ":" + room.questionIndex}
+                room={room}
+                playerId={identity?.id}
+              />
+            )}
             {room.phase === "lobby" && (
               <StudentLobby room={room} identity={identity} />
             )}
@@ -72,6 +83,7 @@ export function Student() {
                 answer={answer}
                 busy={busy}
                 connected={connected}
+                avatar={identity?.avatar}
               />
             )}
             {room.phase === "finished" && (

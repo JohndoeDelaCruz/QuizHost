@@ -77,47 +77,6 @@ export function MotionToggle() {
   );
 }
 
-export function Countdown({ room }: { room: RoomView }) {
-  const [now, setNow] = useState(Date.now());
-  const offset = useRef(room.serverNow - Date.now());
-  useEffect(() => {
-    offset.current = room.serverNow - Date.now();
-  }, [room.serverNow]);
-  useEffect(() => {
-    const timer = setInterval(() => setNow(Date.now()), 100);
-    return () => clearInterval(timer);
-  }, []);
-  const count = room.startsAt
-    ? Math.max(0, Math.ceil((room.startsAt - now - offset.current) / 1000))
-    : 0;
-  return (
-    <section
-      className="round-countdown"
-      aria-label="Get ready for the next question"
-    >
-      <div className="countdown-shapes" aria-hidden="true">
-        <i />
-        <i />
-        <i />
-        <i />
-      </div>
-      <span className="countdown-kicker">
-        QUESTION {room.questionIndex + 1} OF {room.questionCount}
-      </span>
-      <h2>Get ready!</h2>
-      <div
-        className="countdown-number"
-        key={count}
-        role="status"
-        aria-live="polite"
-      >
-        {count || "Go!"}
-      </div>
-      <p>Your full answer time starts after the countdown.</p>
-    </section>
-  );
-}
-
 export function Celebration() {
   const { enabled } = useMotion();
   const [visible, setVisible] = useState(true);

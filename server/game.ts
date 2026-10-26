@@ -1,4 +1,5 @@
 import { randomInt, randomUUID } from "node:crypto";
+import { AVATAR_IDS, type AvatarId } from "../shared/avatars";
 import type {
   Mode,
   Phase,
@@ -13,6 +14,16 @@ interface Player extends Score {
   socketId: string;
   answers: Map<number, { index: number; correct: boolean; earned: number }>;
 }
+export interface GameTimings {
+  readingMs: number;
+  feedbackMs: number;
+  rankingMs: number;
+}
+const DEFAULT_TIMINGS: GameTimings = {
+  readingMs: 5000,
+  feedbackMs: 2500,
+  rankingMs: 2500,
+};
 export class Game {
   id = randomUUID();
   pin = String(randomInt(100000, 1000000));
@@ -26,20 +37,34 @@ export class Game {
   teams: Score[];
   private timer?: ReturnType<typeof setTimeout>;
   private saved = false;
+  private avatarPool: AvatarId[] = [];
+  private previousScores: Score[] = [];
+  private rankingReadyAt: number | null = null;
+  private timings: GameTimings;
   constructor(
     public quiz: Quiz,
     public mode: Mode,
     teamNames: string[],
     private changed: () => void,
     private finished: (result: Result) => void,
+    timings?: Partial<GameTimings>,
   ) {
+    this.timings = { ...DEFAULT_TIMINGS, ...timings };
     this.quiz = structuredClone(quiz);
-    this.teams = teamNames.map((name) => ({
-      id: randomUUID(),
-      name,
-      score: 0,
-      correct: 0,
-    }));
+    this.teams =
+      this.mode === "teams"
+        ? teamNames.map((name) => ({
+            id: randomUUID(),
+            name,
+            score: 0,
+            correct: 0,
+            avatar: this.randomAvatar(),
+          }))
+        : [];
+  }
+  private randomAvatar(): AvatarId {
+    if (!this.avatarPool.length) this.avatarPool = [...AVATAR_IDS];
+    return this.avatarPool.splice(randomInt(this.avatarPool.length), 1)[0];
   }
   join(name: string, token: string | undefined, socketId: string) {
     if (this.mode !== "individual")
@@ -76,6 +101,7 @@ export class Game {
       connected: true,
       socketId,
       answers: new Map(),
+      avatar: this.randomAvatar(),
     };
     this.players.set(player.id, player);
     return player;
@@ -93,10 +119,20 @@ export class Game {
     else this.open(0);
   }
   next() {
-    if (this.mode !== "individual" || this.phase !== "reveal")
-      throw new Error("Reveal this question before continuing.");
-    if (this.questionIndex + 1 >= this.quiz.questions.length) this.finish();
-    else this.open(this.questionIndex + 1);
+    if (this.phase !== "ranking" || this.rankingReadyAt === null)
+      throw new Error("Show the rankings before continuing.");
+    if (Date.now() < this.rankingReadyAt)
+      throw new Error("Wait for the ranking animation to finish.");
+    this.rankingReadyAt = null;
+    if (this.mode === "individual") {
+      if (this.questionIndex + 1 >= this.quiz.questions.length) this.finish();
+      else this.open(this.questionIndex + 1);
+    } else {
+      this.teamIndex = (this.teamIndex + 1) % this.teams.length;
+      this.questionIndex = -1;
+      if (this.used.size === this.quiz.questions.length) this.finish();
+      else this.phase = "board";
+    }
   }
   pick(index: number) {
     if (
@@ -112,10 +148,12 @@ export class Game {
   }
   private open(index: number) {
     clearTimeout(this.timer);
+    this.previousScores = structuredClone(this.scoreboard());
+    this.rankingReadyAt = null;
     this.questionIndex = index;
     this.phase = "countdown";
     this.deadline = null;
-    this.startsAt = Date.now() + 3000;
+    this.startsAt = Date.now() + this.timings.readingMs;
     this.timer = setTimeout(() => {
       this.phase = "question";
       this.startsAt = null;
@@ -125,7 +163,7 @@ export class Game {
         this.changed();
       }, this.quiz.questions[index].seconds * 1000);
       this.changed();
-    }, 3000);
+    }, this.timings.readingMs);
   }
   reveal() {
     if (this.phase !== "question")
@@ -133,6 +171,17 @@ export class Game {
     clearTimeout(this.timer);
     this.phase = "reveal";
     this.deadline = null;
+    if (this.mode === "individual") {
+      this.timer = setTimeout(() => {
+        this.showRankings();
+        this.changed();
+      }, this.timings.feedbackMs);
+    }
+  }
+  private showRankings() {
+    clearTimeout(this.timer);
+    this.phase = "ranking";
+    this.rankingReadyAt = Date.now() + this.timings.rankingMs;
   }
   answer(playerId: string, socketId: string, index: number) {
     if (
@@ -166,6 +215,10 @@ export class Game {
       : 0;
     player.answers.set(this.questionIndex, { index, correct, earned });
     // Keep scores private until the reveal so they cannot give away the answer.
+    if (
+      [...this.players.values()].every((p) => p.answers.has(this.questionIndex))
+    )
+      this.reveal();
   }
   award(correct: boolean) {
     if (this.mode !== "teams" || this.phase !== "reveal")
@@ -175,10 +228,7 @@ export class Game {
         this.quiz.questions[this.questionIndex].points;
       this.teams[this.teamIndex].correct++;
     }
-    this.teamIndex = (this.teamIndex + 1) % this.teams.length;
-    this.questionIndex = -1;
-    if (this.used.size === this.quiz.questions.length) this.finish();
-    else this.phase = "board";
+    this.showRankings();
   }
   finish() {
     if (this.phase === "question") this.reveal();
@@ -186,6 +236,7 @@ export class Game {
     this.phase = "finished";
     this.deadline = null;
     this.startsAt = null;
+    this.rankingReadyAt = null;
     if (!this.saved) {
       this.saved = true;
       this.finished({
@@ -215,6 +266,7 @@ export class Game {
         return {
           id: p.id,
           name: p.name,
+          avatar: p.avatar,
           connected: p.connected,
           score: answers.reduce((sum, a) => sum + a.earned, 0),
           correct: answers.filter((a) => a.correct).length,
@@ -224,7 +276,10 @@ export class Game {
   }
   view(playerId?: string): RoomView {
     const q = this.quiz.questions[this.questionIndex];
-    const canReveal = this.phase === "reveal" || this.phase === "finished";
+    const canReveal =
+      this.phase === "reveal" ||
+      this.phase === "ranking" ||
+      this.phase === "finished";
     const mine = playerId
       ? this.players.get(playerId)?.answers.get(this.questionIndex)
       : undefined;
@@ -236,6 +291,22 @@ export class Game {
       phase: this.phase,
       questionIndex: this.questionIndex,
       questionCount: this.quiz.questions.length,
+      preview:
+        q && this.phase === "countdown"
+          ? {
+              id: q.id,
+              prompt: q.prompt,
+              ...(q.image ? { image: q.image } : {}),
+            }
+          : null,
+      preparationMs: this.timings.readingMs,
+      ranking:
+        this.phase === "ranking" && this.rankingReadyAt !== null
+          ? {
+              previousScores: this.previousScores,
+              readyAt: this.rankingReadyAt,
+            }
+          : null,
       question:
         q && this.phase !== "countdown"
           ? {

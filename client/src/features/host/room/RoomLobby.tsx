@@ -1,7 +1,8 @@
-import { Play, Users } from "lucide-react";
+import { Play } from "lucide-react";
 import { Pill } from "../../../components/Pill";
 import { Scores } from "../../../components/game/Scores";
 import { ConnectionCard } from "../ConnectionCard";
+import { Avatar } from "../../../components/game/Avatar";
 import type { HostRoomProps } from "../types";
 
 export function RoomLobby({ room, busy, act, network }: HostRoomProps) {
@@ -31,11 +32,9 @@ export function RoomLobby({ room, busy, act, network }: HostRoomProps) {
               aloud, and let the teacher award the points.
             </p>
             <div className="team-preview">
-              {room.scores.map((s, i) => (
+              {room.scores.map((s) => (
                 <div key={s.id}>
-                  <span className={"team-avatar color-" + (i % 4)}>
-                    <Users size={25} />
-                  </span>
+                  <Avatar avatar={s.avatar} size={90} />
                   <strong>{s.name}</strong>
                 </div>
               ))}

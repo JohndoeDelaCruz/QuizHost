@@ -16,6 +16,7 @@ import { MotionToggle } from "../../animation";
 import { Logo } from "../../components/Logo";
 import { Pill } from "../../components/Pill";
 import { useSwitchMotion } from "../../components/useSwitchMotion";
+import { Avatar } from "../../components/game/Avatar";
 import { hostToken } from "../../lib";
 import { QuizEditor } from "../quizzes/QuizEditor";
 import { DeleteQuizDialog } from "./DeleteQuizDialog";
@@ -117,7 +118,7 @@ export function Host() {
           </p>
         </div>
         <div className="sidebar-footer">
-          <span className="avatar">T</span>
+          <Avatar avatar="friendly-robot" size={38} />
           <div>
             <strong>Teacher workspace</strong>
             <small>Saved on this laptop</small>
@@ -145,7 +146,7 @@ export function Host() {
               {connected ? <Wifi size={13} /> : <WifiOff size={13} />}{" "}
               {connected ? "Local host ready" : "Reconnecting"}
             </Pill>
-            <span className="top-avatar">T</span>
+            <Avatar avatar="friendly-robot" size={32} />
           </div>
         </header>
         <div className="content" ref={pageRef}>

@@ -1,7 +1,6 @@
-import { ArrowRight, Check, CheckCircle2, Trophy } from "lucide-react";
+import { ArrowRight, Check, CheckCircle2 } from "lucide-react";
 import { Pill } from "../../../components/Pill";
 import { Answers } from "../../../components/game/Answers";
-import { Scores } from "../../../components/game/Scores";
 import { Timer } from "../../../components/game/Timer";
 import { QuestionImageView } from "../../../components/game/QuestionImage";
 import type { GameScreenProps } from "../types";
@@ -63,19 +62,9 @@ export function HostQuestion({ room, busy, act }: GameScreenProps) {
             </>
           ) : room.mode === "individual" ? (
             <>
-              <span className="muted">
-                Take a moment to talk through the answer.
+              <span className="muted" role="status">
+                Points are in. The rankings are coming up…
               </span>
-              <button
-                className="btn primary"
-                disabled={busy}
-                onClick={() => void act("host:next")}
-              >
-                {room.questionIndex + 1 === room.questionCount
-                  ? "Finish game"
-                  : "Next question"}
-                <ArrowRight size={17} />
-              </button>
             </>
           ) : (
             <>
@@ -100,13 +89,6 @@ export function HostQuestion({ room, busy, act }: GameScreenProps) {
             </>
           )}
         </div>
-      </section>
-      <section className="card">
-        <div className="section-heading">
-          <h3>Leaderboard</h3>
-          <Trophy size={18} />
-        </div>
-        <Scores room={room} />
       </section>
     </div>
   );

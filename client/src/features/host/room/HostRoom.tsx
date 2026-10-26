@@ -1,6 +1,7 @@
 import { Hash, Monitor, Square } from "lucide-react";
 import { useState } from "react";
-import { Countdown } from "../../../animation";
+import { QuestionIntro } from "../../../components/game/QuestionIntro";
+import { Rankings } from "../../../components/game/Rankings";
 import { Pill } from "../../../components/Pill";
 import type { HostRoomProps } from "../types";
 import { FinishedRoom } from "./FinishedRoom";
@@ -45,7 +46,15 @@ export function HostRoom({ room, network, busy, act }: HostRoomProps) {
           </button>
         )}
       </div>
-      {room.phase === "countdown" && <Countdown room={room} />}
+      {room.phase === "countdown" && <QuestionIntro room={room} />}
+      {room.phase === "ranking" && (
+        <Rankings
+          key={room.id + ":" + room.questionIndex}
+          room={room}
+          busy={busy}
+          onContinue={() => void act("host:next")}
+        />
+      )}
       {room.phase === "lobby" && (
         <RoomLobby room={room} busy={busy} act={act} network={network} />
       )}

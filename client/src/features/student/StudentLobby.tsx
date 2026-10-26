@@ -2,6 +2,7 @@ import { CheckCircle2, Users } from "lucide-react";
 import type { RoomView } from "../../../../shared/types";
 import { Pill } from "../../components/Pill";
 import type { Identity } from "./identity";
+import { Avatar } from "../../components/game/Avatar";
 
 export function StudentLobby({
   room,
@@ -13,7 +14,11 @@ export function StudentLobby({
   return (
     <section className="student-wait card">
       <div className="waiting-art">
-        <Users size={55} />
+        <Avatar
+          avatar={identity?.avatar}
+          size={115}
+          label="Your random avatar"
+        />
         <span className="waiting-dot" />
       </div>
       <Pill kind="green">

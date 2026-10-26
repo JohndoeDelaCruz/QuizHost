@@ -1,3 +1,5 @@
+import type { AvatarId } from "./avatars";
+
 export type Mode = "individual" | "teams";
 export type Phase =
   | "lobby"
@@ -5,6 +7,7 @@ export type Phase =
   | "countdown"
   | "question"
   | "reveal"
+  | "ranking"
   | "finished";
 export interface QuestionImage {
   id: string;
@@ -32,6 +35,7 @@ export interface Score {
   score: number;
   connected?: boolean;
   correct: number;
+  avatar?: AvatarId;
 }
 export interface PublicQuestion {
   id: string;
@@ -51,6 +55,9 @@ export interface RoomView {
   questionIndex: number;
   questionCount: number;
   question: PublicQuestion | null;
+  preview: Pick<PublicQuestion, "id" | "prompt" | "image"> | null;
+  preparationMs: number;
+  ranking: { previousScores: Score[]; readyAt: number } | null;
   deadline: number | null;
   startsAt: number | null;
   serverNow: number;

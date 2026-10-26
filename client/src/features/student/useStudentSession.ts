@@ -3,7 +3,7 @@ import type { Socket } from "socket.io-client";
 import type { RoomView } from "../../../../shared/types";
 import { command, connect } from "../../lib";
 import type { Identity } from "./identity";
-import { storedIdentity } from "./identity";
+import { saveIdentity, storedIdentity } from "./identity";
 
 export function useStudentSession() {
   const initial = useRef(storedIdentity());
@@ -28,7 +28,7 @@ export function useStudentSession() {
       if (saved)
         void command<Identity & { room: RoomView }>(s, "player:join", saved)
           .then((data) => {
-            setIdentity(data);
+            setIdentity(saveIdentity(data));
             setRoom(data.room);
             setError("");
           })
@@ -71,13 +71,7 @@ export function useStudentSession() {
             : {}),
         },
       );
-      const id = {
-        id: data.id,
-        token: data.token,
-        name: data.name,
-        pin: data.pin,
-      };
-      sessionStorage.setItem("quizhost:player", JSON.stringify(id));
+      const id = saveIdentity(data);
       setIdentity(id);
       setRoom(data.room);
     } catch (e) {

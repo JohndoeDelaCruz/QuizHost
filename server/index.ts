@@ -7,7 +7,7 @@ import { Server } from "socket.io";
 import QRCode from "qrcode";
 import { z } from "zod";
 import { Store } from "./store";
-import { Game } from "./game";
+import { Game, type GameTimings } from "./game";
 import { MediaStore } from "./media";
 import { backupSchema, quizSchema } from "./quizValidation";
 import { MAX_BACKUP_BYTES, MAX_IMAGE_BYTES } from "../shared/media";
@@ -28,6 +28,7 @@ export async function startServer(options: {
   staticDir: string;
   port?: number;
   hostToken?: string;
+  timings?: Partial<GameTimings>;
 }) {
   const store = await Store.open(options.dataDir);
   const media = new MediaStore(options.dataDir);
@@ -93,13 +94,11 @@ export async function startServer(options: {
       return;
     }
     res.setHeader("Cross-Origin-Resource-Policy", "same-origin");
-    res
-      .type(media.contentType(id))
-      .sendFile(media.file(id), {
-        maxAge: "1y",
-        immutable: true,
-        dotfiles: "allow",
-      });
+    res.type(media.contentType(id)).sendFile(media.file(id), {
+      maxAge: "1y",
+      immutable: true,
+      dotfiles: "allow",
+    });
   });
   app.get("/api/config", (_req, res) =>
     res.json({ port, addresses: addresses(), qr: null }),
@@ -117,7 +116,7 @@ export async function startServer(options: {
           type: "svg",
           margin: 1,
           width: 220,
-          color: { dark: "#172d31", light: "#ffffff" },
+          color: { dark: "#2b0b59", light: "#ffce3b" },
         }),
       );
     } catch (error) {
@@ -320,8 +319,13 @@ export async function startServer(options: {
             if (!s.data.isHost && s.data.gameId === game.id)
               s.emit("room:closed");
         }
-        game = new Game(quiz, parsed.mode, parsed.teams, broadcast, (result) =>
-          store.saveResult(result),
+        game = new Game(
+          quiz,
+          parsed.mode,
+          parsed.teams,
+          broadcast,
+          (result) => store.saveResult(result),
+          options.timings,
         );
       },
       true,
@@ -381,6 +385,7 @@ export async function startServer(options: {
         id: player.id,
         token: player.token,
         name: player.name,
+        avatar: player.avatar,
         pin: room.pin,
         room: room.view(player.id),
       };

@@ -1,20 +1,23 @@
-import { CheckCircle2 } from "lucide-react";
 import type { RoomView } from "../../../../shared/types";
 import { Pill } from "../../components/Pill";
 import { Answers } from "../../components/game/Answers";
 import { Timer } from "../../components/game/Timer";
 import { QuestionImageView } from "../../components/game/QuestionImage";
+import { Avatar } from "../../components/game/Avatar";
+import type { AvatarId } from "../../../../shared/avatars";
 
 export function StudentQuestion({
   room,
   answer,
   busy,
   connected,
+  avatar,
 }: {
   room: RoomView;
   answer: (index: number) => Promise<void>;
   busy: boolean;
   connected: boolean;
+  avatar?: AvatarId;
 }) {
   return (
     <section
@@ -35,7 +38,7 @@ export function StudentQuestion({
       <QuestionImageView image={room.question?.image} />
       {room.phase === "question" && room.myAnswer ? (
         <div className="locked-answer">
-          <CheckCircle2 size={44} />
+          <Avatar avatar={avatar} size={96} />
           <h2>Locked in.</h2>
           <p>Nice thinking. Wait for the answer reveal.</p>
           <Pill>Your answer: {["A", "B", "C", "D"][room.myAnswer.index]}</Pill>

@@ -1,5 +1,17 @@
 # QuizHost builds
 
+## Unreleased source preview — concise screens, slower rankings, and trophy artwork (27 October 2026)
+
+Removed the requested sentences from the individual Live room, student join/waiting screens and footer, and both question-reading and preparation screens. Enter game now uses green for its enabled state and a muted green when unavailable. The join form no longer opens the phone keyboard automatically.
+
+Rankings pause for 900 ms, move rows and count points over 1.8 seconds, and hold the teacher's Continue action for five seconds. Stable row callback refs prevent clock refreshes from cancelling movement. The server remains authoritative; scoring is unchanged, and internal test timing overrides remain available. Shared presentation constants keep the default hold and client timings together.
+
+The supplied trophy PNG is bundled unchanged at client/public/art/trophy.png and appears prominently on teacher/student rankings and final results, with an entrance, gentle float, and glint. Reduced motion removes the decorative effects. The package verifier now checks bundled artwork.
+
+Student pages occupy the visible viewport with document scrolling disabled. The layout follows viewport and keyboard-height changes without disabling browser zoom. Long prompts offer Read full question; full choices can be reviewed in small text pages and selected there while answering is open. Final results offer Podium and All scores, with three scores per page and correct global ranks. Very short screens show the top three rankings plus the student's own rank; taller screens show the top five. Enlarged images retain their existing zoom/pan controls.
+
+TypeScript and production builds passed; all 25 tests passed. Browser checks covered the requested copy removal, green join button, six students, leader changes and point counting, full reconstruction of a 590-character question through the reader, submitting a long answer, image enlargement, reconnection, score pagination, animated trophy/reduced motion, and no page scrolling at 390×844, 320×568, and 568×320. Reduced-height joining was also checked. Physical iPhone keyboard behavior remains untested. The latest Windows EXE remains 0.1.4-beta.8 and does not include these source-preview changes yet.
+
 ## Version 0.1.4 Beta 8 — full-volume sound and fading welcomes (27 October 2026)
 
 Teacher and student sound now defaults to on at 100%, with both Background music and Game sounds enabled. A new preference key applies these defaults once instead of inheriting earlier quiet/muted defaults; subsequent choices remain saved separately for each role. Browser playback still unlocks on a user gesture.

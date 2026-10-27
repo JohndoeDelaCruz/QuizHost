@@ -39,8 +39,6 @@ export function StudentLobby({
         {identity?.name}!
       </h1>
       <p>
-        Your teacher will start the game soon.
-        <br />
         Keep this tab open and stay on the classroom Wi-Fi.
       </p>
       <div className="waiting-count">

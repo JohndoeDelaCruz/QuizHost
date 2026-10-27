@@ -22,7 +22,6 @@ export function ConnectionCard({ network }: { network: NetworkInfo | null }) {
       </div>
       <div className="connection-detail">
         <span className="eyebrow">JOIN THE SAME WI-FI, THEN SCAN</span>
-        <h3>A seat for every curious mind.</h3>
         {address ? (
           <>
             <label className="field">

@@ -10,6 +10,7 @@ import "./dark-theme.css";
 import "./gameplay.css";
 import "./audio/audio.css";
 import "./celebrations.css";
+import "./features/student/student-screen.css";
 
 createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

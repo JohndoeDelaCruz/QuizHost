@@ -1,16 +1,15 @@
-import { Check, Trophy } from "lucide-react";
+import { Check } from "lucide-react";
 import { Celebration } from "../../../animation";
 import { Podium } from "../../../components/game/Podium";
 import { Scores } from "../../../components/game/Scores";
 import type { GameScreenProps } from "../types";
+import { VictoryTrophy } from "../../../components/game/VictoryTrophy";
 
 export function FinishedRoom({ room, busy, act }: GameScreenProps) {
   return (
     <section className="card finish-card">
       <Celebration key={room.id} />
-      <span className="winner-icon">
-        <Trophy size={46} />
-      </span>
+      <VictoryTrophy />
       <span className="eyebrow">A ROUND OF APPLAUSE</span>
       <h2>
         {room.scores[0]

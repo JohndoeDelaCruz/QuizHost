@@ -6,9 +6,11 @@ import { Avatar } from "./Avatar";
 export function Scores({
   room,
   playerId,
+  rankOffset = 0,
 }: {
   room: Pick<RoomView, "scores">;
   playerId?: string;
+  rankOffset?: number;
 }) {
   const registerRow = useScoreMotion(room.scores);
   return (
@@ -17,10 +19,10 @@ export function Scores({
         <div
           className={"score-row " + (s.id === playerId ? "is-me" : "")}
           key={s.id}
-          ref={(node) => registerRow(s.id, node)}
+          ref={registerRow(s.id)}
         >
-          <span className={"rank rank-" + i}>
-            {i < 3 && i === 0 ? <Trophy size={17} /> : i + 1}
+          <span className={"rank rank-" + (i + rankOffset)}>
+            {i + rankOffset === 0 ? <Trophy size={17} /> : i + rankOffset + 1}
           </span>
           <Avatar avatar={s.avatar} size={36} />
           <span className="score-name">

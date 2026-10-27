@@ -5,6 +5,9 @@ import { Timer } from "../../components/game/Timer";
 import { QuestionImageView } from "../../components/game/QuestionImage";
 import { Avatar } from "../../components/game/Avatar";
 import type { AvatarId } from "../../../../shared/avatars";
+import { useEffect, useState } from "react";
+import { QuestionPrompt } from "../../components/game/QuestionPrompt";
+import { TextReader } from "../../components/game/TextReader";
 
 export function StudentQuestion({
   room,
@@ -19,6 +22,8 @@ export function StudentQuestion({
   connected: boolean;
   avatar?: AvatarId;
 }) {
+  const [review, setReview] = useState(false);
+  useEffect(() => setReview(false), [room.phase]);
   return (
     <section
       className={"student-question card motion-" + room.phase}
@@ -34,8 +39,10 @@ export function StudentQuestion({
           <Pill kind="green">Answer revealed</Pill>
         )}
       </div>
-      <h1>{room.question?.prompt}</h1>
+      <QuestionPrompt key={room.phase} text={room.question?.prompt ?? ""} compact />
       <QuestionImageView image={room.question?.image} />
+      {!(room.phase === "question" && room.myAnswer) && <button className="text-link choices-review" onClick={() => setReview(true)}>Read full choices</button>}
+      {review && <TextReader entries={(room.question?.options ?? []).map((text, answer) => ({ label: `Answer ${"ABCD"[answer]}`, text, answer }))} onClose={() => setReview(false)} onChoose={room.phase === "question" && !room.myAnswer ? answer : undefined} disabled={busy || !connected} />}
       {room.phase === "question" && room.myAnswer ? (
         <div className="locked-answer">
           <Avatar avatar={avatar} size={96} />

@@ -2,8 +2,9 @@ import { Eye, Hourglass } from "lucide-react";
 import type { RoomView } from "../../../../shared/types";
 import { QuestionImageView } from "./QuestionImage";
 import { useServerClock } from "./useServerClock";
+import { QuestionPrompt } from "./QuestionPrompt";
 
-export function QuestionIntro({ room }: { room: RoomView }) {
+export function QuestionIntro({ room, compact = false }: { room: RoomView; compact?: boolean }) {
   const now = useServerClock(room.serverNow);
   const remaining = Math.max(0, (room.startsAt ?? now) - now);
   const progress = Math.min(
@@ -24,7 +25,7 @@ export function QuestionIntro({ room }: { room: RoomView }) {
         OF {room.questionCount}
       </span>
       <div className="intro-body">
-        <h1>{room.preview.prompt}</h1>
+        <QuestionPrompt text={room.preview.prompt} compact={compact} />
         <QuestionImageView image={room.preview.image} />
       </div>
       <div className="reading-status">
@@ -45,7 +46,6 @@ export function QuestionIntro({ room }: { room: RoomView }) {
       >
         <span style={{ width: `${progress}%` }} />
       </div>
-      <p>Read carefully. Your full answer time starts next.</p>
     </section>
   );
 }

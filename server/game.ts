@@ -1,5 +1,6 @@
 import { randomInt, randomUUID } from "node:crypto";
 import { AVATAR_IDS, type AvatarId } from "../shared/avatars";
+import { RANKING_HOLD_MS } from "../shared/presentation";
 import type {
   Mode,
   Phase,
@@ -24,7 +25,7 @@ const DEFAULT_TIMINGS: GameTimings = {
   preQuestionMs: 5000,
   readingMs: 5000,
   feedbackMs: 2500,
-  rankingMs: 2500,
+  rankingMs: RANKING_HOLD_MS,
 };
 export class Game {
   id = randomUUID();

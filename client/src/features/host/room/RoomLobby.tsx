@@ -18,9 +18,6 @@ export function RoomLobby({ room, busy, act, network, joinNotices, dismissJoinNo
         </h2>
         {room.mode === "individual" ? (
           <>
-            <p>
-              Connect to the classroom Wi-Fi, open the student page, and enter:
-            </p>
             <div className="room-pin" aria-label="Game PIN">
               {room.pin}
             </div>
@@ -77,11 +74,7 @@ export function RoomLobby({ room, busy, act, network, joinNotices, dismissJoinNo
           <Scores room={room} />
           <JoinPopups room={room} notices={joinNotices} onDismiss={dismissJoinNotice} />
         </div>
-        <p className="helper">
-          {room.mode === "individual"
-            ? "Names appear as students join. They can reconnect using the same browser tab."
-            : "No phones, logins, or Wi-Fi needed for this mode."}
-        </p>
+        {room.mode === "teams" && <p className="helper">No phones, logins, or Wi-Fi needed for this mode.</p>}
       </section>
     </div>
   );

@@ -1,4 +1,4 @@
-import { ArrowRight, ShieldCheck } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import React from "react";
 import { Avatar } from "../../components/game/Avatar";
 
@@ -26,18 +26,16 @@ export function JoinForm({
         <Avatar avatar="friendly-robot" size={88} />
         <Avatar avatar="bunny-buddy" size={64} />
       </div>
-      <span className="eyebrow">LET’S GET EVERYONE IN</span>
       <h1>
         Game on<span className="green-text">.</span>
       </h1>
       <p>Enter your teacher’s game PIN and join the fun.</p>
-      <p className="avatar-hint">Your random avatar is waiting for you.</p>
-      <form onSubmit={join}>
+      <form onSubmit={(event) => { (document.activeElement as HTMLElement | null)?.blur(); void join(event); }}>
         <label className="field">
           Game PIN
           <input
-            autoFocus
             inputMode="numeric"
+            enterKeyHint="next"
             pattern="[0-9]{6}"
             maxLength={6}
             value={pin}
@@ -49,6 +47,7 @@ export function JoinForm({
         <label className="field">
           Your name
           <input
+            enterKeyHint="go"
             value={name}
             onChange={(e) => setName(e.target.value)}
             maxLength={30}
@@ -64,10 +63,6 @@ export function JoinForm({
           <ArrowRight size={18} />
         </button>
       </form>
-      <div className="join-footnote">
-        <ShieldCheck size={14} />
-        No account needed. Just you.
-      </div>
     </section>
   );
 }

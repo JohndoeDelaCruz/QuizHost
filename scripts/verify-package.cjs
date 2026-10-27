@@ -67,6 +67,10 @@ for (const file of fs.readdirSync("client/public/audio").filter((file) => /\.(mp
   if (hash(readArchive("dist/client/audio/" + file)) !== hash(fs.readFileSync("client/public/audio/" + file)))
     throw new Error("Packaged audio is missing or stale: " + file);
 }
+for (const file of fs.readdirSync("client/public/art")) {
+  if (hash(readArchive("dist/client/art/" + file)) !== hash(fs.readFileSync("client/public/art/" + file)))
+    throw new Error("Packaged artwork is missing or stale: " + file);
+}
 if (
   hash(readArchive("dist/client/index.html")) !==
   hash(fs.readFileSync("dist/client/index.html"))

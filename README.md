@@ -4,6 +4,17 @@
 
 QuizHost runs on a Windows teacher laptop. Individual players use phone browsers on the same local Wi-Fi. Shared-screen team games run entirely on the laptop. The installed app needs no Node.js, student app, account, paid hosting, or internet connection.
 
+## Current source preview
+
+The source includes changes beyond the packaged Beta 8 executable:
+
+- Shorter Live room and student screens, with the requested helper sentences removed and a green Enter game button.
+- Slower ranking movement and point counting, with a five-second minimum before continuing.
+- The supplied trophy artwork on rankings and final results, with animation that respects reduced motion.
+- Student pages fixed to the visible screen. Long questions and full choices use tap-through reading, and final scores have pages, so content remains accessible without scrolling the page. Short landscape views show the top three plus the student's own rank. Image zoom/pan remains available.
+
+TypeScript/build checks and all 25 tests pass. These changes await the next requested Windows EXE rebuild. Reload student pages after updating the teacher app.
+
 ## Sound and welcome animations
 
 Windows Beta 8 includes:

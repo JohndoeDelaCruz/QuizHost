@@ -24,7 +24,6 @@ export function PreQuestionCountdown({ room, avatar }: { room: RoomView; avatar?
       <div className="reading-progress pre-question-progress" role="progressbar" aria-label="Time until the question appears" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(progress)}>
         <span style={{ width: `${progress}%` }} />
       </div>
-      <p>A little focus. A big idea is on its way.</p>
       <div className="countdown-shapes" aria-hidden="true"><i /><i /><i /><i /></div>
     </section>
   );

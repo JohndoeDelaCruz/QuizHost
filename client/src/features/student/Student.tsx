@@ -15,8 +15,10 @@ import { useGameAudio } from "../../audio/AudioProvider";
 import { useSwitchMotion } from "../../components/useSwitchMotion";
 import { GameStage } from "../../components/game/GameStage";
 import { PreQuestionCountdown } from "../../components/game/PreQuestionCountdown";
+import { useStudentViewport } from "./useStudentViewport";
 
 export function Student() {
+  useStudentViewport();
   const {
     joinNotices,
     dismissJoinNotice,
@@ -37,7 +39,7 @@ export function Student() {
   useGameAudio(room, connected);
   const pageRef = useSwitchMotion(room?.id ?? "join");
   return (
-    <div className="student-shell">
+    <div className={"student-shell student-phase-" + (room?.phase ?? "join")}>
       <header className="student-header">
         <Logo />
         <MotionToggle />
@@ -72,15 +74,16 @@ export function Student() {
               <Pill>ROOM {room.pin}</Pill>
               <span>
                 <Avatar avatar={identity?.avatar} size={34} />
-                {identity?.name}{" "}
+                <span className="student-player-name" title={identity?.name}>{identity?.name}</span>
                 <strong>{me?.score.toLocaleString() ?? 0} pts</strong>
               </span>
             </div>
             <GameStage stageKey={`${room.id}:${room.phase}:${room.questionIndex}`}>
             {room.phase === "preparing" && <PreQuestionCountdown room={room} avatar={identity?.avatar} />}
-            {room.phase === "countdown" && <QuestionIntro room={room} />}
+            {room.phase === "countdown" && <QuestionIntro room={room} compact />}
             {room.phase === "ranking" && (
               <Rankings
+                compact
                 key={room.id + ":" + room.questionIndex}
                 room={room}
                 playerId={identity?.id}
@@ -105,9 +108,6 @@ export function Student() {
           </>
         )}
       </main>
-      <footer className="student-footer">
-        A LITTLE PLAY. A LOT OF LEARNING.
-      </footer>
     </div>
   );
 }

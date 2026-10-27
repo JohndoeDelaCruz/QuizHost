@@ -113,11 +113,12 @@ export function Celebration() {
 
 // Move existing rows visually after React has already committed the true score order.
 // Scoring and ranking always come from the server; the animation never delays updates.
-export function useScoreMotion(scores: RoomView["scores"]) {
+export function useScoreMotion(scores: RoomView["scores"], duration = 1400) {
   const { enabled } = useMotion();
   const nodes = useRef(new Map<string, HTMLDivElement>());
   const positions = useRef(new Map<string, number>());
   const running = useRef(new Map<string, Animation>());
+  const refs = useRef(new Map<string, (node: HTMLDivElement | null) => void>());
   React.useLayoutEffect(() => {
     const nextPositions = new Map<string, number>();
     for (const score of scores) {
@@ -141,25 +142,31 @@ export function useScoreMotion(scores: RoomView["scores"]) {
               { transform: `translateY(${previous - top}px)` },
               { transform: "translateY(0)" },
             ],
-            { duration: 450, easing: "cubic-bezier(.2,.8,.2,1)" },
+            { duration, easing: "cubic-bezier(.4,0,.2,1)" },
           ),
         );
       }
     }
     positions.current = nextPositions;
-  }, [scores, enabled]);
+  }, [scores, enabled, duration]);
   useEffect(
     () => () => {
       for (const animation of running.current.values()) animation.cancel();
     },
     [],
   );
-  return (id: string, node: HTMLDivElement | null) => {
-    if (node) nodes.current.set(id, node);
-    else {
-      running.current.get(id)?.cancel();
-      running.current.delete(id);
-      nodes.current.delete(id);
+  // Stable callback refs prevent clock renders from cancelling row movement.
+  return (id: string) => {
+    if (!refs.current.has(id)) {
+      refs.current.set(id, (node) => {
+        if (node) nodes.current.set(id, node);
+        else {
+          running.current.get(id)?.cancel();
+          running.current.delete(id);
+          nodes.current.delete(id);
+        }
+      });
     }
+    return refs.current.get(id)!;
   };
 }

@@ -1,6 +1,6 @@
 # QuizHost builds
 
-## Unreleased source preview — full-volume sound and fading welcomes (26 October 2026)
+## Version 0.1.4 Beta 8 — full-volume sound and fading welcomes (27 October 2026)
 
 Teacher and student sound now defaults to on at 100%, with both Background music and Game sounds enabled. A new preference key applies these defaults once instead of inheriting earlier quiet/muted defaults; subsequent choices remain saved separately for each role. Browser playback still unlocks on a user gesture.
 
@@ -8,7 +8,9 @@ New arrivals appear as a single avatar welcome inside the teacher's Who’s here
 
 Workspace pages, question tabs, game stages, and welcome cards now fade out their previous view while the live view updates immediately. The outgoing copy lasts 320 ms, is inert and hidden from assistive technology, has duplicate identifiers removed, and cannot receive input. Rapid changes and unmounting clean up copies. Countdown digits also fade between numbers. Independently updating countdown text and point counters refresh the cached visual at most ten times per second; progress-bar style updates do not cause copies or restart entrances. Reduced motion skips these effects without changing server timing.
 
-TypeScript and production build passed; all 25 tests passed. Browser checks confirmed 100% sound defaults and saved choices, welcomes within both panels, 390×844 layout without horizontal overflow, dismiss/expiry fade cleanup, inert outgoing game views, overlapping fading countdown digits, and reduced motion with advancing progress. No console errors appeared in the checked teacher flow. The Windows EXE remains 0.1.4-beta.7 and does not contain this preview yet.
+TypeScript and production build passed; all 25 tests passed. Browser checks on 26 October confirmed 100% sound defaults and saved choices, welcomes within both panels, 390×844 layout without horizontal overflow, dismiss/expiry fade cleanup, inert outgoing game views, overlapping fading countdown digits, and reduced motion with advancing progress. No console errors appeared in the checked teacher flow. Windows executable: release/QuizHost-0.1.4-beta.8-Windows.exe. Application identity and the saved-data location are unchanged. Reload student pages after updating the teacher app. Native Windows startup and final classroom acceptance testing remain pending.
+
+Windows package inspection confirmed version 0.1.4-beta.8, matching compiled frontend/server files, the desktop entry point, SQLite runtime, ten avatars, and all sixteen music files. All seven custom icon sizes were verified in the application and portable launcher. Download and deliverable EXE copies were checked against the release file by SHA-256. Local databases, environment files, and internal project notes are excluded from the package.
 
 ## Version 0.1.4 Beta 7 — pre-question countdown, join popups, and game transitions (26 October 2026)
 

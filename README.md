@@ -1,22 +1,22 @@
-# QuizHost 0.1.4 Beta 7 — offline classroom quizzes
+# QuizHost 0.1.4 Beta 8 — offline classroom quizzes
 
 **Beta release:** core features are implemented; final classroom acceptance testing is still pending. Test the Windows app on the teacher's laptop and the intended classroom network before final handover.
 
 QuizHost runs on a Windows teacher laptop. Individual players use phone browsers on the same local Wi-Fi. Shared-screen team games run entirely on the laptop. The installed app needs no Node.js, student app, account, paid hosting, or internet connection.
 
-## Current source preview
+## Sound and welcome animations
 
-The source and browser preview include changes beyond the packaged Windows Beta 7:
+Windows Beta 8 includes:
 
 - Teacher and student sound starts on at 100%, with Background music and Game sounds enabled. Earlier sound preferences reset once; later adjustments remain saved. Browser playback may still require a tap.
 - New arrivals pop up inside **Who’s here** on the teacher's screen and inside the student's waiting card. One welcome appears at a time, then fades away when dismissed or after 4.2 seconds.
 - Pages, question tabs, game stages, welcome cards, and countdown digits fade out as the next view appears. Controls and server timers update immediately. Reduced motion skips decorative effects.
 
-These changes have passed the build and all 25 tests. They will be included in the next requested EXE rebuild; the current Beta 7 executable retains the behavior described below.
+These changes have passed the build and all 25 tests.
 
 ## Try the Windows app
 
-1. Open `release/QuizHost-0.1.4-beta.7-Windows.exe`.
+1. Open `release/QuizHost-0.1.4-beta.8-Windows.exe`.
 2. Choose **Host game** on the included quiz.
 3. Choose **Everyone’s in** for individual phone play, or **Better together** for shared-screen teams.
 4. For phones, connect every device to the same classroom Wi-Fi. Open **Setup & connection**, use the displayed student address or QR code, and enter the room’s six-digit PIN.
@@ -26,7 +26,7 @@ Team play: enter 2–8 team names, start the room, pick a question tile, reveal 
 
 Each question begins with a shared five-second Get ready countdown and progress bar while the question remains hidden. Next, a five-second reading stage shows the prompt and optional photo before answer choices appear. The full answer time starts afterward. Answer tiles enter in sequence, locked answers and correct-answer feedback animate, leaderboard rows move into their new positions, and the final podium has a short confetti celebration. Use **Animations on** in the header to switch to reduced motion on that device; the app also respects the device’s reduced-motion preference. All effects work offline.
 
-Workspace pages and quiz-editor question tabs also have short entrance transitions. Typing and live score updates do not replay them.
+Workspace pages and quiz-editor question tabs also have short crossfades. Typing and live score updates do not replay them.
 
 This initial development build is unsigned. It has not been tested with 50 physical phones. Use a suitable access point and run a classroom pilot before promising that capacity.
 
@@ -46,7 +46,7 @@ These features are included in Windows Beta 5.
 
 ## Offline music
 
-The supplied eight-track music pack is included locally. The Quiz library plays Lobby Bounce after the first click or a tap on Enable sound. Teacher music then changes with the lobby/team board, question reading, answering, rankings, and final podium. The last five seconds use a deadline-aligned countdown sound. Students hear their own correct/wrong result after the answer is revealed; student background music is off by default and can be enabled. Shared-screen team awards play correct/wrong effects on the teacher's laptop.
+The supplied eight-track music pack is included locally. The Quiz library plays Lobby Bounce after the first click or a tap on Enable sound. Teacher music then changes with the lobby/team board, question reading, answering, rankings, and final podium. The last five seconds use a deadline-aligned countdown sound. Students hear their own correct/wrong result after the answer is revealed. Teacher and student sound defaults to on at 100%, with Background music and Game sounds enabled. Shared-screen team awards play correct/wrong effects on the teacher's laptop.
 
 Use the speaker button to enable or mute sound, and the adjacent Sound settings control to adjust volume, Background music, and Game sounds independently. These preferences are saved per device, with separate teacher/student settings. Clicking in the teacher workspace, joining, answering, or tapping Enable sound activates browser playback. A page reload or device interruption may require another tap. Library music resumes when returning from Live room. Results, Setup & connection, and an empty Live room are silent. Sound also stops on disconnection or when hiding the page. Reconnection resumes music without replaying old feedback. Audio loading and playback failures do not affect scoring or game progression.
 
@@ -56,9 +56,9 @@ Audio files are served over the same local Wi-Fi as the rest of the game; intern
 
 A separate five-second Get ready countdown appears before every question in both modes. A progress bar and avatar mascot appear while the prompt, photo, and choices remain hidden. The five-second question-reading stage follows, then the full answer timer begins. Preparation and reading deadlines come from the server and survive reconnection.
 
-When a new student joins, the teacher, existing students, and joining student see a brief avatar welcome popup. The joining student gets a personal welcome. Arrivals are limited to three visible cards at once, can be dismissed, and expire automatically. Reconnecting does not announce a new arrival. Game screens use a short bounce and sparkle entrance when stages or questions change; score updates and timer ticks do not replay it. The shared reduced-motion setting disables decorative movement while preserving progress and game timing.
+When a new student joins, the teacher, existing students, and joining student see a brief avatar welcome inside the roster or student waiting card. The joining student gets a personal welcome. One arrival is highlighted at a time, can be dismissed, and fades away automatically after 4.2 seconds. Reconnecting does not announce a new arrival. Game screens use a short bounce and sparkle entrance with a fade-out of the previous stage; score updates and timer ticks do not replay it. Countdown digits also fade between values. The shared reduced-motion setting disables decorative movement while preserving progress and game timing.
 
-These features are included in Windows Beta 7. After updating the teacher's app, reload student pages before joining the new room so they receive the current interface.
+Countdowns and classroom celebrations were introduced in Windows Beta 7; panel welcomes and fade-outs are included in Beta 8. After updating the teacher's app, reload student pages before joining the new room so they receive the current interface.
 
 ## Development
 

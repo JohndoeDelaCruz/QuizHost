@@ -1,6 +1,6 @@
 # QuizHost builds
 
-## Unreleased source preview — concise screens, slower rankings, and trophy artwork (27 October 2026)
+## Version 0.1.4 Beta 9 — concise screens, slower rankings, and trophy artwork (27 October 2026)
 
 Removed the requested sentences from the individual Live room, student join/waiting screens and footer, and both question-reading and preparation screens. Enter game now uses green for its enabled state and a muted green when unavailable. The join form no longer opens the phone keyboard automatically.
 
@@ -10,7 +10,9 @@ The supplied trophy PNG is bundled unchanged at client/public/art/trophy.png and
 
 Student pages occupy the visible viewport with document scrolling disabled. The layout follows viewport and keyboard-height changes without disabling browser zoom. Long prompts offer Read full question; full choices can be reviewed in small text pages and selected there while answering is open. Final results offer Podium and All scores, with three scores per page and correct global ranks. Very short screens show the top three rankings plus the student's own rank; taller screens show the top five. Enlarged images retain their existing zoom/pan controls.
 
-TypeScript and production builds passed; all 25 tests passed. Browser checks covered the requested copy removal, green join button, six students, leader changes and point counting, full reconstruction of a 590-character question through the reader, submitting a long answer, image enlargement, reconnection, score pagination, animated trophy/reduced motion, and no page scrolling at 390×844, 320×568, and 568×320. Reduced-height joining was also checked. Physical iPhone keyboard behavior remains untested. The latest Windows EXE remains 0.1.4-beta.8 and does not include these source-preview changes yet.
+TypeScript and production builds passed; all 25 tests passed. Browser checks covered the requested copy removal, green join button, six students, leader changes and point counting, full reconstruction of a 590-character question through the reader, submitting a long answer, image enlargement, reconnection, score pagination, animated trophy/reduced motion, and no page scrolling at 390×844, 320×568, and 568×320. Reduced-height joining was also checked. Physical iPhone keyboard behavior and native Windows startup remain untested. Windows executable: release/QuizHost-0.1.4-beta.9-Windows.exe. Application identity and the saved-data location are unchanged. Reload student pages after updating the teacher app.
+
+Windows package inspection confirmed version 0.1.4-beta.9, matching compiled frontend/server files, the desktop entry point, SQLite runtime, trophy artwork, ten avatars, and all sixteen music files. All seven custom icon sizes were verified in the application and portable launcher. Download and deliverable EXE copies were checked against the release file by SHA-256. Local databases, environment files, and internal project notes are excluded from the package.
 
 ## Version 0.1.4 Beta 8 — full-volume sound and fading welcomes (27 October 2026)
 

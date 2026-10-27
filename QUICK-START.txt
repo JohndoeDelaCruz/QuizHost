@@ -1,6 +1,6 @@
-QUIZHOST 0.1.4 BETA 8 — CLASSROOM PILOT
+QUIZHOST 0.1.4 BETA 9 — CLASSROOM PILOT
 
-1. Open release\QuizHost-0.1.4-beta.8-Windows.exe on the teacher's Windows x64 laptop.
+1. Open release\QuizHost-0.1.4-beta.9-Windows.exe on the teacher's Windows x64 laptop.
 2. Click Host game on the sample quiz.
 3. Choose a play mode and open the room.
 
@@ -19,6 +19,16 @@ The question and optional photo then appear with a five-second reading bar.
 Answer choices then open with the full answer timer. Answers reveal when
 everyone has answered, time expires, or the teacher clicks Reveal answer.
 After feedback, watch the animated rankings and continue to the next question.
+Ranking movement and point counting take 1.8 seconds. The teacher can continue
+after five seconds. Rankings and final results show the animated trophy.
+
+STUDENT PHONE SCREENS
+Student pages stay fixed to the visible screen without page scrolling.
+Use Read full question and Read full choices for long text. Tap through
+the pages and choose an answer while answering is open.
+Final results offer Podium and All scores, with three scores per page.
+Very short screens show the top three rankings plus your own rank.
+Image enlargement and zoom/pan remain available.
 
 SHARED-SCREEN TEAM MODE
 Choose Better together. Enter one team name per line (2–8 teams).

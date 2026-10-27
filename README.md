@@ -1,19 +1,19 @@
-# QuizHost 0.1.4 Beta 8 — offline classroom quizzes
+# QuizHost 0.1.4 Beta 9 — offline classroom quizzes
 
 **Beta release:** core features are implemented; final classroom acceptance testing is still pending. Test the Windows app on the teacher's laptop and the intended classroom network before final handover.
 
 QuizHost runs on a Windows teacher laptop. Individual players use phone browsers on the same local Wi-Fi. Shared-screen team games run entirely on the laptop. The installed app needs no Node.js, student app, account, paid hosting, or internet connection.
 
-## Current source preview
+## New in Windows Beta 9
 
-The source includes changes beyond the packaged Beta 8 executable:
+Windows Beta 9 includes:
 
 - Shorter Live room and student screens, with the requested helper sentences removed and a green Enter game button.
 - Slower ranking movement and point counting, with a five-second minimum before continuing.
 - The supplied trophy artwork on rankings and final results, with animation that respects reduced motion.
 - Student pages fixed to the visible screen. Long questions and full choices use tap-through reading, and final scores have pages, so content remains accessible without scrolling the page. Short landscape views show the top three plus the student's own rank. Image zoom/pan remains available.
 
-TypeScript/build checks and all 25 tests pass. These changes await the next requested Windows EXE rebuild. Reload student pages after updating the teacher app.
+TypeScript/build checks and all 25 tests pass. Reload student pages after updating the teacher app.
 
 ## Sound and welcome animations
 
@@ -27,7 +27,7 @@ These changes have passed the build and all 25 tests.
 
 ## Try the Windows app
 
-1. Open `release/QuizHost-0.1.4-beta.8-Windows.exe`.
+1. Open `release/QuizHost-0.1.4-beta.9-Windows.exe`.
 2. Choose **Host game** on the included quiz.
 3. Choose **Everyone’s in** for individual phone play, or **Better together** for shared-screen teams.
 4. For phones, connect every device to the same classroom Wi-Fi. Open **Setup & connection**, use the displayed student address or QR code, and enter the room’s six-digit PIN.
@@ -51,9 +51,9 @@ Teacher and student screens show the same image during reading, answering, and r
 
 QuizHost uses dark purple surfaces across the teacher workspace, editor, dialogs, and student screens. Ten supplied avatars are bundled locally. The host assigns avatars randomly without repeating until all ten have been used, then starts a fresh random pool. Reconnection preserves each player's avatar, and finished results retain it. Teams receive random avatars as well.
 
-After the Get ready countdown, each question shows its prompt and optional image with a five-second reading progress bar. Answer choices stay hidden, and the full answer timer starts afterward. Individual play reveals answers when everyone has answered, when time runs out, or when the teacher reveals early. After 2.5 seconds of feedback, an animated top-five ranking screen counts up points and moves players to their new positions. Students also see their own rank and points gained. The teacher can continue after the ranking animation's minimum 2.5-second display. Team play shows rankings after Correct or Missed it, then returns to the board or opens the final podium. Reduced motion displays final scores immediately while preserving the game stages.
+After the Get ready countdown, each question shows its prompt and optional image with a five-second reading progress bar. Answer choices stay hidden, and the full answer timer starts afterward. Individual play reveals answers when everyone has answered, when time runs out, or when the teacher reveals early. After 2.5 seconds of feedback, an animated top-five ranking screen counts up points and moves players to their new positions. Students also see their own rank and points gained. The teacher can continue after the ranking animation's minimum five-second display. Very short student screens show the top three plus the student's own rank. Team play shows rankings after Correct or Missed it, then returns to the board or opens the final podium. Reduced motion displays final scores immediately while preserving the game stages.
 
-These features are included in Windows Beta 5.
+Avatars and round rankings were introduced in Windows Beta 5. Beta 9 slows the ranking animation and adds trophy artwork and compact student layouts.
 
 ## Offline music
 

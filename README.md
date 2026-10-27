@@ -1,12 +1,14 @@
-# QuizHost 0.1.4 Beta 9 — offline classroom quizzes
+# QuizHost 0.1.4 Beta 10 — offline classroom quizzes
 
 **Beta release:** core features are implemented; final classroom acceptance testing is still pending. Test the Windows app on the teacher's laptop and the intended classroom network before final handover.
 
 QuizHost runs on a Windows teacher laptop. Individual players use phone browsers on the same local Wi-Fi. Shared-screen team games run entirely on the laptop. The installed app needs no Node.js, student app, account, paid hosting, or internet connection.
 
-## Current source preview
+## New in Windows Beta 10
 
-The source refreshes local addresses automatically, labels network adapters, and keeps the QR tied to the exact selected address when adapters or IPs change. These changes have passed the build and all 26 tests and await the next Windows EXE build. The currently packaged Beta 9 executable retains the earlier address handling.
+Questions and answers use normal letter/word spacing and more space between lines. Student previews adapt to portrait and short landscape screens, retain full-text reading for long content, and keep photos clear of the reading countdown.
+
+Local addresses refresh automatically and identify their network adapters. The QR remains tied to the selected address when adapters or IPs change. These changes have passed TypeScript/build checks and all 26 tests. Reload student pages after updating the teacher app.
 
 ## New in Windows Beta 9
 
@@ -31,7 +33,7 @@ These changes have passed the build and all 25 tests.
 
 ## Try the Windows app
 
-1. Open `release/QuizHost-0.1.4-beta.9-Windows.exe`.
+1. Open `release/QuizHost-0.1.4-beta.10-Windows.exe`.
 2. Choose **Host game** on the included quiz.
 3. Choose **Everyone’s in** for individual phone play, or **Better together** for shared-screen teams.
 4. For phones, connect every device to the same classroom Wi-Fi. Open **Setup & connection**, use the displayed student address or QR code, and enter the room’s six-digit PIN.
@@ -150,6 +152,8 @@ Quizzes and finished results survive an app restart. An unfinished live room is 
 For an Android hotspot, connect the laptop and every student phone to that same hotspot. The hotspot network must allow the devices to communicate locally. In Setup, choose the laptop's address on that network. A page opening on the laptop itself verifies the local server, but does not verify access from phones.
 
 If both the hotspot phone and a second connected phone time out while the laptop opens its student address, check the laptop's inbound firewall permissions and active network profile. With the portable build, verify permissions for the currently running QuizHost.exe: its extracted temporary path can differ from earlier runs. Use the trusted classroom network profile and the application-specific permission. The app does not configure these Windows settings. A third-party firewall or hotspot access restriction may also need investigation.
+
+VPN software can apply its own network filters independently of the Windows Firewall app exception. Cloudflare WARP blocked local phone connections in a confirmed hotspot test; disconnect WARP on the hosting laptop for offline play, or use its local-network access option if your client provides one. Keep Windows Firewall enabled.
 - Test a phone first, then several phones, then the intended full class. Router client limits and radio conditions vary.
 - Teacher access uses a fresh secret on every startup. Do not share the private teacher URL. Only the `/join` address and game PIN should be shared with students.
 

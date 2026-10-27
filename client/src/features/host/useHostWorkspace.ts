@@ -49,6 +49,30 @@ export function useHostWorkspace() {
   }, []);
   useEffect(() => {
     if (!hostToken) return;
+    let active = true;
+    let request = 0;
+    const updateAddresses = async () => {
+      if (document.hidden) return;
+      const currentRequest = ++request;
+      try {
+        const next = await api<NetworkInfo>("/config");
+        if (active && currentRequest === request)
+          setNetwork((current) => JSON.stringify(current) === JSON.stringify(next) ? current : next);
+      } catch { /* Preserve the last address during a transient host disconnect. */ }
+    };
+    const timer = setInterval(() => void updateAddresses(), 5000);
+    const focus = () => void updateAddresses();
+    window.addEventListener("focus", focus);
+    document.addEventListener("visibilitychange", focus);
+    return () => {
+      active = false;
+      clearInterval(timer);
+      window.removeEventListener("focus", focus);
+      document.removeEventListener("visibilitychange", focus);
+    };
+  }, []);
+  useEffect(() => {
+    if (!hostToken) return;
     void refresh();
     const s = connect();
     setSocket(s);

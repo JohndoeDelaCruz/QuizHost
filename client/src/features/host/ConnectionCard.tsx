@@ -1,17 +1,24 @@
 import { Check, Copy, WifiOff } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { NetworkInfo } from "../../../../shared/types";
 
 export function ConnectionCard({ network }: { network: NetworkInfo | null }) {
-  const [selected, setSelected] = useState(0);
+  const [selected, setSelected] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
-  const address = network?.addresses[selected];
+  const [qrFailed, setQrFailed] = useState(false);
+  const address = network?.addresses.find((candidate) => candidate === selected) ?? network?.addresses[0];
+  useEffect(() => {
+    setSelected((current) => network?.addresses.includes(current ?? "") ? current : network?.addresses[0] ?? null);
+  }, [network]);
+  useEffect(() => { setCopied(false); setQrFailed(false); }, [address, network]);
   return (
     <div className="connection-card">
       <div className="qr-wrap">
-        {address ? (
+        {address && !qrFailed ? (
           <img
-            src={"/api/qr?index=" + selected}
+            src={"/api/qr?address=" + encodeURIComponent(address)}
+            key={address}
+            onError={() => setQrFailed(true)}
             width={176}
             height={176}
             alt="Scan to open the student joining page"
@@ -27,14 +34,13 @@ export function ConnectionCard({ network }: { network: NetworkInfo | null }) {
             <label className="field">
               Student address
               <select
-                value={selected}
-                onChange={(e) => setSelected(Number(e.target.value))}
+                value={address}
+                onChange={(e) => setSelected(e.target.value)}
               >
-                {network?.addresses.map((a, i) => (
-                  <option value={i} key={a}>
-                    {a}
-                  </option>
-                ))}
+                {network?.addresses.map((url) => {
+                  const name = network.interfaces?.find((item) => item.url === url)?.name;
+                  return <option value={url} key={url}>{name ? name + " · " : ""}{url}</option>;
+                })}
               </select>
             </label>
             <button
@@ -52,9 +58,8 @@ export function ConnectionCard({ network }: { network: NetworkInfo | null }) {
               {copied ? <Check size={15} /> : <Copy size={15} />}{" "}
               {copied ? "Copied" : "Copy address"}
             </button>
-            <p className="helper">
-              Choose the address for the classroom Wi-Fi if more than one
-              appears.
+            <p className="helper" role={qrFailed ? "alert" : undefined}>
+              {qrFailed ? "The network changed. Refresh addresses in Setup & connection." : "Choose the Wi-Fi or hotspot network used by the student phones. Addresses update automatically."}
             </p>
           </>
         ) : (

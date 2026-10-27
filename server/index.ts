@@ -29,6 +29,7 @@ export async function startServer(options: {
   port?: number;
   hostToken?: string;
   timings?: Partial<GameTimings>;
+  networkInterfaces?: typeof networkInterfaces;
 }) {
   const store = await Store.open(options.dataDir);
   const media = new MediaStore(options.dataDir);
@@ -62,22 +63,15 @@ export async function startServer(options: {
   });
   let game: Game | null = null;
   let port = 0;
-  function addresses() {
-    const ips = [
-      ...new Set(
-        Object.values(networkInterfaces()).flatMap((list) =>
-          (list ?? [])
-            .filter(
-              (x) =>
-                x.family === "IPv4" &&
-                !x.internal &&
-                !x.address.startsWith("169.254."),
-            )
-            .map((x) => x.address),
-        ),
-      ),
-    ];
-    return ips.map((ip) => `http://${ip}:${port}/join`);
+  function connections() {
+    const seen = new Set<string>();
+    return Object.entries((options.networkInterfaces ?? networkInterfaces)()).flatMap(([name, list]) =>
+      (list ?? []).flatMap((item) => {
+        if (item.family !== "IPv4" || item.internal || item.address.startsWith("169.254.") || seen.has(item.address)) return [];
+        seen.add(item.address);
+        return [{ name, url: `http://${item.address}:${port}/join` }];
+      }),
+    );
   }
   function broadcast() {
     for (const socket of io.sockets.sockets.values()) {
@@ -100,13 +94,26 @@ export async function startServer(options: {
       dotfiles: "allow",
     });
   });
-  app.get("/api/config", (_req, res) =>
-    res.json({ port, addresses: addresses(), qr: null }),
-  );
+  app.get("/api/config", (_req, res) => {
+    const interfaces = connections();
+    res.setHeader("Cache-Control", "no-store");
+    res.json({ port, addresses: interfaces.map((item) => item.url), interfaces, qr: null });
+  });
   app.get("/api/qr", async (req, res, next) => {
     try {
+      res.setHeader("Cache-Control", "no-store");
+      const addresses = connections().map((item) => item.url);
       const index = Number(req.query.index ?? 0);
-      const address = addresses()[Number.isInteger(index) ? index : -1];
+      const requested = req.query.address;
+      if (requested !== undefined && typeof requested !== "string") {
+        res.status(400).end();
+        return;
+      }
+      // Bind a new client's QR to its selected URL, not a changing adapter index.
+      // Keep the index parameter for older clients, and reject arbitrary URLs.
+      const address = requested === undefined
+        ? addresses[Number.isInteger(index) ? index : -1]
+        : addresses.find((candidate) => candidate === requested);
       if (!address) {
         res.status(404).end();
         return;

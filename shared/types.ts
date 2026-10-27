@@ -85,6 +85,7 @@ export interface Result {
 export interface NetworkInfo {
   port: number;
   addresses: string[];
+  interfaces?: { name: string; url: string }[];
   qr: string | null;
 }
 export interface Ack<T = undefined> {

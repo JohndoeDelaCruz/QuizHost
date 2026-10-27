@@ -1,5 +1,11 @@
 # QuizHost builds
 
+## Unreleased source preview — network address refresh and stable QR selection (27 October 2026)
+
+Teacher address lists refresh every five seconds while the page is visible and on focus/visibility return. Address choices now include adapter names and remain selected by URL when adapter order changes. If an address disappears, selection moves to an available current address. The QR request is keyed to the exact selected URL rather than a changing adapter index; the server validates that URL against its current local addresses. Older clients can still use the index query. Config and QR responses use Cache-Control: no-store, including rejected stale QR requests. QR loading failures show a refresh hint.
+
+TypeScript and production build passed; all 26 tests passed. Regression checks cover filtering local-only/link-local/duplicate entries, adapter labels, changed IPs, stable QR payloads after adapter reordering, legacy index requests, no-cache headers, and rejecting stale/arbitrary/malformed URL requests. Browser checks use simulated adapters and verify selection retention and automatic IP/QR refresh. Physical hotspot access remains unverified; this change does not establish the cause of a timeout reported on another laptop. The Windows EXE remains 0.1.4-beta.9 until another build is requested.
+
 ## Version 0.1.4 Beta 9 — concise screens, slower rankings, and trophy artwork (27 October 2026)
 
 Removed the requested sentences from the individual Live room, student join/waiting screens and footer, and both question-reading and preparation screens. Enter game now uses green for its enabled state and a muted green when unavailable. The join form no longer opens the phone keyboard automatically.

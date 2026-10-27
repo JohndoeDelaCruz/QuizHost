@@ -48,4 +48,6 @@ Student screen overrides load last. Keep the document fixed to the visual viewpo
 
 Both roles default to unmuted sound, music/effects enabled, and volume 1. Sound preferences use `quizhost:sound:v2:<role>` so the new defaults apply once and later adjustments persist.
 
+`useHostWorkspace` refreshes network details while visible and after focus returns. `ConnectionCard` preserves selection by URL and requests `/api/qr?address=...`; adapter indexes are unstable when networks change. The server accepts only one of its current local URLs and marks network/QR responses no-store. Adapter names help teachers choose the network used by phones. Local server readiness cannot prove that Windows Firewall or a hotspot permits another device to connect.
+
 Validate changes from the project root with `npm run check`, `npm test`, and `npm run build`. For frontend changes, also check the affected teacher/student flow in the browser.

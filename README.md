@@ -4,6 +4,10 @@
 
 QuizHost runs on a Windows teacher laptop. Individual players use phone browsers on the same local Wi-Fi. Shared-screen team games run entirely on the laptop. The installed app needs no Node.js, student app, account, paid hosting, or internet connection.
 
+## Current source preview
+
+The source refreshes local addresses automatically, labels network adapters, and keeps the QR tied to the exact selected address when adapters or IPs change. These changes have passed the build and all 26 tests and await the next Windows EXE build. The currently packaged Beta 9 executable retains the earlier address handling.
+
 ## New in Windows Beta 9
 
 Windows Beta 9 includes:
@@ -142,6 +146,10 @@ Quizzes and finished results survive an app restart. An unfinished live room is 
 - Allow the application through Windows Firewall on the trusted private classroom network when asked. The application does not change firewall rules automatically.
 - Disable guest/client isolation through the school’s approved network configuration if it prevents reaching the host. A working same-Wi-Fi connection alone does not prove device-to-device access.
 - Keep phones on Wi-Fi if they report “no internet.” Keep the laptop awake and connected throughout the game.
+
+For an Android hotspot, connect the laptop and every student phone to that same hotspot. The hotspot network must allow the devices to communicate locally. In Setup, choose the laptop's address on that network. A page opening on the laptop itself verifies the local server, but does not verify access from phones.
+
+If both the hotspot phone and a second connected phone time out while the laptop opens its student address, check the laptop's inbound firewall permissions and active network profile. With the portable build, verify permissions for the currently running QuizHost.exe: its extracted temporary path can differ from earlier runs. Use the trusted classroom network profile and the application-specific permission. The app does not configure these Windows settings. A third-party firewall or hotspot access restriction may also need investigation.
 - Test a phone first, then several phones, then the intended full class. Router client limits and radio conditions vary.
 - Teacher access uses a fresh secret on every startup. Do not share the private teacher URL. Only the `/join` address and game PIN should be shared with students.
 

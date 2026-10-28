@@ -16,6 +16,7 @@
 | `features/student/Student.tsx` | Student layout and game-phase composition |
 | `features/student/useStudentSession.ts`, `identity.ts` | Joining, reconnection, answer submission, and session identity |
 | `features/student/JoinForm.tsx`, `StudentLobby.tsx`, `StudentQuestion.tsx`, `StudentFinish.tsx` | Individual student screens |
+| `features/student/StudentLobbyRoster.tsx`, `student-lobby.css` | Live class avatars, self/connection markers, arrival animation, and viewport-sized lobby pages |
 | `components/` | Shared branding and small visual components |
 | `components/useSwitchMotion.ts` | Page, question-tab, game-stage, and popup crossfades with inert outgoing copies and the shared motion preference |
 | `components/game/` | Shared answer tiles/shapes, timer, leaderboard, and podium |
@@ -43,6 +44,8 @@ Add new behavior to its feature. Keep the application entry and page composition
 Global layout remains in `style.css`, with visual theme rules in `theme.css`. Keep their import order in `main.tsx`: layout, theme, images, animations, dark theme, gameplay, audio controls, then classroom celebrations. Reduced-motion overrides use the shared preference and device settings. `GameStage` animates its live container only when the stage key changes, preserving controls and avoiding replays on room score updates. `useSwitchMotion` briefly fades a visual copy of the outgoing pane; copies are inert, inaccessible, stripped of identifiers, and cleaned up on interruption or unmount. The live pane always updates immediately. Child text changes refresh the cached copy at most ten times a second without observing progress-bar styles.
 
 Student screen overrides load last. Keep the document fixed to the visual viewport, but retain readable access to long content through text pages and image zoom. Do not hide full answer text without the reading controls. Student result pages pass a rank offset into `Scores` so page two never starts at rank one. `useScoreMotion` returns stable callback refs per player; recreating those refs on every timer render cancels the row animation.
+
+The student lobby uses the live room scores as its roster, including the server-assigned avatar and connection state. `StudentLobbyRoster` measures the available space and pages the class without document scrolling; keep every player reachable when the viewport changes. Mark the current student with “You” and retain disconnected classmates with a reconnecting label. Arrival notices animate new avatars, while the shared welcome and page transitions provide the fade-out and honor reduced motion. Reconnection must not create another arrival or assign a new avatar.
 
 Question and answer copy uses normal letter/word spacing, rather than the fixed negative tracking used by large display headings. Student prompts keep 1.5 line height; the reading stage allows more lines than the answer screen, with a smaller limit in short viewports and the full-text reader for overflow. Keep this spacing when adjusting responsive font sizes or line limits.
 

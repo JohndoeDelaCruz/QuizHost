@@ -1,9 +1,9 @@
-import { CheckCircle2, Users } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 import type { JoinNotice, RoomView } from "../../../../shared/types";
 import { Pill } from "../../components/Pill";
 import type { Identity } from "./identity";
-import { Avatar } from "../../components/game/Avatar";
 import { JoinPopups } from "../../components/game/JoinPopups";
+import { StudentLobbyRoster } from "./StudentLobbyRoster";
 
 export function StudentLobby({
   room,
@@ -17,35 +17,15 @@ export function StudentLobby({
   dismissJoinNotice: (id: string) => void;
 }) {
   return (
-    <section className="student-wait card">
+    <section className="student-lobby card" aria-label="Student lobby">
       <div className="student-welcome-slot">
         <JoinPopups room={room} notices={joinNotices} playerId={identity?.id} onDismiss={dismissJoinNotice} />
       </div>
-      <div className="waiting-art">
-        <Avatar
-          avatar={identity?.avatar}
-          size={115}
-          label="Your random avatar"
-        />
-        <span className="waiting-dot" />
-      </div>
-      <Pill kind="green">
-        <CheckCircle2 size={14} />
-        YOU’RE IN
-      </Pill>
-      <h1>
-        You’re in,
-        <br />
-        {identity?.name}!
-      </h1>
-      <p>
-        Keep this tab open and stay on the classroom Wi-Fi.
-      </p>
-      <div className="waiting-count">
-        <Users size={17} />
-        {room.scores.length} {room.scores.length === 1 ? "student" : "students"}{" "}
-        in the room
-      </div>
+      <header className="student-lobby-heading">
+        <h1>Student lobby</h1>
+        <Pill kind="green"><CheckCircle2 size={14} /> YOU’RE IN</Pill>
+      </header>
+      <StudentLobbyRoster room={room} playerId={identity?.id} joinNotices={joinNotices} />
     </section>
   );
 }

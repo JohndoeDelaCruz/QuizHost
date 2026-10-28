@@ -1,0 +1,55 @@
+.student-lobby {
+  position: relative; display: flex; flex-direction: column; gap: 14px;
+  padding: 18px; overflow: hidden; text-align: left;
+}
+.student-lobby-heading { flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.student-lobby-heading h1 { margin: 0; font-size: clamp(20px, 4vw, 28px); }
+.student-lobby-heading .pill { flex: 0 0 auto; font-size: 9px; padding: 6px 8px; }
+.student-lobby-roster { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 10px; }
+.lobby-roster-heading { display: flex; flex: 0 0 auto; align-items: center; justify-content: space-between; gap: 8px; }
+.lobby-roster-heading h2 { margin: 0; display: flex; align-items: center; gap: 7px; font-size: 15px; }
+.lobby-roster-heading > span { font-size: 12px; color: #e2ccef; }
+.lobby-roster-space { --lobby-tile-height: 104px; flex: 1; min-height: 0; }
+.lobby-avatar-grid {
+  display: grid; grid-template-columns: repeat(var(--lobby-columns), minmax(0, 1fr));
+  grid-auto-rows: var(--lobby-tile-height); gap: 8px; width: 100%;
+}
+.lobby-avatar-tile {
+  min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 3px; padding: 7px 5px; border: 1px solid #b77ae044; border-radius: 14px;
+  background: #51277b; text-align: center;
+}
+.lobby-avatar-tile.is-you { border-color: #ffdf68; background: #63408a; box-shadow: inset 0 0 0 1px #ffdf6822; }
+.lobby-avatar-tile .player-avatar { width: 48px; height: 48px; flex: 0 0 auto; }
+.lobby-avatar-tile strong { max-width: 100%; font-size: 12px; line-height: 1.4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lobby-avatar-tile > span { color: #d9efbd; font-size: 10px; line-height: 1.4; }
+.lobby-avatar-tile.is-you > span { color: #ffe488; }
+.lobby-avatar-tile > span.is-reconnecting { color: #ffd0a4; }
+.lobby-avatar-tile.is-arriving .player-avatar { animation: lobby-avatar-pop 700ms cubic-bezier(.2,.8,.3,1) both; }
+.lobby-roster-pages { display: flex; flex: 0 0 auto; align-items: center; justify-content: center; gap: 18px; }
+.lobby-roster-pages > span { min-width: 45px; text-align: center; font-size: 12px; color: #e2ccef; }
+.lobby-roster-pages .btn { min-width: 44px; min-height: 44px; padding: 8px; }
+.student-lobby .student-welcome-slot { top: 62px; left: 12px; right: 12px; }
+.student-lobby .join-popup-copy > small { display: none; }
+@keyframes lobby-avatar-pop {
+  0% { opacity: 0; transform: translateY(12px) scale(.6) rotate(-10deg); }
+  65% { opacity: 1; transform: translateY(-4px) scale(1.12) rotate(5deg); }
+  100% { opacity: 1; transform: none; }
+}
+@media (max-height: 470px) {
+  .student-lobby { padding: 10px 12px; gap: 6px; }
+  .student-lobby-heading h1 { font-size: 18px; }
+  .student-lobby-heading .pill { padding: 4px 7px; }
+  .student-lobby-roster { gap: 6px; }
+  .lobby-roster-heading h2 { font-size: 12px; }
+  .lobby-roster-heading > span { font-size: 10px; }
+  .lobby-roster-space { --lobby-tile-height: 78px; }
+  .lobby-avatar-tile { padding: 4px; gap: 1px; }
+  .lobby-avatar-tile .player-avatar { width: 32px; height: 32px; }
+  .lobby-avatar-tile strong { font-size: 11px; }
+  .student-lobby .student-welcome-slot { top: 40px; }
+  .student-lobby .join-popup { min-height: 78px; padding-top: 8px; padding-bottom: 8px; }
+  .student-lobby .join-popup-avatar .player-avatar { width: 44px; height: 44px; }
+}
+@media (prefers-reduced-motion: reduce) { .lobby-avatar-tile.is-arriving .player-avatar { animation: none; } }
+[data-reduced-motion="true"] .lobby-avatar-tile.is-arriving .player-avatar { animation: none; }

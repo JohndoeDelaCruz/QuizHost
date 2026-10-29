@@ -1,8 +1,14 @@
-# QuizHost 0.1.4 Beta 10 — offline classroom quizzes
+# QuizHost 0.1.4 Beta 11 — offline classroom quizzes
 
 **Beta release:** core features are implemented; final classroom acceptance testing is still pending. Test the Windows app on the teacher's laptop and the intended classroom network before final handover.
 
 QuizHost runs on a Windows teacher laptop. Individual players use phone browsers on the same local Wi-Fi. Shared-screen team games run entirely on the laptop. The installed app needs no Node.js, student app, account, paid hosting, or internet connection.
+
+## New in Windows Beta 11
+
+Students see classmates' names and floating avatars in the lobby, with no avatar cards. They can drag any avatar using touch or a mouse, or use arrow keys and Home on a keyboard. Positions stay inside the lobby and are remembered on that device through room updates, page changes and resizing. Dragging changes only that student's display.
+
+New arrivals receive the existing welcome animation. The current student is marked “You”; disconnected classmates keep their avatar with a reconnecting label. Larger classes have viewport-sized pages without document scrolling. Reduced motion stops decorative bobbing and transitions. Reload student pages after updating the teacher app.
 
 ## New in Windows Beta 10
 
@@ -33,7 +39,7 @@ These changes have passed the build and all 25 tests.
 
 ## Try the Windows app
 
-1. Open `release/QuizHost-0.1.4-beta.10-Windows.exe`.
+1. Open `release/QuizHost-0.1.4-beta.11-Windows.exe`.
 2. Choose **Host game** on the included quiz.
 3. Choose **Everyone’s in** for individual phone play, or **Better together** for shared-screen teams.
 4. For phones, connect every device to the same classroom Wi-Fi. Open **Setup & connection**, use the displayed student address or QR code, and enter the room’s six-digit PIN.

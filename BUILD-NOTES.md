@@ -1,5 +1,17 @@
 # QuizHost builds
 
+## Version 0.1.4 Beta 11 — floating, draggable student lobby avatars (29 October 2026)
+
+The student lobby shows classmates' names and server-assigned avatars in an open space without avatar cards or an outer panel. Avatars bob gently and can be moved with mouse/touch pointer capture, arrow keys, or Home to reset. Movement stays within the visible lobby. Positions are local to the student's device and survive room updates, page changes and resizing; no movement commands are sent to the game server. New classmates append to the roster instead of reordering existing players alphabetically.
+
+The current student has a “You” marker and avatar glow. Disconnected classmates retain their avatar with a reconnecting label. Existing welcome popups and page fades remain; reduced motion disables decorative bobbing and transitions. Classes of up to 100 students use pages sized to the available viewport, with no document scrolling. Page controls are hidden when everyone fits on one page.
+
+TypeScript and production builds passed, and all 26 tests passed before packaging. Browser checks covered mouse dragging of classmates, edge clamping, keyboard movement/reset, reconnection updates, saved positions across lobby pages, reduced motion, 320×568, 390×844 and 568×320 layouts, and all 100 unique simulated students across nine pages. Physical phone touch gestures still require a device retest.
+
+Windows executable: release/QuizHost-0.1.4-beta.11-Windows.exe. Application identity and saved-data paths are retained. Close the previous app before opening the new EXE, then reload student pages. Native Windows startup remains untested.
+
+Package inspection confirmed Beta 11 metadata and matching compiled frontend/server files, including floating-avatar drag handling, the desktop entry point, SQLite runtime, trophy artwork, ten avatars and all sixteen music files. The app and portable launcher contain all seven custom icon sizes. The portable EXE's embedded app.asar, unpacked SQLite WASM and window icon match the inspected unpacked build by SHA-256. The 5,460 packaged entries exclude local data, test fixtures, environment files and internal project notes. Delivered EXE copies are checked against the release file by SHA-256.
+
 ## Version 0.1.4 Beta 10 — readable game text and current network addresses (28 October 2026)
 
 Question and answer text now uses normal letter/word spacing, and student prompts use a 1.5 line height. This removes the fixed negative tracking inherited from large headings that squeezed letters together at an 18px phone font size. Reading previews have more room for text; short landscape views use a smaller preview with the existing full-text reader. Landscape photo containers stay within their available space so they do not overlap the countdown. Teacher question text uses normal tracking too.

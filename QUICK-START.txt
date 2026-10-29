@@ -1,6 +1,6 @@
-QUIZHOST 0.1.4 BETA 10 — CLASSROOM PILOT
+QUIZHOST 0.1.4 BETA 11 — CLASSROOM PILOT
 
-1. Open release\QuizHost-0.1.4-beta.10-Windows.exe on the teacher's Windows x64 laptop.
+1. Open release\QuizHost-0.1.4-beta.11-Windows.exe on the teacher's Windows x64 laptop.
 2. Click Host game on the sample quiz.
 3. Choose a play mode and open the room.
 
@@ -13,7 +13,12 @@ INDIVIDUAL PHONE MODE
 Connect the laptop and phones to the same local Wi-Fi.
 Open the address displayed in Setup & connection on each phone.
 Students enter the game PIN and their name.
-Click Start game. Students receive random avatars that stay on reconnection.
+Students receive random avatars when joining; they stay on reconnection.
+The student lobby shows classmates' floating avatars and names without cards.
+Drag any avatar with touch or a mouse; keyboard users can use arrow keys and Home.
+Positions remain inside the lobby and are kept on that device through lobby updates,
+page changes and resizing. Moving avatars only affects the current device's display.
+Larger classes have lobby pages. Click Start game when everyone has joined.
 A five-second Get ready countdown and progress bar appear before each question.
 The question and optional photo then appear with a five-second reading bar.
 Answer choices then open with the full answer timer. Answers reveal when
@@ -38,8 +43,8 @@ Mark Correct or Missed it. Watch the rankings, then continue to rotate teams.
 Student phones and Wi-Fi are not needed for this mode.
 
 ANIMATIONS
-New students receive an avatar welcome inside their waiting card. Teachers
-see welcomes inside Who's here, and classmates see them in their waiting cards.
+New students receive an avatar welcome in their lobby. Teachers
+see welcomes inside Who's here, and classmates see them in their lobby.
 One welcome appears at a time and fades away. Reconnecting does not replay it.
 Game stages have short bounce and sparkle entrances with fade-outs.
 Answer tiles, feedback, leaderboard changes, and the final podium animate.

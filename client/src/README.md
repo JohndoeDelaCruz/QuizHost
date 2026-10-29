@@ -16,7 +16,7 @@
 | `features/student/Student.tsx` | Student layout and game-phase composition |
 | `features/student/useStudentSession.ts`, `identity.ts` | Joining, reconnection, answer submission, and session identity |
 | `features/student/JoinForm.tsx`, `StudentLobby.tsx`, `StudentQuestion.tsx`, `StudentFinish.tsx` | Individual student screens |
-| `features/student/StudentLobbyRoster.tsx`, `student-lobby.css` | Live class avatars, self/connection markers, arrival animation, and viewport-sized lobby pages |
+| `features/student/StudentLobbyRoster.tsx`, `FloatingLobbyAvatar.tsx`, `student-lobby.css` | Floating class avatars, bounded pointer/keyboard dragging, self/connection markers, and viewport-sized lobby pages |
 | `components/` | Shared branding and small visual components |
 | `components/useSwitchMotion.ts` | Page, question-tab, game-stage, and popup crossfades with inert outgoing copies and the shared motion preference |
 | `components/game/` | Shared answer tiles/shapes, timer, leaderboard, and podium |
@@ -45,7 +45,7 @@ Global layout remains in `style.css`, with visual theme rules in `theme.css`. Ke
 
 Student screen overrides load last. Keep the document fixed to the visual viewport, but retain readable access to long content through text pages and image zoom. Do not hide full answer text without the reading controls. Student result pages pass a rank offset into `Scores` so page two never starts at rank one. `useScoreMotion` returns stable callback refs per player; recreating those refs on every timer render cancels the row animation.
 
-The student lobby uses the live room scores as its roster, including the server-assigned avatar and connection state. `StudentLobbyRoster` measures the available space and pages the class without document scrolling; keep every player reachable when the viewport changes. Mark the current student with “You” and retain disconnected classmates with a reconnecting label. Arrival notices animate new avatars, while the shared welcome and page transitions provide the fade-out and honor reduced motion. Reconnection must not create another arrival or assign a new avatar.
+The student lobby uses the live room scores as its roster, including the server-assigned avatar and connection state. Avatars float without cards. `StudentLobbyRoster` measures the available space and pages the class without document scrolling; keep every player reachable when the viewport changes. `FloatingLobbyAvatar` supports mouse/touch pointer capture and arrow-key movement, clamps positions inside the visible arena, and keeps positions locally through page changes and room updates. Dragging is decorative on the current device and sends no game commands. Mark the current student with “You” and retain disconnected classmates with a reconnecting label. Arrival notices animate new avatars, while the shared welcome and page transitions provide the fade-out and honor reduced motion. Reconnection must not create another arrival or assign a new avatar.
 
 Question and answer copy uses normal letter/word spacing, rather than the fixed negative tracking used by large display headings. Student prompts keep 1.5 line height; the reading stage allows more lines than the answer screen, with a smaller limit in short viewports and the full-text reader for overflow. Keep this spacing when adjusting responsive font sizes or line limits.
 

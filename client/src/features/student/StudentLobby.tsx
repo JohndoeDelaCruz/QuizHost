@@ -17,7 +17,7 @@ export function StudentLobby({
   dismissJoinNotice: (id: string) => void;
 }) {
   return (
-    <section className="student-lobby card" aria-label="Student lobby">
+    <section className="student-lobby" aria-label="Student lobby">
       <div className="student-welcome-slot">
         <JoinPopups room={room} notices={joinNotices} playerId={identity?.id} onDismiss={dismissJoinNotice} />
       </div>

@@ -126,6 +126,12 @@ The Windows launcher, application window, and browser tab use the QuizHost icon.
 
 `npm run dev` runs the TypeScript server directly against the last built frontend. Run `npm run build` after frontend changes. The desktop app starts port 3210, or uses an available port if it is occupied. Its actual address is displayed in Setup.
 
+## Practice question packs
+
+[Grade 7 Physics Team Challenge](question-packs/grade-7-physics-teams/QuizHost-Baamboozle-Grade-7-Physics.json) is an original, importable question bank for the Baamboozle-style **Better together** mode. Import it through **Quiz library → Import**. It adds a 24-tile quiz for 2, 3, 4, 6 or 8 teams, a 20-tile quiz for 5 teams, and a 21-tile quiz for 7 teams, so playing every tile gives equal turns. Each tile is worth 100 points.
+
+The [student questionnaire](question-packs/grade-7-physics-teams/QuizHost-Baamboozle-Grade-7-Physics-Questionnaire.md) and [teacher key](question-packs/grade-7-physics-teams/QuizHost-Baamboozle-Grade-7-Physics-Teacher-Key.md) include the full questions, explanations, discussion prompts and short-version tile mappings. No EXE rebuild is needed to import the pack.
+
 ## Source layout
 
 - `assets/`: editable icon source, Windows ICO, and PNG preview.

@@ -1,0 +1,869 @@
+{
+  "version": 1,
+  "quizzes": [
+    {
+      "title": "Grade 7 Physics Teams - 24 Tiles",
+      "description": "Original Grade 7 physics team-discussion practice: forces, motion and heat. Designed for 2, 3, 4, 6 or 8 teams. Every tile is 100 points. Give a choice and explain your evidence before the teacher reveals and awards points.",
+      "questions": [
+        {
+          "id": "team-physics-01",
+          "prompt": "During a school tug-of-war, one side pulls a rope 240 N east and the other pulls it 180 N west. Consider these two horizontal forces only. Which statement is correct?",
+          "options": [
+            "The net force is 420 N east because the forces must be added.",
+            "The net force is zero because the pulls are in opposite directions.",
+            "The net force is 60 N east, so the horizontal forces are unbalanced.",
+            "The net force is 60 N west because the smaller pull determines the direction."
+          ],
+          "correctIndex": 2,
+          "seconds": 60,
+          "points": 100
+        },
+        {
+          "id": "team-physics-02",
+          "prompt": "A student pushes a toy cart 12 N to the right. It moves in a straight line at constant speed. The only horizontal forces are the push and friction. What can the team infer about friction?",
+          "options": [
+            "Friction is 12 N to the left, balancing the push.",
+            "Friction is zero because the cart is moving.",
+            "Friction is more than 12 N to the left because the cart has wheels.",
+            "Friction is 12 N to the right, helping the push."
+          ],
+          "correctIndex": 0,
+          "seconds": 60,
+          "points": 100
+        },
+        {
+          "id": "team-physics-03",
+          "prompt": "A book rests on a classroom table. Carlo says, 'No forces act on the book because it is not moving.' Which response best explains the situation?",
+          "options": [
+            "Carlo is correct: objects at rest cannot experience forces.",
+            "Only gravity acts, but it stops acting when the book touches the table.",
+            "The table's upward force is larger than gravity, keeping the book still.",
+            "Gravity pulls down and the table pushes up; these forces balance on the book."
+          ],
+          "correctIndex": 3,
+          "seconds": 60,
+          "points": 100
+        },
+        {
+          "id": "team-physics-04",
+          "prompt": "A cart is already moving left in a straight line. All forces on it remain balanced. Which prediction follows from this information?",
+          "options": [
+            "It must stop immediately because the net force is zero.",
+            "It continues left at the same speed while the forces remain balanced.",
+            "It speeds up because balanced forces add together.",
+            "It turns right because a force is needed for every moment of leftward motion."
+          ],
+          "correctIndex": 1,
+          "seconds": 60,
+          "points": 100
+        },
+        {
+          "id": "team-physics-05",
+          "prompt": "A team wants to compare how far the same toy car rolls on cloth and smooth board. Which plan gives the fairest comparison?",
+          "options": [
+            "Release the same car from the same ramp height, change only the surface, and repeat the trials.",
+            "Use a heavier car on cloth and a lighter car on the board.",
+            "Push the car harder on cloth so both surfaces seem fair.",
+            "Change the ramp height and surface together, then record one trial."
+          ],
+          "correctIndex": 0,
+          "seconds": 75,
+          "points": 100
+        },
+        {
+          "id": "team-physics-06",
+          "prompt": "Two groups pull a rope: 200 N east and 200 N west. Which change would create a net force toward the east?",
+          "options": [
+            "Increase both pulls by 50 N.",
+            "Increase only the westward pull by 50 N.",
+            "Increase the eastward pull by 50 N and keep the westward pull unchanged.",
+            "Reduce only the eastward pull by 50 N."
+          ],
+          "correctIndex": 2,
+          "seconds": 75,
+          "points": 100
+        },
+        {
+          "id": "team-physics-07",
+          "prompt": "A toy car follows a curved track at constant speed. A teammate says the net force must be zero because the speed is constant. Which response is best?",
+          "options": [
+            "The teammate is correct because speed and velocity are always the same.",
+            "Its direction changes, so its velocity changes and the forces cannot all be balanced.",
+            "Any change of direction means the car has stopped moving.",
+            "Balanced forces make an object change direction continuously."
+          ],
+          "correctIndex": 1,
+          "seconds": 75,
+          "points": 100
+        },
+        {
+          "id": "team-physics-08",
+          "prompt": "The same cart is pulled at the same steady speed across two level surfaces. Required pulls are P: 0.8, 0.9, 0.8 N; Q: 1.7, 1.8, 1.6 N. The method is otherwise unchanged. What is best supported?",
+          "options": [
+            "Surface P has greater resistance because its readings are smaller.",
+            "Both surfaces have zero resistance because the speed is steady.",
+            "One unusual reading proves surface Q will always stop every vehicle.",
+            "Surface Q has greater opposing resistance under these test conditions."
+          ],
+          "correctIndex": 3,
+          "seconds": 75,
+          "points": 100
+        },
+        {
+          "id": "team-physics-09",
+          "prompt": "From a barangay hall, Nika walks 60 m east, then 20 m west along the same straight road. What are her total distance and final displacement from the hall?",
+          "options": [
+            "Distance: 40 m; displacement: 80 m east.",
+            "Distance: 80 m; displacement: 40 m east.",
+            "Distance: 80 m; displacement: 80 m east.",
+            "Distance: 40 m; displacement: 40 m west."
+          ],
+          "correctIndex": 1,
+          "seconds": 75,
+          "points": 100
+        },
+        {
+          "id": "team-physics-10",
+          "prompt": "A pupil walks 120 m in 40 s, then waits for 20 s. What is the average speed for the entire 60 s observation, including the wait?",
+          "options": [
+            "3 m/s, because waiting time must always be ignored.",
+            "6 m/s, because the distance is divided by the waiting time.",
+            "0 m/s, because the pupil is stopped at the end.",
+            "2 m/s, because 120 m is divided by the full 60 s."
+          ],
+          "correctIndex": 3,
+          "seconds": 90,
+          "points": 100
+        },
+        {
+          "id": "team-physics-11",
+          "prompt": "A cart travels straight away from its start. Its distances are 0 m at 0 s, 4 m at 2 s, 8 m at 4 s, and 12 m at 6 s. If the pattern continues, how far is it from the start at 10 s?",
+          "options": [
+            "20 m: it gains 4 m every 2 s.",
+            "16 m: only one more 2 s interval remains after 6 s.",
+            "10 m: the time value must equal the distance value.",
+            "24 m: it doubles its distance during every interval."
+          ],
+          "correctIndex": 0,
+          "seconds": 75,
+          "points": 100
+        },
+        {
+          "id": "team-physics-12",
+          "prompt": "A cart moves straight forward. Total distances are 0 m at 0 s, 2 m at 2 s, 6 m at 4 s, and 12 m at 6 s. What do the distances covered during each 2 s interval suggest?",
+          "options": [
+            "Its speed is constant because the time intervals are equal.",
+            "Its speed decreases because more time has passed.",
+            "Its average speed increases across the intervals: it covers 2 m, then 4 m, then 6 m.",
+            "It returns to its start after each measurement."
+          ],
+          "correctIndex": 2,
+          "seconds": 75,
+          "points": 100
+        },
+        {
+          "id": "team-physics-13",
+          "prompt": "Team Sampaguita covers 60 m in 20 s. Team Narra covers 100 m in 40 s. Narra claims it was faster because it travelled farther. Which conclusion is supported?",
+          "options": [
+            "Narra is faster because 100 m is a longer distance.",
+            "They have the same speed because both are moving.",
+            "Sampaguita is slower because 20 s is less than 40 s.",
+            "Sampaguita has the greater average speed: 3 m/s compared with 2.5 m/s."
+          ],
+          "correctIndex": 3,
+          "seconds": 90,
+          "points": 100
+        },
+        {
+          "id": "team-physics-14",
+          "prompt": "Two pupils walk along the same straight path at 3 m/s, one east and one west. Which statement correctly compares their motion?",
+          "options": [
+            "Their velocities are equal because the number 3 is the same.",
+            "Their speeds are equal, but their velocities differ because their directions differ.",
+            "The eastbound pupil must have the greater speed.",
+            "Neither has a velocity because they move in opposite directions."
+          ],
+          "correctIndex": 1,
+          "seconds": 60,
+          "points": 100
+        },
+        {
+          "id": "team-physics-15",
+          "prompt": "On a position-time graph for a cart on a straight track, a horizontal line stays at 5 m from 10 s to 30 s. What does this part of the graph mean?",
+          "options": [
+            "The cart travels 5 m during every second of that interval.",
+            "The cart moves faster because the horizontal line is long.",
+            "The cart stays at the same position while time passes, so it is at rest during that interval.",
+            "Time stops because the cart's position does not change."
+          ],
+          "correctIndex": 2,
+          "seconds": 60,
+          "points": 100
+        },
+        {
+          "id": "team-physics-16",
+          "prompt": "Using the classroom door as the reference point, a pupil starts 5 m west of it and finishes 5 m east of it 20 s later. What is the average velocity over that time?",
+          "options": [
+            "0.5 m/s east, because the displacement is 10 m east over 20 s.",
+            "0.25 m/s east, because only the final 5 m matters.",
+            "0 m/s, because the two distances cancel regardless of direction.",
+            "0.5 m/s west, because the pupil started west of the door."
+          ],
+          "correctIndex": 0,
+          "seconds": 90,
+          "points": 100
+        },
+        {
+          "id": "team-physics-17",
+          "prompt": "One end of a metal spoon sits in warm soup. After a while, the handle also becomes warmer although it does not touch the soup. Which explanation is best?",
+          "options": [
+            "Cold particles travel from the handle into the soup, creating heat.",
+            "The solid metal flows upward through the handle by convection.",
+            "Energy transfers through the metal from its warmer end toward its cooler end by conduction.",
+            "The handle creates energy because metal always warms itself."
+          ],
+          "correctIndex": 2,
+          "seconds": 60,
+          "points": 100
+        },
+        {
+          "id": "team-physics-18",
+          "prompt": "A metal ruler and a wooden ruler have both been measured at 25 degrees C. Your hand is warmer than both. The metal feels cooler. What is the best explanation?",
+          "options": [
+            "Metal transfers energy away from your warmer hand faster, even though the rulers have the same temperature.",
+            "The metal must have a lower temperature because it feels cooler.",
+            "Wood has no particles, so it cannot transfer energy.",
+            "The thermometer must be wrong whenever two materials feel different."
+          ],
+          "correctIndex": 0,
+          "seconds": 75,
+          "points": 100
+        },
+        {
+          "id": "team-physics-19",
+          "prompt": "Water is heated from below in a container. Warmer water rises and cooler water sinks. Which explanation best accounts for the circulation?",
+          "options": [
+            "Water can only transfer energy by radiation, so it cannot circulate.",
+            "Heating changes the water's density, and the bulk movement transfers energy by convection.",
+            "Warmer water always becomes denser and sinks to the bottom.",
+            "The water particles turn into metal and conduct upward."
+          ],
+          "correctIndex": 1,
+          "seconds": 60,
+          "points": 100
+        },
+        {
+          "id": "team-physics-20",
+          "prompt": "Energy from the Sun crosses the nearly empty space between the Sun and Earth. Which process explains how that energy reaches Earth?",
+          "options": [
+            "Conduction through a continuous solid bridge from the Sun.",
+            "Convection carried by a stream of air all the way from the Sun.",
+            "Friction caused by sunlight rubbing against space.",
+            "Radiation, which can transfer energy through empty space."
+          ],
+          "correctIndex": 3,
+          "seconds": 60,
+          "points": 100
+        },
+        {
+          "id": "team-physics-21",
+          "prompt": "Identical cups each start with 20 g of ice under the same room conditions. One is wrapped in felt. After 20 min, 8 g of ice remains in the wrapped cup and 3 g in the unwrapped cup. What is best supported?",
+          "options": [
+            "The felt slows energy transfer into the ice, so less ice melts during the test.",
+            "The felt creates cold energy that adds new ice.",
+            "The felt prevents every kind of energy transfer forever.",
+            "The unwrapped cup keeps ice longer because less ice remains."
+          ],
+          "correctIndex": 0,
+          "seconds": 75,
+          "points": 100
+        },
+        {
+          "id": "team-physics-22",
+          "prompt": "To test whether a lid slows cooling, one group puts 100 mL of water at 70 degrees C in a covered cup and 200 mL at 60 degrees C in an uncovered cup. Why is the comparison weak?",
+          "options": [
+            "A fair test must change every starting condition at once.",
+            "Cooling can never be measured with temperature readings.",
+            "The cup with more water automatically proves that lids have no effect.",
+            "The water volume and starting temperature also differ, so the lid's effect is not isolated."
+          ],
+          "correctIndex": 3,
+          "seconds": 75,
+          "points": 100
+        },
+        {
+          "id": "team-physics-23",
+          "prompt": "One cup contains 50 mL of water and another contains 200 mL. Both start at 60 degrees C. Both will cool to 30 degrees C without evaporation. Which statement is correct?",
+          "options": [
+            "The 200 mL sample must start hotter because it contains more water.",
+            "Equal starting temperatures mean the amounts of energy transferred must be equal.",
+            "They start at the same temperature, but more energy must leave the 200 mL sample for the same temperature drop.",
+            "Only the 50 mL sample can transfer energy to cooler surroundings."
+          ],
+          "correctIndex": 2,
+          "seconds": 75,
+          "points": 100
+        },
+        {
+          "id": "team-physics-24",
+          "prompt": "Identical model roofs, painted black or white, start at the same temperature and receive sunlight side by side. Three equal-duration tests give roof temperatures: black 41, 42, 43 degrees C; white 34, 35, 36 degrees C. Which decision is best supported?",
+          "options": [
+            "Choose black because the higher readings show that it stays cooler.",
+            "Choose white to reduce roof-surface temperature under conditions like these tests; verify other conditions before generalizing.",
+            "Claim white roofs will always have the same temperature in every weather condition.",
+            "Ignore all three tests because temperature data cannot help a design decision."
+          ],
+          "correctIndex": 1,
+          "seconds": 90,
+          "points": 100
+        }
+      ]
+    },
+    {
+      "title": "Grade 7 Physics Teams - 20 Tiles (5 Teams)",
+      "description": "Original Grade 7 physics team-discussion practice: forces, motion and heat. Designed for 5 teams. Every tile is 100 points. Give a choice and explain your evidence before the teacher reveals and awards points.",
+      "questions": [
+        {
+          "id": "team-physics-01",
+          "prompt": "During a school tug-of-war, one side pulls a rope 240 N east and the other pulls it 180 N west. Consider these two horizontal forces only. Which statement is correct?",
+          "options": [
+            "The net force is 420 N east because the forces must be added.",
+            "The net force is zero because the pulls are in opposite directions.",
+            "The net force is 60 N east, so the horizontal forces are unbalanced.",
+            "The net force is 60 N west because the smaller pull determines the direction."
+          ],
+          "correctIndex": 2,
+          "seconds": 60,
+          "points": 100
+        },
+        {
+          "id": "team-physics-02",
+          "prompt": "A student pushes a toy cart 12 N to the right. It moves in a straight line at constant speed. The only horizontal forces are the push and friction. What can the team infer about friction?",
+          "options": [
+            "Friction is 12 N to the left, balancing the push.",
+            "Friction is zero because the cart is moving.",
+            "Friction is more than 12 N to the left because the cart has wheels.",
+            "Friction is 12 N to the right, helping the push."
+          ],
+          "correctIndex": 0,
+          "seconds": 60,
+          "points": 100
+        },
+        {
+          "id": "team-physics-03",
+          "prompt": "A book rests on a classroom table. Carlo says, 'No forces act on the book because it is not moving.' Which response best explains the situation?",
+          "options": [
+            "Carlo is correct: objects at rest cannot experience forces.",
+            "Only gravity acts, but it stops acting when the book touches the table.",
+            "The table's upward force is larger than gravity, keeping the book still.",
+            "Gravity pulls down and the table pushes up; these forces balance on the book."
+          ],
+          "correctIndex": 3,
+          "seconds": 60,
+          "points": 100
+        },
+        {
+          "id": "team-physics-05",
+          "prompt": "A team wants to compare how far the same toy car rolls on cloth and smooth board. Which plan gives the fairest comparison?",
+          "options": [
+            "Release the same car from the same ramp height, change only the surface, and repeat the trials.",
+            "Use a heavier car on cloth and a lighter car on the board.",
+            "Push the car harder on cloth so both surfaces seem fair.",
+            "Change the ramp height and surface together, then record one trial."
+          ],
+          "correctIndex": 0,
+          "seconds": 75,
+          "points": 100
+        },
+        {
+          "id": "team-physics-06",
+          "prompt": "Two groups pull a rope: 200 N east and 200 N west. Which change would create a net force toward the east?",
+          "options": [
+            "Increase both pulls by 50 N.",
+            "Increase only the westward pull by 50 N.",
+            "Increase the eastward pull by 50 N and keep the westward pull unchanged.",
+            "Reduce only the eastward pull by 50 N."
+          ],
+          "correctIndex": 2,
+          "seconds": 75,
+          "points": 100
+        },
+        {
+          "id": "team-physics-07",
+          "prompt": "A toy car follows a curved track at constant speed. A teammate says the net force must be zero because the speed is constant. Which response is best?",
+          "options": [
+            "The teammate is correct because speed and velocity are always the same.",
+            "Its direction changes, so its velocity changes and the forces cannot all be balanced.",
+            "Any change of direction means the car has stopped moving.",
+            "Balanced forces make an object change direction continuously."
+          ],
+          "correctIndex": 1,
+          "seconds": 75,
+          "points": 100
+        },
+        {
+          "id": "team-physics-09",
+          "prompt": "From a barangay hall, Nika walks 60 m east, then 20 m west along the same straight road. What are her total distance and final displacement from the hall?",
+          "options": [
+            "Distance: 40 m; displacement: 80 m east.",
+            "Distance: 80 m; displacement: 40 m east.",
+            "Distance: 80 m; displacement: 80 m east.",
+            "Distance: 40 m; displacement: 40 m west."
+          ],
+          "correctIndex": 1,
+          "seconds": 75,
+          "points": 100
+        },
+        {
+          "id": "team-physics-10",
+          "prompt": "A pupil walks 120 m in 40 s, then waits for 20 s. What is the average speed for the entire 60 s observation, including the wait?",
+          "options": [
+            "3 m/s, because waiting time must always be ignored.",
+            "6 m/s, because the distance is divided by the waiting time.",
+            "0 m/s, because the pupil is stopped at the end.",
+            "2 m/s, because 120 m is divided by the full 60 s."
+          ],
+          "correctIndex": 3,
+          "seconds": 90,
+          "points": 100
+        },
+        {
+          "id": "team-physics-11",
+          "prompt": "A cart travels straight away from its start. Its distances are 0 m at 0 s, 4 m at 2 s, 8 m at 4 s, and 12 m at 6 s. If the pattern continues, how far is it from the start at 10 s?",
+          "options": [
+            "20 m: it gains 4 m every 2 s.",
+            "16 m: only one more 2 s interval remains after 6 s.",
+            "10 m: the time value must equal the distance value.",
+            "24 m: it doubles its distance during every interval."
+          ],
+          "correctIndex": 0,
+          "seconds": 75,
+          "points": 100
+        },
+        {
+          "id": "team-physics-12",
+          "prompt": "A cart moves straight forward. Total distances are 0 m at 0 s, 2 m at 2 s, 6 m at 4 s, and 12 m at 6 s. What do the distances covered during each 2 s interval suggest?",
+          "options": [
+            "Its speed is constant because the time intervals are equal.",
+            "Its speed decreases because more time has passed.",
+            "Its average speed increases across the intervals: it covers 2 m, then 4 m, then 6 m.",
+            "It returns to its start after each measurement."
+          ],
+          "correctIndex": 2,
+          "seconds": 75,
+          "points": 100
+        },
+        {
+          "id": "team-physics-13",
+          "prompt": "Team Sampaguita covers 60 m in 20 s. Team Narra covers 100 m in 40 s. Narra claims it was faster because it travelled farther. Which conclusion is supported?",
+          "options": [
+            "Narra is faster because 100 m is a longer distance.",
+            "They have the same speed because both are moving.",
+            "Sampaguita is slower because 20 s is less than 40 s.",
+            "Sampaguita has the greater average speed: 3 m/s compared with 2.5 m/s."
+          ],
+          "correctIndex": 3,
+          "seconds": 90,
+          "points": 100
+        },
+        {
+          "id": "team-physics-14",
+          "prompt": "Two pupils walk along the same straight path at 3 m/s, one east and one west. Which statement correctly compares their motion?",
+          "options": [
+            "Their velocities are equal because the number 3 is the same.",
+            "Their speeds are equal, but their velocities differ because their directions differ.",
+            "The eastbound pupil must have the greater speed.",
+            "Neither has a velocity because they move in opposite directions."
+          ],
+          "correctIndex": 1,
+          "seconds": 60,
+          "points": 100
+        },
+        {
+          "id": "team-physics-15",
+          "prompt": "On a position-time graph for a cart on a straight track, a horizontal line stays at 5 m from 10 s to 30 s. What does this part of the graph mean?",
+          "options": [
+            "The cart travels 5 m during every second of that interval.",
+            "The cart moves faster because the horizontal line is long.",
+            "The cart stays at the same position while time passes, so it is at rest during that interval.",
+            "Time stops because the cart's position does not change."
+          ],
+          "correctIndex": 2,
+          "seconds": 60,
+          "points": 100
+        },
+        {
+          "id": "team-physics-17",
+          "prompt": "One end of a metal spoon sits in warm soup. After a while, the handle also becomes warmer although it does not touch the soup. Which explanation is best?",
+          "options": [
+            "Cold particles travel from the handle into the soup, creating heat.",
+            "The solid metal flows upward through the handle by convection.",
+            "Energy transfers through the metal from its warmer end toward its cooler end by conduction.",
+            "The handle creates energy because metal always warms itself."
+          ],
+          "correctIndex": 2,
+          "seconds": 60,
+          "points": 100
+        },
+        {
+          "id": "team-physics-18",
+          "prompt": "A metal ruler and a wooden ruler have both been measured at 25 degrees C. Your hand is warmer than both. The metal feels cooler. What is the best explanation?",
+          "options": [
+            "Metal transfers energy away from your warmer hand faster, even though the rulers have the same temperature.",
+            "The metal must have a lower temperature because it feels cooler.",
+            "Wood has no particles, so it cannot transfer energy.",
+            "The thermometer must be wrong whenever two materials feel different."
+          ],
+          "correctIndex": 0,
+          "seconds": 75,
+          "points": 100
+        },
+        {
+          "id": "team-physics-19",
+          "prompt": "Water is heated from below in a container. Warmer water rises and cooler water sinks. Which explanation best accounts for the circulation?",
+          "options": [
+            "Water can only transfer energy by radiation, so it cannot circulate.",
+            "Heating changes the water's density, and the bulk movement transfers energy by convection.",
+            "Warmer water always becomes denser and sinks to the bottom.",
+            "The water particles turn into metal and conduct upward."
+          ],
+          "correctIndex": 1,
+          "seconds": 60,
+          "points": 100
+        },
+        {
+          "id": "team-physics-20",
+          "prompt": "Energy from the Sun crosses the nearly empty space between the Sun and Earth. Which process explains how that energy reaches Earth?",
+          "options": [
+            "Conduction through a continuous solid bridge from the Sun.",
+            "Convection carried by a stream of air all the way from the Sun.",
+            "Friction caused by sunlight rubbing against space.",
+            "Radiation, which can transfer energy through empty space."
+          ],
+          "correctIndex": 3,
+          "seconds": 60,
+          "points": 100
+        },
+        {
+          "id": "team-physics-21",
+          "prompt": "Identical cups each start with 20 g of ice under the same room conditions. One is wrapped in felt. After 20 min, 8 g of ice remains in the wrapped cup and 3 g in the unwrapped cup. What is best supported?",
+          "options": [
+            "The felt slows energy transfer into the ice, so less ice melts during the test.",
+            "The felt creates cold energy that adds new ice.",
+            "The felt prevents every kind of energy transfer forever.",
+            "The unwrapped cup keeps ice longer because less ice remains."
+          ],
+          "correctIndex": 0,
+          "seconds": 75,
+          "points": 100
+        },
+        {
+          "id": "team-physics-22",
+          "prompt": "To test whether a lid slows cooling, one group puts 100 mL of water at 70 degrees C in a covered cup and 200 mL at 60 degrees C in an uncovered cup. Why is the comparison weak?",
+          "options": [
+            "A fair test must change every starting condition at once.",
+            "Cooling can never be measured with temperature readings.",
+            "The cup with more water automatically proves that lids have no effect.",
+            "The water volume and starting temperature also differ, so the lid's effect is not isolated."
+          ],
+          "correctIndex": 3,
+          "seconds": 75,
+          "points": 100
+        },
+        {
+          "id": "team-physics-23",
+          "prompt": "One cup contains 50 mL of water and another contains 200 mL. Both start at 60 degrees C. Both will cool to 30 degrees C without evaporation. Which statement is correct?",
+          "options": [
+            "The 200 mL sample must start hotter because it contains more water.",
+            "Equal starting temperatures mean the amounts of energy transferred must be equal.",
+            "They start at the same temperature, but more energy must leave the 200 mL sample for the same temperature drop.",
+            "Only the 50 mL sample can transfer energy to cooler surroundings."
+          ],
+          "correctIndex": 2,
+          "seconds": 75,
+          "points": 100
+        }
+      ]
+    },
+    {
+      "title": "Grade 7 Physics Teams - 21 Tiles (7 Teams)",
+      "description": "Original Grade 7 physics team-discussion practice: forces, motion and heat. Designed for 7 teams. Every tile is 100 points. Give a choice and explain your evidence before the teacher reveals and awards points.",
+      "questions": [
+        {
+          "id": "team-physics-01",
+          "prompt": "During a school tug-of-war, one side pulls a rope 240 N east and the other pulls it 180 N west. Consider these two horizontal forces only. Which statement is correct?",
+          "options": [
+            "The net force is 420 N east because the forces must be added.",
+            "The net force is zero because the pulls are in opposite directions.",
+            "The net force is 60 N east, so the horizontal forces are unbalanced.",
+            "The net force is 60 N west because the smaller pull determines the direction."
+          ],
+          "correctIndex": 2,
+          "seconds": 60,
+          "points": 100
+        },
+        {
+          "id": "team-physics-02",
+          "prompt": "A student pushes a toy cart 12 N to the right. It moves in a straight line at constant speed. The only horizontal forces are the push and friction. What can the team infer about friction?",
+          "options": [
+            "Friction is 12 N to the left, balancing the push.",
+            "Friction is zero because the cart is moving.",
+            "Friction is more than 12 N to the left because the cart has wheels.",
+            "Friction is 12 N to the right, helping the push."
+          ],
+          "correctIndex": 0,
+          "seconds": 60,
+          "points": 100
+        },
+        {
+          "id": "team-physics-03",
+          "prompt": "A book rests on a classroom table. Carlo says, 'No forces act on the book because it is not moving.' Which response best explains the situation?",
+          "options": [
+            "Carlo is correct: objects at rest cannot experience forces.",
+            "Only gravity acts, but it stops acting when the book touches the table.",
+            "The table's upward force is larger than gravity, keeping the book still.",
+            "Gravity pulls down and the table pushes up; these forces balance on the book."
+          ],
+          "correctIndex": 3,
+          "seconds": 60,
+          "points": 100
+        },
+        {
+          "id": "team-physics-04",
+          "prompt": "A cart is already moving left in a straight line. All forces on it remain balanced. Which prediction follows from this information?",
+          "options": [
+            "It must stop immediately because the net force is zero.",
+            "It continues left at the same speed while the forces remain balanced.",
+            "It speeds up because balanced forces add together.",
+            "It turns right because a force is needed for every moment of leftward motion."
+          ],
+          "correctIndex": 1,
+          "seconds": 60,
+          "points": 100
+        },
+        {
+          "id": "team-physics-05",
+          "prompt": "A team wants to compare how far the same toy car rolls on cloth and smooth board. Which plan gives the fairest comparison?",
+          "options": [
+            "Release the same car from the same ramp height, change only the surface, and repeat the trials.",
+            "Use a heavier car on cloth and a lighter car on the board.",
+            "Push the car harder on cloth so both surfaces seem fair.",
+            "Change the ramp height and surface together, then record one trial."
+          ],
+          "correctIndex": 0,
+          "seconds": 75,
+          "points": 100
+        },
+        {
+          "id": "team-physics-06",
+          "prompt": "Two groups pull a rope: 200 N east and 200 N west. Which change would create a net force toward the east?",
+          "options": [
+            "Increase both pulls by 50 N.",
+            "Increase only the westward pull by 50 N.",
+            "Increase the eastward pull by 50 N and keep the westward pull unchanged.",
+            "Reduce only the eastward pull by 50 N."
+          ],
+          "correctIndex": 2,
+          "seconds": 75,
+          "points": 100
+        },
+        {
+          "id": "team-physics-07",
+          "prompt": "A toy car follows a curved track at constant speed. A teammate says the net force must be zero because the speed is constant. Which response is best?",
+          "options": [
+            "The teammate is correct because speed and velocity are always the same.",
+            "Its direction changes, so its velocity changes and the forces cannot all be balanced.",
+            "Any change of direction means the car has stopped moving.",
+            "Balanced forces make an object change direction continuously."
+          ],
+          "correctIndex": 1,
+          "seconds": 75,
+          "points": 100
+        },
+        {
+          "id": "team-physics-09",
+          "prompt": "From a barangay hall, Nika walks 60 m east, then 20 m west along the same straight road. What are her total distance and final displacement from the hall?",
+          "options": [
+            "Distance: 40 m; displacement: 80 m east.",
+            "Distance: 80 m; displacement: 40 m east.",
+            "Distance: 80 m; displacement: 80 m east.",
+            "Distance: 40 m; displacement: 40 m west."
+          ],
+          "correctIndex": 1,
+          "seconds": 75,
+          "points": 100
+        },
+        {
+          "id": "team-physics-10",
+          "prompt": "A pupil walks 120 m in 40 s, then waits for 20 s. What is the average speed for the entire 60 s observation, including the wait?",
+          "options": [
+            "3 m/s, because waiting time must always be ignored.",
+            "6 m/s, because the distance is divided by the waiting time.",
+            "0 m/s, because the pupil is stopped at the end.",
+            "2 m/s, because 120 m is divided by the full 60 s."
+          ],
+          "correctIndex": 3,
+          "seconds": 90,
+          "points": 100
+        },
+        {
+          "id": "team-physics-11",
+          "prompt": "A cart travels straight away from its start. Its distances are 0 m at 0 s, 4 m at 2 s, 8 m at 4 s, and 12 m at 6 s. If the pattern continues, how far is it from the start at 10 s?",
+          "options": [
+            "20 m: it gains 4 m every 2 s.",
+            "16 m: only one more 2 s interval remains after 6 s.",
+            "10 m: the time value must equal the distance value.",
+            "24 m: it doubles its distance during every interval."
+          ],
+          "correctIndex": 0,
+          "seconds": 75,
+          "points": 100
+        },
+        {
+          "id": "team-physics-12",
+          "prompt": "A cart moves straight forward. Total distances are 0 m at 0 s, 2 m at 2 s, 6 m at 4 s, and 12 m at 6 s. What do the distances covered during each 2 s interval suggest?",
+          "options": [
+            "Its speed is constant because the time intervals are equal.",
+            "Its speed decreases because more time has passed.",
+            "Its average speed increases across the intervals: it covers 2 m, then 4 m, then 6 m.",
+            "It returns to its start after each measurement."
+          ],
+          "correctIndex": 2,
+          "seconds": 75,
+          "points": 100
+        },
+        {
+          "id": "team-physics-13",
+          "prompt": "Team Sampaguita covers 60 m in 20 s. Team Narra covers 100 m in 40 s. Narra claims it was faster because it travelled farther. Which conclusion is supported?",
+          "options": [
+            "Narra is faster because 100 m is a longer distance.",
+            "They have the same speed because both are moving.",
+            "Sampaguita is slower because 20 s is less than 40 s.",
+            "Sampaguita has the greater average speed: 3 m/s compared with 2.5 m/s."
+          ],
+          "correctIndex": 3,
+          "seconds": 90,
+          "points": 100
+        },
+        {
+          "id": "team-physics-14",
+          "prompt": "Two pupils walk along the same straight path at 3 m/s, one east and one west. Which statement correctly compares their motion?",
+          "options": [
+            "Their velocities are equal because the number 3 is the same.",
+            "Their speeds are equal, but their velocities differ because their directions differ.",
+            "The eastbound pupil must have the greater speed.",
+            "Neither has a velocity because they move in opposite directions."
+          ],
+          "correctIndex": 1,
+          "seconds": 60,
+          "points": 100
+        },
+        {
+          "id": "team-physics-15",
+          "prompt": "On a position-time graph for a cart on a straight track, a horizontal line stays at 5 m from 10 s to 30 s. What does this part of the graph mean?",
+          "options": [
+            "The cart travels 5 m during every second of that interval.",
+            "The cart moves faster because the horizontal line is long.",
+            "The cart stays at the same position while time passes, so it is at rest during that interval.",
+            "Time stops because the cart's position does not change."
+          ],
+          "correctIndex": 2,
+          "seconds": 60,
+          "points": 100
+        },
+        {
+          "id": "team-physics-17",
+          "prompt": "One end of a metal spoon sits in warm soup. After a while, the handle also becomes warmer although it does not touch the soup. Which explanation is best?",
+          "options": [
+            "Cold particles travel from the handle into the soup, creating heat.",
+            "The solid metal flows upward through the handle by convection.",
+            "Energy transfers through the metal from its warmer end toward its cooler end by conduction.",
+            "The handle creates energy because metal always warms itself."
+          ],
+          "correctIndex": 2,
+          "seconds": 60,
+          "points": 100
+        },
+        {
+          "id": "team-physics-18",
+          "prompt": "A metal ruler and a wooden ruler have both been measured at 25 degrees C. Your hand is warmer than both. The metal feels cooler. What is the best explanation?",
+          "options": [
+            "Metal transfers energy away from your warmer hand faster, even though the rulers have the same temperature.",
+            "The metal must have a lower temperature because it feels cooler.",
+            "Wood has no particles, so it cannot transfer energy.",
+            "The thermometer must be wrong whenever two materials feel different."
+          ],
+          "correctIndex": 0,
+          "seconds": 75,
+          "points": 100
+        },
+        {
+          "id": "team-physics-19",
+          "prompt": "Water is heated from below in a container. Warmer water rises and cooler water sinks. Which explanation best accounts for the circulation?",
+          "options": [
+            "Water can only transfer energy by radiation, so it cannot circulate.",
+            "Heating changes the water's density, and the bulk movement transfers energy by convection.",
+            "Warmer water always becomes denser and sinks to the bottom.",
+            "The water particles turn into metal and conduct upward."
+          ],
+          "correctIndex": 1,
+          "seconds": 60,
+          "points": 100
+        },
+        {
+          "id": "team-physics-20",
+          "prompt": "Energy from the Sun crosses the nearly empty space between the Sun and Earth. Which process explains how that energy reaches Earth?",
+          "options": [
+            "Conduction through a continuous solid bridge from the Sun.",
+            "Convection carried by a stream of air all the way from the Sun.",
+            "Friction caused by sunlight rubbing against space.",
+            "Radiation, which can transfer energy through empty space."
+          ],
+          "correctIndex": 3,
+          "seconds": 60,
+          "points": 100
+        },
+        {
+          "id": "team-physics-21",
+          "prompt": "Identical cups each start with 20 g of ice under the same room conditions. One is wrapped in felt. After 20 min, 8 g of ice remains in the wrapped cup and 3 g in the unwrapped cup. What is best supported?",
+          "options": [
+            "The felt slows energy transfer into the ice, so less ice melts during the test.",
+            "The felt creates cold energy that adds new ice.",
+            "The felt prevents every kind of energy transfer forever.",
+            "The unwrapped cup keeps ice longer because less ice remains."
+          ],
+          "correctIndex": 0,
+          "seconds": 75,
+          "points": 100
+        },
+        {
+          "id": "team-physics-22",
+          "prompt": "To test whether a lid slows cooling, one group puts 100 mL of water at 70 degrees C in a covered cup and 200 mL at 60 degrees C in an uncovered cup. Why is the comparison weak?",
+          "options": [
+            "A fair test must change every starting condition at once.",
+            "Cooling can never be measured with temperature readings.",
+            "The cup with more water automatically proves that lids have no effect.",
+            "The water volume and starting temperature also differ, so the lid's effect is not isolated."
+          ],
+          "correctIndex": 3,
+          "seconds": 75,
+          "points": 100
+        },
+        {
+          "id": "team-physics-23",
+          "prompt": "One cup contains 50 mL of water and another contains 200 mL. Both start at 60 degrees C. Both will cool to 30 degrees C without evaporation. Which statement is correct?",
+          "options": [
+            "The 200 mL sample must start hotter because it contains more water.",
+            "Equal starting temperatures mean the amounts of energy transferred must be equal.",
+            "They start at the same temperature, but more energy must leave the 200 mL sample for the same temperature drop.",
+            "Only the 50 mL sample can transfer energy to cooler surroundings."
+          ],
+          "correctIndex": 2,
+          "seconds": 75,
+          "points": 100
+        }
+      ]
+    }
+  ],
+  "images": []
+}

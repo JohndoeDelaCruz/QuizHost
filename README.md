@@ -1,12 +1,14 @@
-# QuizHost 0.1.4 Beta 11 — offline classroom quizzes
+# QuizHost 0.1.4 Beta 12 — offline classroom quizzes
 
 **Beta release:** core features are implemented; final classroom acceptance testing is still pending. Test the Windows app on the teacher's laptop and the intended classroom network before final handover.
 
 QuizHost runs on a Windows teacher laptop. Individual players use phone browsers on the same local Wi-Fi. Shared-screen team games run entirely on the laptop. The installed app needs no Node.js, student app, account, paid hosting, or internet connection.
 
-## New in Windows Beta 11
+## New in Windows Beta 12
 
-**Source update, not yet packaged:** Better together now offers sixteen shared-screen games: Quiz board, Classic, Classic Jr., Memory, Tic Tac Toe, Four in a Row, Bingo, Snakes & Ladders, Story Dice, Bowling, Soccer, American Football, Adventure Trail, Basketball, Balloon Words and Egg Hunt. Choose one when hosting a quiz. See [Team games](TEAM-GAMES.md) for setup, scoring and question requirements. These are QuizHost classroom adaptations. The existing Beta 11 EXE requires rebuilding to include them.
+Better together now offers sixteen shared-screen games: Quiz board, Classic, Classic Jr., Memory, Tic Tac Toe, Four in a Row, Bingo, Snakes & Ladders, Story Dice, Bowling, Soccer, American Football, Adventure Trail, Basketball, Balloon Words and Egg Hunt. Choose one when hosting a quiz. See [Team games](TEAM-GAMES.md) for setup, scoring and question requirements. These are QuizHost classroom adaptations, included in the Beta 12 Windows package.
+
+## New in Windows Beta 11
 
 Students see classmates' names and floating avatars in the lobby, with no avatar cards. They can drag any avatar using touch or a mouse, or use arrow keys and Home on a keyboard. Positions stay inside the lobby and are remembered on that device through room updates, page changes and resizing. Dragging changes only that student's display.
 
@@ -41,13 +43,13 @@ These changes have passed the build and all 25 tests.
 
 ## Try the Windows app
 
-1. Open `release/QuizHost-0.1.4-beta.11-Windows.exe`.
+1. Open `release/QuizHost-0.1.4-beta.12-Windows.exe`.
 2. Choose **Host game** on the included quiz.
 3. Choose **Everyone’s in** for individual phone play, or **Better together** for shared-screen teams.
 4. For phones, connect every device to the same classroom Wi-Fi. Open **Setup & connection**, use the displayed student address or QR code, and enter the room’s six-digit PIN.
 5. Start the game. Read the question, answer, watch the rankings, and continue to the next question. Results save automatically at the end.
 
-Team play: enter 2–8 team names, start the room, pick a question tile, reveal the answer, and mark the team’s answer correct or missed. Watch the rankings, then continue to rotate turns. Question point values are used in team mode; individual correct answers earn 500–1,000 points based on time remaining.
+Team play: select a game and enter 2–8 team names (exactly two for Tic Tac Toe, Four in a Row and Soccer). Follow the board’s controls, judge spoken answers, and watch the rankings between turns. Games use their own score units; see [Team games](TEAM-GAMES.md). Individual correct answers earn 500–1,000 points based on time remaining.
 
 Each question begins with a shared five-second Get ready countdown and progress bar while the question remains hidden. Next, a five-second reading stage shows the prompt and optional photo before answer choices appear. The full answer time starts afterward. Answer tiles enter in sequence, locked answers and correct-answer feedback animate, leaderboard rows move into their new positions, and the final podium has a short confetti celebration. Use **Animations on** in the header to switch to reduced motion on that device; the app also respects the device’s reduced-motion preference. All effects work offline.
 
@@ -116,6 +118,8 @@ npm run package:win
 ```
 
 The executable is written to `release/`. Building needs internet access to download the Electron runtime and packaging tools on the first run. The teacher does not need any development tools.
+
+After packaging, run `node scripts/verify-package.cjs`, `node scripts/verify-windows-icons.cjs` and `node scripts/verify-portable-package.cjs`. These inspect package contents, icons and the portable payload without launching the app.
 
 The `release/` and `deliverables/` folders are included in Git through empty `.gitkeep` files so they exist after cloning on another computer. For future builds, including builds run by Codex:
 

@@ -1,6 +1,6 @@
 # QuizHost team games
 
-All sixteen games below are implemented in the source app. They are QuizHost classroom adaptations with original boards and controls. They do not reproduce every Baamboozle rule or asset. The existing Windows Beta 11 EXE needs rebuilding to include this expansion.
+All sixteen games below are included in Windows Beta 12 and the source app. They are QuizHost classroom adaptations with original boards and controls. They do not reproduce every Baamboozle rule or asset.
 
 ## Getting started
 

@@ -1,6 +1,6 @@
-QUIZHOST 0.1.4 BETA 11 — CLASSROOM PILOT
+QUIZHOST 0.1.4 BETA 12 — CLASSROOM PILOT
 
-1. Open release\QuizHost-0.1.4-beta.11-Windows.exe on the teacher's Windows x64 laptop.
+1. Open release\QuizHost-0.1.4-beta.12-Windows.exe on the teacher's Windows x64 laptop.
 2. Click Host game on the sample quiz.
 3. Choose a play mode and open the room.
 
@@ -37,9 +37,18 @@ Very short screens show the top three rankings plus your own rank.
 Image enlargement and zoom/pan remain available.
 
 SHARED-SCREEN TEAM MODE
-Choose Better together. Enter one team name per line (2–8 teams).
-Start, choose a tile, let the active team answer aloud, then reveal.
-Mark Correct or Missed it. Watch the rankings, then continue to rotate teams.
+Choose Better together, then select one of sixteen games:
+Quiz board, Classic, Classic Jr., Memory, Tic Tac Toe, Four in a Row, Bingo,
+Snakes & Ladders, Story Dice, Bowling, Soccer, American Football,
+Adventure Trail, Basketball, Balloon Words or Egg Hunt.
+Enter one team name per line (2–8 teams). Tic Tac Toe, Four in a Row
+and Soccer require exactly two teams. Configure the timer and available surprises.
+Start and follow the board controls. Most turns ask the team to answer aloud;
+reveal and judge the answer, then complete any movement or skill shot.
+Memory uses matching cards; Balloon Words uses alternating letter guesses.
+Watch the rankings before continuing. Each game uses its own score units.
+For Balloon Words, add a short Word-game answer in the quiz editor if needed.
+See QuizHost-Team-Games.md for complete rules and question requirements.
 Student phones and Wi-Fi are not needed for this mode.
 
 ANIMATIONS

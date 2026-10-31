@@ -1,12 +1,14 @@
 # QuizHost builds
 
-## Source expansion — sixteen team games (1 November 2026, not packaged)
+## Version 0.1.4 Beta 12 — sixteen team games (1 November 2026)
 
 Better together now includes all sixteen games from the supplied reference. Original classroom variants use separate question, board and activity stages with host-only commands, server scoring, hidden state, configurable surprises, score units and explicit board winners/ties. See TEAM-GAMES.md for the full rules, question requirements and reference-name mappings. The editor adds an optional short word-game answer, preserved by old/new quiz imports and backups. Existing quizzes, individual scoring, offline media and saved results remain supported.
 
 TypeScript and production builds passed, and all 59 tests passed. Automated coverage includes all sixteen controller/Socket.IO flows and natural endings, all 21 point/position effects, invalid/repeated actions, secret state, line wins/draws, Bingo shared wins, paths, shot reachability, result persistence and CSV formatting, alongside the existing phone-mode regressions. Browser checks played a turn in every mode, including Classic/Jr. surprises, memory flips, claims, Bingo multi-team judging, dice, shots, letter solving and egg collection. Checked laptop/narrow layouts, reduced motion and result units. Browser download automation did not provide a completion event; CSV content is verified by automated formatter tests.
 
-No Windows package was produced. Version remains 0.1.4-beta.11 and release/QuizHost-0.1.4-beta.11-Windows.exe is the earlier build. Rebuild and increment the beta version before distributing these games. Native Windows launch and physical classroom acceptance testing remain pending.
+Windows executable: release/QuizHost-0.1.4-beta.12-Windows.exe. Application identity and saved-data paths are retained. Finish the current game and close the previous app before opening Beta 12, then reload student pages. Native Windows launch and physical classroom acceptance testing remain pending.
+
+Package inspection verified Beta 12 metadata, all sixteen game labels, matching frontend/server bundles, offline avatars/music/artwork and the SQLite runtime. All seven custom icon sizes are embedded in both the app and portable launcher. The portable payload matches the unpacked app by SHA-256; its 5,460 packaged entries exclude local data, fixtures, environment files and internal project notes. EXE size: 107,934,077 bytes. SHA-256: 7858cfeabf563474f1095860742477cf263bfe7b94bc5d52d649bca4a18d6992. Delivery copies are verified against this checksum.
 
 ## Version 0.1.4 Beta 11 — floating, draggable student lobby avatars (29 October 2026)
 

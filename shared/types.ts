@@ -1,9 +1,11 @@
 import type { AvatarId } from "./avatars";
+import type { TeamGameId, TeamGameView } from "./teamGames";
 
 export type Mode = "individual" | "teams";
 export type Phase =
   | "lobby"
   | "board"
+  | "activity"
   | "preparing"
   | "countdown"
   | "question"
@@ -22,6 +24,7 @@ export interface Question {
   seconds: number;
   points: number;
   image?: QuestionImage;
+  puzzleAnswer?: string;
 }
 export interface Quiz {
   id: string;
@@ -70,9 +73,11 @@ export interface RoomView {
   serverNow: number;
   scores: Score[];
   answeredCount: number;
-  tiles: { index: number; points: number; used: boolean }[];
+  tiles: { index: number; points: number; used: boolean; label?: string }[];
   activeTeam: string | null;
   myAnswer?: { index: number; correct?: boolean; earned?: number };
+  teamGame?: TeamGameView;
+  scoreUnit?: string;
 }
 export interface Result {
   id: string;
@@ -81,6 +86,10 @@ export interface Result {
   finishedAt: string;
   questionCount: number;
   scores: Score[];
+  teamGame?: TeamGameId;
+  scoreUnit?: string;
+  winnerIds?: string[];
+  finishReason?: string;
 }
 export interface NetworkInfo {
   port: number;

@@ -4,7 +4,12 @@ import type { RoomView } from "../../../../shared/types";
 import { useMotion, useScoreMotion } from "../../animation";
 import { Avatar } from "./Avatar";
 import { useServerClock } from "./useServerClock";
-import { RANKING_HOLD_MS, RANKING_MOVE_MS, RANKING_PAUSE_MS, RANKING_POINTS_MS } from "../../../../shared/presentation";
+import {
+  RANKING_HOLD_MS,
+  RANKING_MOVE_MS,
+  RANKING_PAUSE_MS,
+  RANKING_POINTS_MS,
+} from "../../../../shared/presentation";
 import { VictoryTrophy } from "./VictoryTrophy";
 
 function AnimatedPoints({ from, to }: { from: number; to: number }) {
@@ -42,10 +47,15 @@ export function Rankings({
   compact?: boolean;
 }) {
   const { enabled } = useMotion();
-  const [shortScreen, setShortScreen] = useState(() => (window.visualViewport?.height ?? window.innerHeight) < 520);
+  const [shortScreen, setShortScreen] = useState(
+    () => (window.visualViewport?.height ?? window.innerHeight) < 520,
+  );
   useEffect(() => {
     if (!compact) return;
-    const update = () => setShortScreen((window.visualViewport?.height ?? window.innerHeight) < 520);
+    const update = () =>
+      setShortScreen(
+        (window.visualViewport?.height ?? window.innerHeight) < 520,
+      );
     window.addEventListener("resize", update);
     window.visualViewport?.addEventListener("resize", update);
     return () => {
@@ -81,25 +91,31 @@ export function Rankings({
   const myGain = me ? me.score - (before.get(me.id)?.score ?? 0) : 0;
   const last =
     room.mode === "teams"
-      ? room.tiles.every((tile) => tile.used)
+      ? (room.teamGame?.finished ?? room.tiles.every((tile) => tile.used))
       : room.questionIndex + 1 >= room.questionCount;
   return (
     <section className="rankings-screen" aria-label="Round rankings">
       <VictoryTrophy />
-      <span className="intro-kicker">
-        POINTS ARE IN
-      </span>
+      <span className="intro-kicker">POINTS ARE IN</span>
       <h1>Look who’s moving up!</h1>
       <p className="rankings-subtitle">
         {room.mode === "teams"
           ? "Your team standings"
           : "Your classroom leaderboard"}{" "}
-        · Top {Math.min(visibleRows, room.scores.length)}
+        · Top {Math.min(visibleRows, room.scores.length)} ·{" "}
+        {room.scoreUnit ?? "pts"}
       </p>
+      {room.teamGame && (
+        <p className="ranking-outcome" role="status">
+          {room.teamGame.summary}
+        </p>
+      )}
       <div
         className={"rankings-board" + (settled ? " is-settled" : "")}
         style={
-          { "--visible-rows": Math.min(visibleRows, displayed.length) } as CSSProperties
+          {
+            "--visible-rows": Math.min(visibleRows, displayed.length),
+          } as CSSProperties
         }
       >
         {displayed.map((score, index) => {
@@ -129,7 +145,9 @@ export function Rankings({
                 </span>
               )}
               <span className="round-gain">
-                {settled && gain > 0 ? `+${gain.toLocaleString()}` : ""}
+                {settled && gain !== 0
+                  ? `${gain > 0 ? "+" : ""}${gain.toLocaleString()}`
+                  : ""}
               </span>
               <strong className="ranking-total">
                 <AnimatedPoints from={old?.score ?? 0} to={score.score} />

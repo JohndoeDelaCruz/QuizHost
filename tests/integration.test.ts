@@ -7,6 +7,12 @@ import { startServer } from "../server/index";
 import type { Ack, JoinNotice, Quiz, RoomView } from "../shared/types";
 import { AVATAR_IDS } from "../shared/avatars";
 import type { GameTimings } from "../server/game";
+import {
+  defaultTeamConfig,
+  TEAM_GAME_IDS,
+  TEAM_GAMES,
+  type TeamAction,
+} from "../shared/teamGames";
 const states = new WeakMap<Socket, RoomView | null>();
 const TEST_TIMINGS: GameTimings = {
   preQuestionMs: 150,
@@ -121,6 +127,149 @@ function quizBody(count = 1) {
     })),
   };
 }
+
+test("all sixteen team games work over host-only Socket.IO commands and persist game-specific results", async (t) => {
+  const f = await fixture(t, { preQuestionMs: 2, readingMs: 2, rankingMs: 0 });
+  const body = quizBody(4);
+  const bank: Quiz = await f.api("/quizzes", {
+    ...body,
+    questions: body.questions.map((q, i) => ({
+      ...q,
+      options: ["MASS " + i, "Wrong", "Other", "Last"],
+      correctIndex: 0,
+      puzzleAnswer: "MASS",
+    })),
+  });
+  assert.equal(bank.questions[0].puzzleAnswer, "MASS");
+  const backup = await f.api("/backup");
+  assert.equal(
+    backup.quizzes.find((q: Quiz) => q.id === bank.id).questions[0]
+      .puzzleAnswer,
+    "MASS",
+  );
+  await f.api("/import", backup);
+  assert.ok(
+    (await f.api("/quizzes")).filter(
+      (q: Quiz) => q.questions[0].puzzleAnswer === "MASS",
+    ).length >= 2,
+  );
+  const host = await f.socket(true),
+    guest = await f.socket();
+  await assert.rejects(
+    cmd(guest, "host:team-action", { type: "draw" }),
+    /teacher/,
+  );
+  let previous = "";
+  for (const id of TEAM_GAME_IDS) {
+    await cmd(host, "host:create", {
+      quizId: bank.id,
+      mode: "teams",
+      teams: ["Sun", "Moon"],
+      teamGame: { ...defaultTeamConfig(id), timed: false, powerUps: [] },
+    });
+    const lobby = await state(
+      host,
+      (r) => r.phase === "lobby" && r.id !== previous,
+    );
+    previous = lobby.id;
+    assert.equal(lobby.teamGame!.id, id);
+    await assert.rejects(
+      cmd(guest, "player:join", { pin: lobby.pin, name: "Outsider" }),
+      /shared-screen/,
+    );
+    await cmd(host, "host:start");
+    await state(host, (r) => r.id === lobby.id && r.phase === "board");
+    await assert.rejects(
+      cmd(host, "host:team-action", {
+        type: "shoot",
+        angle: Infinity,
+        power: 80,
+      }),
+    );
+    const action = (payload: TeamAction) =>
+      cmd(host, "host:team-action", payload);
+    if (id === "memory") {
+      await action({ type: "flip", index: 0 });
+      await assert.rejects(action({ type: "flip", index: 0 }), /face-down/);
+      await action({ type: "flip", index: 1 });
+      await state(host, (r) => r.phase === "activity");
+      await action({ type: "continue" });
+    } else {
+      if (["quiz", "classic", "junior", "ticTacToe"].includes(id))
+        await action({ type: "pick", index: 0 });
+      else if (id === "connectFour") await action({ type: "column", index: 0 });
+      else if (["snakes", "adventure", "storyDice"].includes(id))
+        await action({ type: "roll" });
+      else if (id === "eggHunt") {
+        await action({ type: "roll" });
+        await action({ type: "move", index: 1 });
+      } else await action({ type: "draw" });
+      const question = await state(host, (r) => r.phase === "question");
+      assert.equal(question.deadline, null);
+      await assert.rejects(action({ type: "draw" }), /stage/);
+      if (id === "balloons") {
+        assert.equal(question.teamGame!.word!.answer, undefined);
+        assert.deepEqual(question.question!.options, []);
+        for (const letter of "MAS") await action({ type: "guess", letter });
+        await state(host, (r) => r.phase === "reveal");
+        await action({ type: "continue" });
+      } else {
+        await cmd(host, "host:reveal");
+        const revealed = await state(host, (r) => r.phase === "reveal");
+        if (id === "bingo") {
+          await assert.rejects(
+            action({ type: "bingo-award", teamIds: ["invalid"] }),
+            /valid/,
+          );
+          await action({
+            type: "bingo-award",
+            teamIds: revealed.scores.map((s) => s.id),
+          });
+        } else await cmd(host, "host:award", true);
+        if (["bowling", "soccer", "football", "basketball"].includes(id)) {
+          await state(host, (r) => r.phase === "activity");
+          await action({ type: "shoot", angle: 45, power: 80 });
+          await assert.rejects(
+            action({ type: "shoot", angle: 45, power: 80 }),
+            /already/,
+          );
+          await action({ type: "continue" });
+        }
+      }
+    }
+    await state(host, (r) => r.phase === "ranking");
+    await assert.rejects(cmd(host, "host:award", true), /Reveal/);
+    await cmd(host, "host:next");
+    await state(host, (r) => r.phase === "board");
+    await cmd(host, "host:end");
+    await state(host, (r) => r.phase === "finished");
+    const result = (await f.api("/results")).find(
+      (r: { id: string }) => r.id === lobby.id,
+    );
+    assert.equal(result.teamGame, id);
+    assert.equal(result.scoreUnit, TEAM_GAMES[id].unit);
+    assert.ok(result.winnerIds.length >= 1);
+    await cmd(host, "host:close");
+  }
+  assert.equal((await f.api("/results")).length, 16);
+  await assert.rejects(
+    cmd(host, "host:create", {
+      quizId: bank.id,
+      mode: "teams",
+      teams: ["A", "B", "C"],
+      teamGame: { game: "soccer" },
+    }),
+    /exactly two/,
+  );
+  await assert.rejects(
+    cmd(host, "host:create", {
+      quizId: bank.id,
+      mode: "teams",
+      teams: ["A", "B"],
+      teamGame: { game: "junior", powerUps: ["virus"] },
+    }),
+  );
+});
 
 const imageBytes = Buffer.from(
   "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jN2UAAAAASUVORK5CYII=",
@@ -502,13 +651,18 @@ test("five-second preparation hides the question, then reading and reconnection 
   assert.equal(hidden.preview, null);
   assert.equal(hidden.deadline, null);
   assert.ok(hidden.startsAt && hidden.startsAt - hidden.serverNow >= 4950);
-  assert.equal((await state(host, (r) => r.phase === "preparing")).startsAt, hidden.startsAt);
+  assert.equal(
+    (await state(host, (r) => r.phase === "preparing")).startsAt,
+    hidden.startsAt,
+  );
   await assert.rejects(cmd(student, "player:answer", 1), /closed/);
   await assert.rejects(cmd(host, "host:reveal"), /no open question/);
   student.disconnect();
   student = await f.socket();
   const earlyReturn = await cmd<{ room: RoomView }>(student, "player:join", {
-    pin: lobby.pin, name: "Ready learner", token: player.token,
+    pin: lobby.pin,
+    name: "Ready learner",
+    token: player.token,
   });
   assert.equal(earlyReturn.room.phase, "preparing");
   assert.equal(earlyReturn.room.startsAt, hidden.startsAt);
@@ -552,7 +706,9 @@ test("ending during preparation or question reading cancels both scheduled stage
   const host = await f.socket(true);
   for (const phase of ["preparing", "countdown"]) {
     await cmd(host, "host:create", {
-      quizId: quiz.id, mode: "teams", teams: ["Sun", "Moon"],
+      quizId: quiz.id,
+      mode: "teams",
+      teams: ["Sun", "Moon"],
     });
     await cmd(host, "host:start");
     await cmd(host, "host:pick", 0);
@@ -561,7 +717,12 @@ test("ending during preparation or question reading cancels both scheduled stage
     const ended = await state(host, (r) => r.phase === "finished");
     assert.equal(ended.startsAt, null);
     assert.equal(ended.deadline, null);
-    await new Promise((resolve) => setTimeout(resolve, TEST_TIMINGS.preQuestionMs + TEST_TIMINGS.readingMs + 100));
+    await new Promise((resolve) =>
+      setTimeout(
+        resolve,
+        TEST_TIMINGS.preQuestionMs + TEST_TIMINGS.readingMs + 100,
+      ),
+    );
     assert.equal(states.get(host)?.phase, "finished");
   }
   assert.equal((await f.api("/results")).length, 2);
@@ -584,13 +745,21 @@ test("new arrivals notify the teacher, joining student, and room peers, without 
   outsider.on("room:player-joined", (n) => outsiderNotices.push(n));
   await cmd(host, "host:create", { quizId: quiz.id, mode: "individual" });
   const lobby = await state(host, (r) => r.phase === "lobby");
-  const a = await cmd<{ id: string; token: string; avatar: string }>(alex, "player:join", { pin: lobby.pin, name: "Alex" });
+  const a = await cmd<{ id: string; token: string; avatar: string }>(
+    alex,
+    "player:join",
+    { pin: lobby.pin, name: "Alex" },
+  );
   await state(host, (r) => r.scores.length === 1);
   assert.equal(hostNotices.length, 1);
   assert.equal(alexNotices.length, 1);
   assert.equal(beaNotices.length, 0);
   assert.equal(hostNotices[0].roomId, lobby.id);
-  assert.deepEqual(hostNotices[0].player, { id: a.id, name: "Alex", avatar: a.avatar });
+  assert.deepEqual(hostNotices[0].player, {
+    id: a.id,
+    name: "Alex",
+    avatar: a.avatar,
+  });
   assert.equal("token" in hostNotices[0].player, false);
   await cmd(bea, "player:join", { pin: lobby.pin, name: "Bea" });
   await state(host, (r) => r.scores.length === 2);
@@ -600,7 +769,11 @@ test("new arrivals notify the teacher, joining student, and room peers, without 
   assert.equal(beaNotices[0].player.name, "Bea");
   alex.disconnect();
   const returning = await f.socket();
-  await cmd(returning, "player:join", { pin: lobby.pin, name: "Alex", token: a.token });
+  await cmd(returning, "player:join", {
+    pin: lobby.pin,
+    name: "Alex",
+    token: a.token,
+  });
   await new Promise((resolve) => setTimeout(resolve, 30));
   assert.equal(hostNotices.length, 2);
   assert.equal(beaNotices.length, 1);
@@ -613,7 +786,11 @@ test("random avatars cover the supplied pack before repeating and survive reconn
   const host = await f.socket(true);
   await cmd(host, "host:create", { quizId: quiz.id, mode: "individual" });
   const lobby = await state(host, (r) => r.phase === "lobby");
-  const identities: { id: string; token: string; avatar: (typeof AVATAR_IDS)[number] }[] = [];
+  const identities: {
+    id: string;
+    token: string;
+    avatar: (typeof AVATAR_IDS)[number];
+  }[] = [];
   for (let index = 0; index < 11; index++) {
     const student = await f.socket();
     identities.push(

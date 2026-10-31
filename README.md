@@ -6,6 +6,8 @@ QuizHost runs on a Windows teacher laptop. Individual players use phone browsers
 
 ## New in Windows Beta 11
 
+**Source update, not yet packaged:** Better together now offers sixteen shared-screen games: Quiz board, Classic, Classic Jr., Memory, Tic Tac Toe, Four in a Row, Bingo, Snakes & Ladders, Story Dice, Bowling, Soccer, American Football, Adventure Trail, Basketball, Balloon Words and Egg Hunt. Choose one when hosting a quiz. See [Team games](TEAM-GAMES.md) for setup, scoring and question requirements. These are QuizHost classroom adaptations. The existing Beta 11 EXE requires rebuilding to include them.
+
 Students see classmates' names and floating avatars in the lobby, with no avatar cards. They can drag any avatar using touch or a mouse, or use arrow keys and Home on a keyboard. Positions stay inside the lobby and are remembered on that device through room updates, page changes and resizing. Dragging changes only that student's display.
 
 New arrivals receive the existing welcome animation. The current student is marked “You”; disconnected classmates keep their avatar with a reconnecting label. Larger classes have viewport-sized pages without document scrolling. Reduced motion stops decorative bobbing and transitions. Reload student pages after updating the teacher app.
@@ -138,6 +140,7 @@ The [student questionnaire](question-packs/grade-7-physics-teams/QuizHost-Baambo
 - `client/src/main.tsx` and `App.tsx`: React entry point, global styles, and teacher/student routing.
 - `client/src/features/host/`: teacher workspace, library, results, setup, launch dialogs, and host connection/state hook.
 - `client/src/features/host/room/`: room lobby, team board, live question, and finished-game screens.
+- `client/src/features/host/team/`: sixteen-game picker/settings, boards, power-up and shot activities, and responsive team styles.
 - `client/src/features/quizzes/`: quiz editor and new-question defaults.
 - `client/src/features/student/`: student screens, joining/reconnection hook, and saved session identity.
 - `client/src/components/`: shared branding, answer tiles, timer, leaderboard, and podium.
@@ -146,8 +149,10 @@ The [student questionnaire](question-packs/grade-7-physics-teams/QuizHost-Baambo
 - `client/src/animation.tsx` and `client/src/animations.css`: countdown display, motion preferences, leaderboard movement, answer feedback, and finite confetti effects.
 - `server/index.ts`: HTTP endpoints, validation, teacher authorization, Socket.IO transport.
 - `server/game.ts`: game state, authoritative timers, scoring, reconnection, team turns.
+- `server/team/`: team game rules, power-ups, board/path validation and host action schemas.
 - `server/store.ts`: SQLite persistence through locally bundled sql.js WebAssembly.
 - `shared/types.ts`: shared data contracts.
+- `shared/teamGames.ts`, `shotMath.ts`, `resultCSV.ts`: game catalog/contracts, shot calculation and CSV formatting.
 - `electron/main.cjs`: Windows app lifecycle and bundled server startup.
 - `tests/integration.test.ts`: real HTTP and socket integration tests, including 50 clients.
 
@@ -199,4 +204,4 @@ The automated 50-client check is an application test on one machine, not a measu
 3. Agree on branding, question import format, images/audio, and any additional question types before expanding scope.
 4. Decide whether automatic recovery of an interrupted game and signed installation packages are required for final delivery.
 
-The current app supports text-only multiple-choice questions. It does not include cloud accounts, online quiz libraries, AI generation, live-game crash recovery, or automatic software updates.
+QuizHost supports multiple-choice questions with optional photos; the source expansion also supports short word-game answers. It does not include cloud accounts, online quiz libraries, AI generation, live-game crash recovery, or automatic software updates.

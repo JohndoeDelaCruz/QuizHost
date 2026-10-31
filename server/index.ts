@@ -12,10 +12,12 @@ import { MediaStore } from "./media";
 import { backupSchema, quizSchema } from "./quizValidation";
 import { MAX_BACKUP_BYTES, MAX_IMAGE_BYTES } from "../shared/media";
 import type { Ack, JoinNotice, Quiz } from "../shared/types";
+import { teamActionSchema, teamConfigSchema } from "./team/validation";
 
 const createRoomSchema = z.object({
   quizId: z.string(),
   mode: z.enum(["individual", "teams"]),
+  teamGame: teamConfigSchema.optional(),
   teams: z
     .array(z.string().trim().min(1).max(30))
     .min(2)
@@ -65,9 +67,17 @@ export async function startServer(options: {
   let port = 0;
   function connections() {
     const seen = new Set<string>();
-    return Object.entries((options.networkInterfaces ?? networkInterfaces)()).flatMap(([name, list]) =>
+    return Object.entries(
+      (options.networkInterfaces ?? networkInterfaces)(),
+    ).flatMap(([name, list]) =>
       (list ?? []).flatMap((item) => {
-        if (item.family !== "IPv4" || item.internal || item.address.startsWith("169.254.") || seen.has(item.address)) return [];
+        if (
+          item.family !== "IPv4" ||
+          item.internal ||
+          item.address.startsWith("169.254.") ||
+          seen.has(item.address)
+        )
+          return [];
         seen.add(item.address);
         return [{ name, url: `http://${item.address}:${port}/join` }];
       }),
@@ -97,7 +107,12 @@ export async function startServer(options: {
   app.get("/api/config", (_req, res) => {
     const interfaces = connections();
     res.setHeader("Cache-Control", "no-store");
-    res.json({ port, addresses: interfaces.map((item) => item.url), interfaces, qr: null });
+    res.json({
+      port,
+      addresses: interfaces.map((item) => item.url),
+      interfaces,
+      qr: null,
+    });
   });
   app.get("/api/qr", async (req, res, next) => {
     try {
@@ -111,9 +126,10 @@ export async function startServer(options: {
       }
       // Bind a new client's QR to its selected URL, not a changing adapter index.
       // Keep the index parameter for older clients, and reject arbitrary URLs.
-      const address = requested === undefined
-        ? addresses[Number.isInteger(index) ? index : -1]
-        : addresses.find((candidate) => candidate === requested);
+      const address =
+        requested === undefined
+          ? addresses[Number.isInteger(index) ? index : -1]
+          : addresses.find((candidate) => candidate === requested);
       if (!address) {
         res.status(404).end();
         return;
@@ -320,20 +336,22 @@ export async function startServer(options: {
           parsed.teams.length
         )
           throw new Error("Give each team a different name.");
-        if (game) {
-          game.dispose();
-          for (const s of io.sockets.sockets.values())
-            if (!s.data.isHost && s.data.gameId === game.id)
-              s.emit("room:closed");
-        }
-        game = new Game(
+        const nextGame = new Game(
           quiz,
           parsed.mode,
           parsed.teams,
           broadcast,
           (result) => store.saveResult(result),
           options.timings,
+          parsed.mode === "teams" ? parsed.teamGame : undefined,
         );
+        if (game) {
+          game.dispose();
+          for (const s of io.sockets.sockets.values())
+            if (!s.data.isHost && s.data.gameId === game.id)
+              s.emit("room:closed");
+        }
+        game = nextGame;
       },
       true,
     );
@@ -352,6 +370,12 @@ export async function startServer(options: {
     on(
       "host:award",
       (payload: unknown) => current().award(z.boolean().parse(payload)),
+      true,
+    );
+    on(
+      "host:team-action",
+      (payload: unknown) =>
+        current().teamAction(teamActionSchema.parse(payload)),
       true,
     );
     on("host:end", () => current().finish(), true);
@@ -391,7 +415,8 @@ export async function startServer(options: {
       socket.data.playerId = player.id;
       if (room.players.size > previousCount) {
         const notice: JoinNotice = {
-          id: randomUUID(), roomId: room.id,
+          id: randomUUID(),
+          roomId: room.id,
           player: { id: player.id, name: player.name, avatar: player.avatar },
         };
         for (const recipient of io.sockets.sockets.values()) {

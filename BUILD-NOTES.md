@@ -1,5 +1,13 @@
 # QuizHost builds
 
+## Source expansion — sixteen team games (1 November 2026, not packaged)
+
+Better together now includes all sixteen games from the supplied reference. Original classroom variants use separate question, board and activity stages with host-only commands, server scoring, hidden state, configurable surprises, score units and explicit board winners/ties. See TEAM-GAMES.md for the full rules, question requirements and reference-name mappings. The editor adds an optional short word-game answer, preserved by old/new quiz imports and backups. Existing quizzes, individual scoring, offline media and saved results remain supported.
+
+TypeScript and production builds passed, and all 59 tests passed. Automated coverage includes all sixteen controller/Socket.IO flows and natural endings, all 21 point/position effects, invalid/repeated actions, secret state, line wins/draws, Bingo shared wins, paths, shot reachability, result persistence and CSV formatting, alongside the existing phone-mode regressions. Browser checks played a turn in every mode, including Classic/Jr. surprises, memory flips, claims, Bingo multi-team judging, dice, shots, letter solving and egg collection. Checked laptop/narrow layouts, reduced motion and result units. Browser download automation did not provide a completion event; CSV content is verified by automated formatter tests.
+
+No Windows package was produced. Version remains 0.1.4-beta.11 and release/QuizHost-0.1.4-beta.11-Windows.exe is the earlier build. Rebuild and increment the beta version before distributing these games. Native Windows launch and physical classroom acceptance testing remain pending.
+
 ## Version 0.1.4 Beta 11 — floating, draggable student lobby avatars (29 October 2026)
 
 The student lobby shows classmates' names and server-assigned avatars in an open space without avatar cards or an outer panel. Avatars bob gently and can be moved with mouse/touch pointer capture, arrow keys, or Home to reset. Movement stays within the visible lobby. Positions are local to the student's device and survive room updates, page changes and resizing; no movement commands are sent to the game server. New classmates append to the roster instead of reordering existing players alphabetically.

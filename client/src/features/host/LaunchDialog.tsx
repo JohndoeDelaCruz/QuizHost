@@ -1,5 +1,7 @@
 import { ArrowRight, Monitor, Smartphone, X } from "lucide-react";
 import type { Mode, Quiz } from "../../../../shared/types";
+import { TEAM_GAMES, type TeamGameConfig } from "../../../../shared/teamGames";
+import { GamePicker } from "./team/GamePicker";
 
 export function LaunchDialog({
   quiz,
@@ -7,6 +9,8 @@ export function LaunchDialog({
   onModeChange,
   teamNames,
   onTeamNamesChange,
+  teamGame,
+  onTeamGameChange,
   active,
   error,
   busy,
@@ -19,6 +23,8 @@ export function LaunchDialog({
   onModeChange: (mode: Mode) => void;
   teamNames: string;
   onTeamNamesChange: (names: string) => void;
+  teamGame: TeamGameConfig;
+  onTeamGameChange: (config: TeamGameConfig) => void;
   active: boolean;
   error: string;
   busy: boolean;
@@ -26,6 +32,8 @@ export function LaunchDialog({
   onClose: () => void;
   onStart: () => Promise<void>;
 }) {
+  const needsTwo = mode === "teams" && TEAM_GAMES[teamGame.game].twoTeams;
+  const count = teamNames.split("\n").filter((name) => name.trim()).length;
   return (
     <div className="modal-backdrop">
       <div className="modal launch-modal">
@@ -70,14 +78,29 @@ export function LaunchDialog({
           </button>
         </div>
         {mode === "teams" && (
+          <GamePicker
+            config={teamGame}
+            onChange={onTeamGameChange}
+            questionCount={quiz.questions.length}
+          />
+        )}
+        {mode === "teams" && (
           <label className="field">
-            Team names <span>One per line · 2–8 teams</span>
+            Team names{" "}
+            <span>
+              One per line · {needsTwo ? "Exactly 2 teams" : "2–8 teams"}
+            </span>
             <textarea
               value={teamNames}
               onChange={(e) => onTeamNamesChange(e.target.value)}
               rows={4}
             />
           </label>
+        )}
+        {needsTwo && count !== 2 && (
+          <p className="inline-error">
+            Enter exactly two teams for {TEAM_GAMES[teamGame.game].title}.
+          </p>
         )}
         {active && (
           <p className="inline-error">
@@ -95,7 +118,9 @@ export function LaunchDialog({
           </button>
           <button
             className="btn primary"
-            disabled={busy || !!active || !connected}
+            disabled={
+              busy || !!active || !connected || (!!needsTwo && count !== 2)
+            }
             onClick={onStart}
           >
             Open game room <ArrowRight size={18} />

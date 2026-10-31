@@ -8,7 +8,7 @@ export function Scores({
   playerId,
   rankOffset = 0,
 }: {
-  room: Pick<RoomView, "scores">;
+  room: Pick<RoomView, "scores" | "scoreUnit">;
   playerId?: string;
   rankOffset?: number;
 }) {
@@ -31,7 +31,7 @@ export function Scores({
             {s.connected === false && <small>Reconnecting</small>}
           </span>
           <strong>{s.score.toLocaleString()}</strong>
-          <span className="muted">pts</span>
+          <span className="muted">{room.scoreUnit ?? "pts"}</span>
         </div>
       ))}
       {!room.scores.length && (

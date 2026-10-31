@@ -53,6 +53,8 @@ export function Host() {
     setDeleteQuiz,
     mode,
     setMode,
+    teamGame,
+    setTeamGame,
     teamNames,
     setTeamNames,
     refresh,
@@ -62,12 +64,17 @@ export function Host() {
     openRoom,
     removeQuiz,
   } = useHostWorkspace();
-  const pageRef = useSwitchMotion(tab + (tab === "room" ? `:${room?.id ?? "empty"}` : ""));
+  const pageRef = useSwitchMotion(
+    tab + (tab === "room" ? `:${room?.id ?? "empty"}` : ""),
+  );
   const audio = useAudio();
   useHostAudio(room, tab, connected);
   function activateSound() {
-    if (!audio.settings.muted && audio.settings.volume > 0 &&
-      (audio.snapshot.status === "locked" || audio.snapshot.status === "paused")) {
+    if (
+      !audio.settings.muted &&
+      audio.settings.volume > 0 &&
+      (audio.snapshot.status === "locked" || audio.snapshot.status === "paused")
+    ) {
       audio.unlock();
     }
   }
@@ -225,6 +232,8 @@ export function Host() {
           onModeChange={setMode}
           teamNames={teamNames}
           onTeamNamesChange={setTeamNames}
+          teamGame={teamGame}
+          onTeamGameChange={setTeamGame}
           active={!!active}
           error={error}
           busy={busy}

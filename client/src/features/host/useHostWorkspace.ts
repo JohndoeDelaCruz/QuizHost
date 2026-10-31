@@ -11,6 +11,10 @@ import { api, command, connect, hostToken } from "../../lib";
 import { freshQuestion } from "../quizzes/question";
 import { useAudio } from "../../audio/AudioProvider";
 import { useJoinNotices } from "../../components/game/useJoinNotices";
+import {
+  defaultTeamConfig,
+  type TeamGameConfig,
+} from "../../../../shared/teamGames";
 
 export function useHostWorkspace() {
   const { unlock } = useAudio();
@@ -33,6 +37,9 @@ export function useHostWorkspace() {
   const [deleteQuiz, setDeleteQuiz] = useState<Quiz | null>(null);
   const [mode, setMode] = useState<Mode>("individual");
   const [teamNames, setTeamNames] = useState("Team Sun\nTeam Moon\nTeam Star");
+  const [teamGame, setTeamGame] = useState<TeamGameConfig>(() =>
+    defaultTeamConfig(),
+  );
   const refresh = useCallback(async () => {
     try {
       const [q, r, n] = await Promise.all([
@@ -57,8 +64,12 @@ export function useHostWorkspace() {
       try {
         const next = await api<NetworkInfo>("/config");
         if (active && currentRequest === request)
-          setNetwork((current) => JSON.stringify(current) === JSON.stringify(next) ? current : next);
-      } catch { /* Preserve the last address during a transient host disconnect. */ }
+          setNetwork((current) =>
+            JSON.stringify(current) === JSON.stringify(next) ? current : next,
+          );
+      } catch {
+        /* Preserve the last address during a transient host disconnect. */
+      }
     };
     const timer = setInterval(() => void updateAddresses(), 5000);
     const focus = () => void updateAddresses();
@@ -142,6 +153,7 @@ export function useHostWorkspace() {
       await act("host:create", {
         quizId: launch.id,
         mode,
+        ...(mode === "teams" ? { teamGame } : {}),
         teams:
           mode === "teams"
             ? teamNames
@@ -188,6 +200,8 @@ export function useHostWorkspace() {
     setDeleteQuiz,
     mode,
     setMode,
+    teamGame,
+    setTeamGame,
     teamNames,
     setTeamNames,
     refresh,

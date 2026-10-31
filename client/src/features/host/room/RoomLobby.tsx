@@ -6,7 +6,14 @@ import { Avatar } from "../../../components/game/Avatar";
 import { JoinPopups } from "../../../components/game/JoinPopups";
 import type { HostRoomProps } from "../types";
 
-export function RoomLobby({ room, busy, act, network, joinNotices, dismissJoinNotice }: HostRoomProps) {
+export function RoomLobby({
+  room,
+  busy,
+  act,
+  network,
+  joinNotices,
+  dismissJoinNotice,
+}: HostRoomProps) {
   return (
     <div className="room-grid">
       <section className="card lobby-card">
@@ -26,8 +33,8 @@ export function RoomLobby({ room, busy, act, network, joinNotices, dismissJoinNo
         ) : (
           <>
             <p>
-              Gather around one screen. Take turns choosing a tile, answer
-              aloud, and let the teacher award the points.
+              {room.teamGame?.rules ??
+                "Gather around one screen. Answer aloud and let the teacher award the points."}
             </p>
             <div className="team-preview">
               {room.scores.map((s) => (
@@ -72,9 +79,17 @@ export function RoomLobby({ room, busy, act, network, joinNotices, dismissJoinNo
         </div>
         <div className="roster-body">
           <Scores room={room} />
-          <JoinPopups room={room} notices={joinNotices} onDismiss={dismissJoinNotice} />
+          <JoinPopups
+            room={room}
+            notices={joinNotices}
+            onDismiss={dismissJoinNotice}
+          />
         </div>
-        {room.mode === "teams" && <p className="helper">No phones, logins, or Wi-Fi needed for this mode.</p>}
+        {room.mode === "teams" && (
+          <p className="helper">
+            No phones, logins, or Wi-Fi needed for this mode.
+          </p>
+        )}
       </section>
     </div>
   );

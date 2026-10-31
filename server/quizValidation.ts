@@ -13,6 +13,7 @@ export const quizSchema = z.object({
         correctIndex: z.number().int().min(0).max(3),
         seconds: z.number().int().min(5).max(120),
         points: z.number().int().min(10).max(2000),
+        puzzleAnswer: z.string().trim().max(60).optional(),
         image: z
           .object({
             id: z.string().regex(IMAGE_ID_PATTERN),

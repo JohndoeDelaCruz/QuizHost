@@ -2,7 +2,13 @@ import { Trophy } from "lucide-react";
 import type { RoomView } from "../../../../shared/types";
 import { Avatar } from "./Avatar";
 
-export function Podium({ scores }: { scores: RoomView["scores"] }) {
+export function Podium({
+  scores,
+  unit = "pts",
+}: {
+  scores: RoomView["scores"];
+  unit?: string;
+}) {
   return (
     <div className="podium" aria-label="Top three scores">
       {[1, 0, 2]
@@ -18,7 +24,7 @@ export function Podium({ scores }: { scores: RoomView["scores"] }) {
             <Avatar avatar={scores[index].avatar} size={98} />
             <strong className="podium-name">{scores[index].name}</strong>
             <span className="podium-score">
-              {scores[index].score.toLocaleString()} pts
+              {scores[index].score.toLocaleString()} {unit}
             </span>
             <div className="podium-block">
               <span>{index + 1}</span>

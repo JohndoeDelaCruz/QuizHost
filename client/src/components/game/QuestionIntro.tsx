@@ -4,7 +4,13 @@ import { QuestionImageView } from "./QuestionImage";
 import { useServerClock } from "./useServerClock";
 import { QuestionPrompt } from "./QuestionPrompt";
 
-export function QuestionIntro({ room, compact = false }: { room: RoomView; compact?: boolean }) {
+export function QuestionIntro({
+  room,
+  compact = false,
+}: {
+  room: RoomView;
+  compact?: boolean;
+}) {
   const now = useServerClock(room.serverNow);
   const remaining = Math.max(0, (room.startsAt ?? now) - now);
   const progress = Math.min(
@@ -19,10 +25,8 @@ export function QuestionIntro({ room, compact = false }: { room: RoomView; compa
     >
       <span className="intro-kicker">
         <Eye size={18} /> QUESTION{" "}
-        {room.mode === "teams"
-          ? room.tiles.filter((tile) => tile.used).length
-          : room.questionIndex + 1}{" "}
-        OF {room.questionCount}
+        {room.teamGame?.questionsUsed ?? room.questionIndex + 1} OF{" "}
+        {room.questionCount}
       </span>
       <div className="intro-body">
         <QuestionPrompt text={room.preview.prompt} compact={compact} />

@@ -6,20 +6,33 @@ import type { GameScreenProps } from "../types";
 import { VictoryTrophy } from "../../../components/game/VictoryTrophy";
 
 export function FinishedRoom({ room, busy, act }: GameScreenProps) {
+  const winners = room.teamGame?.winnerIds;
+  const names = winners
+    ?.map((id) => room.scores.find((team) => team.id === id)?.name)
+    .join(" & ");
   return (
     <section className="card finish-card">
       <Celebration key={room.id} />
       <VictoryTrophy />
       <span className="eyebrow">A ROUND OF APPLAUSE</span>
       <h2>
-        {room.scores[0]
-          ? `${room.scores[0].name} takes the lead!`
-          : "That’s a wrap!"}
+        {winners
+          ? winners.length === 0
+            ? "It’s a draw!"
+            : winners.length > 1
+              ? `${names} share the win!`
+              : `${names} wins!`
+          : room.scores[0]
+            ? `${room.scores[0].name} takes the lead!`
+            : "That’s a wrap!"}
       </h2>
       <p className="muted">
-        Every question is a chance to learn. Your results are saved.
+        {room.teamGame?.summary ?? "Every question is a chance to learn."} Your
+        results are saved.
       </p>
-      <Podium scores={room.scores} />
+      {(!winners || winners.length === 1) && (
+        <Podium scores={room.scores} unit={room.scoreUnit} />
+      )}
       <Scores room={room} />
       <button
         className="btn primary"

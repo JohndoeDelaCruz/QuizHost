@@ -10,8 +10,17 @@ import { RoomLobby } from "./RoomLobby";
 import { TeamBoard } from "./TeamBoard";
 import { GameStage } from "../../../components/game/GameStage";
 import { PreQuestionCountdown } from "../../../components/game/PreQuestionCountdown";
+import { TeamActivity } from "../team/TeamActivity";
+import { BalloonBoard } from "../team/BalloonBoard";
 
-export function HostRoom({ room, network, busy, act, joinNotices, dismissJoinNotice }: HostRoomProps) {
+export function HostRoom({
+  room,
+  network,
+  busy,
+  act,
+  joinNotices,
+  dismissJoinNotice,
+}: HostRoomProps) {
   const [confirmEnd, setConfirmEnd] = useState(false);
   const questionVisible = room.phase === "question" || room.phase === "reveal";
   return (
@@ -48,27 +57,49 @@ export function HostRoom({ room, network, busy, act, joinNotices, dismissJoinNot
           </button>
         )}
       </div>
-      <GameStage stageKey={`${room.id}:${room.phase}:${room.questionIndex}`}>
-      {room.phase === "preparing" && <PreQuestionCountdown room={room} />}
-      {room.phase === "countdown" && <QuestionIntro room={room} />}
-      {room.phase === "ranking" && (
-        <Rankings
-          key={room.id + ":" + room.questionIndex}
-          room={room}
-          busy={busy}
-          onContinue={() => void act("host:next")}
-        />
-      )}
-      {room.phase === "lobby" && (
-        <RoomLobby room={room} busy={busy} act={act} network={network} joinNotices={joinNotices} dismissJoinNotice={dismissJoinNotice} />
-      )}
-      {room.phase === "board" && (
-        <TeamBoard room={room} busy={busy} act={act} />
-      )}
-      {questionVisible && <HostQuestion room={room} busy={busy} act={act} />}
-      {room.phase === "finished" && (
-        <FinishedRoom room={room} busy={busy} act={act} />
-      )}
+      <GameStage
+        stageKey={`${room.id}:${room.phase}:${room.teamGame?.round ?? room.questionIndex}`}
+      >
+        {room.phase === "preparing" && <PreQuestionCountdown room={room} />}
+        {room.phase === "countdown" && <QuestionIntro room={room} />}
+        {room.phase === "ranking" && (
+          <Rankings
+            key={room.id + ":" + (room.teamGame?.round ?? room.questionIndex)}
+            room={room}
+            busy={busy}
+            onContinue={() => void act("host:next")}
+          />
+        )}
+        {room.phase === "lobby" && (
+          <RoomLobby
+            room={room}
+            busy={busy}
+            act={act}
+            network={network}
+            joinNotices={joinNotices}
+            dismissJoinNotice={dismissJoinNotice}
+          />
+        )}
+        {room.phase === "board" && (
+          <TeamBoard room={room} busy={busy} act={act} />
+        )}
+        {room.phase === "activity" && (
+          <TeamActivity
+            key={`${room.id}:${room.teamGame?.round}`}
+            room={room}
+            busy={busy}
+            act={act}
+          />
+        )}
+        {questionVisible &&
+          (room.teamGame?.id === "balloons" ? (
+            <BalloonBoard room={room} busy={busy} act={act} />
+          ) : (
+            <HostQuestion room={room} busy={busy} act={act} />
+          ))}
+        {room.phase === "finished" && (
+          <FinishedRoom room={room} busy={busy} act={act} />
+        )}
       </GameStage>
       {confirmEnd && (
         <div className="modal-backdrop">

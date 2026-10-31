@@ -222,6 +222,21 @@ export function QuizEditor({
                 </div>
               ))}
             </div>
+            <label className="field">
+              Word-game answer{" "}
+              <span>
+                Optional · Balloon Words uses this instead of a long answer
+                choice
+              </span>
+              <input
+                value={current.puzzleAnswer ?? ""}
+                maxLength={60}
+                placeholder="A short word or phrase, such as FRICTION"
+                onChange={(e) =>
+                  question({ puzzleAnswer: e.target.value || undefined })
+                }
+              />
+            </label>
             <div className="row settings-row">
               <label className="field">
                 Time limit <span>seconds</span>

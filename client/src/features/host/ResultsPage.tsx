@@ -2,7 +2,9 @@ import { Download, Trophy } from "lucide-react";
 import type { Result } from "../../../../shared/types";
 import { Pill } from "../../components/Pill";
 import { Scores } from "../../components/game/Scores";
-import { csvCell, download } from "../../lib";
+import { download } from "../../lib";
+import { resultCSV } from "../../../../shared/resultCSV";
+import { TEAM_GAMES } from "../../../../shared/teamGames";
 
 export function ResultsPage({ results }: { results: Result[] }) {
   return (
@@ -28,7 +30,11 @@ export function ResultsPage({ results }: { results: Result[] }) {
             <div className="section-heading">
               <div>
                 <Pill>
-                  {result.mode === "teams" ? "Team play" : "Individual play"}
+                  {result.teamGame
+                    ? TEAM_GAMES[result.teamGame].title
+                    : result.mode === "teams"
+                      ? "Team play"
+                      : "Individual play"}
                 </Pill>
                 <h2>{result.quizTitle}</h2>
                 <p>
@@ -42,27 +48,7 @@ export function ResultsPage({ results }: { results: Result[] }) {
                 onClick={() =>
                   download(
                     "quizhost-results.csv",
-                    "\uFEFF" +
-                      [
-                        [
-                          "Rank",
-                          "Name",
-                          "Score",
-                          "Correct answers",
-                          "Quiz",
-                          "Finished",
-                        ],
-                        ...result.scores.map((s, i) => [
-                          i + 1,
-                          s.name,
-                          s.score,
-                          s.correct,
-                          result.quizTitle,
-                          result.finishedAt,
-                        ]),
-                      ]
-                        .map((row) => row.map(csvCell).join(","))
-                        .join("\r\n"),
+                    resultCSV(result),
                     "text/csv;charset=utf-8",
                   )
                 }
@@ -71,6 +57,17 @@ export function ResultsPage({ results }: { results: Result[] }) {
                 Export CSV
               </button>
             </div>
+            {result.winnerIds && (
+              <p>
+                {result.winnerIds.length === 0
+                  ? "Draw"
+                  : `${result.winnerIds.length > 1 ? "Shared win" : "Winner"}: ${result.scores
+                      .filter((s) => result.winnerIds!.includes(s.id))
+                      .map((s) => s.name)
+                      .join(" & ")}`}{" "}
+                · {result.finishReason}
+              </p>
+            )}
             <Scores room={result} />
           </div>
         ))
